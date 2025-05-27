@@ -1,35 +1,74 @@
-The old DX8 [[shd8bumpspec.vsh]] shader handles tangent space basis transformation, lighting vectors, and outputs several interpolators for per-pixel lighting. Here’s a summary of what needs to be addressed and a draft translation to modern BGFX GLSL-style code.
+# Directions: Updating BGFX Bump Specular Shader to Match DX8 Logic
 
-Key points from the DX8 shader
-Inputs:
-Vertex position, normal, color, texture coords, tangent (S), bitangent (T), and SxT (cross product of S and T).
-Uniforms:
-Model/view/projection, world matrix, light directions, light colors, material parameters, eye position, etc.
-Outputs:
-Transform basis to world, compute tangent space light direction, normalize, output various lighting factors, compute and output specular, etc.
-You need these in your BGFX shader:
-Vertex Attributes:
+## 1. Add Required Vertex Attributes
 
-a_position, a_normal, a_texcoord0
-Add: a_tangent, a_bitangent (and possibly color)
-Uniforms:
+Ensure your shader receives the following per-vertex attributes:
+- `a_position` (vec3): Vertex position
+- `a_normal` (vec3): Vertex normal
+- `a_tangent` (vec3): Tangent vector (S)
+- `a_bitangent` (vec3): Bitangent vector (T)
+- `a_texcoord0` (vec2): Texture coordinates
+- *(Optional but recommended)*: Vertex color
 
-Model/view/projection
-World matrix
-Light directions/colors
-Eye position
-Material parameters (diffuse, ambient, specular, bumpiness)
-Varyings:
+## 2. Declare Required Uniforms
 
-Pass tangent, bitangent, normal to fragment shader
-Pass tangent-space light vector, view vector
-Pass texcoords
-Example: BGFX GLSL Vertex Shader
-Below is a starting point for your BGFX vertex shader, matching the DX8 logic as closely as possible.
-Note: You’ll need to set up all required uniforms and attributes in your engine code as well.
+Add these uniforms to your shader:
+- `u_modelViewProj` (mat4): Model-View-Projection matrix
+- `u_model` (mat4): Model (world) matrix
+- `u_eyePos` (vec3): Camera/eye position in world space
+- `u_lightDir0` (vec3): Light direction in world space (add more for additional lights as needed)
+- `u_lightColor0` (vec4): Light color/attenuation (add more for additional lights)
+- *(Optional)*: Material parameters (diffuse, ambient, specular, bumpiness)
 
-GLSL
-// BGFX vertex shader for bump specular effect with gloss map
+## 3. Transform Inputs to World Space
+
+In your main vertex shader function:
+- Transform the vertex position to world space:  
+  `worldPos = vec3(mul(u_model, vec4(a_position, 1.0)));`
+- Transform the normal, tangent, and bitangent to world space (and normalize):
+  ```
+  N = normalize(vec3(mul((mat3)u_model, a_normal)));
+  T = normalize(vec3(mul((mat3)u_model, a_tangent)));
+  B = normalize(vec3(mul((mat3)u_model, a_bitangent)));
+  ```
+
+## 4. Build the TBN Matrix
+
+- Construct the tangent space basis matrix:
+  ```glsl
+  mat3 TBN = mat3(T, B, N);
+  ```
+
+## 5. Compute Light and View Vectors in Tangent Space
+
+- Calculate light direction in world space and normalize:
+  `vec3 L = normalize(u_lightDir0);`
+- Calculate view direction in world space:
+  `vec3 V = normalize(u_eyePos - worldPos);`
+- Transform both to tangent space:
+  ```
+  v_lightDirTS = TBN * L;
+  v_viewDirTS  = TBN * V;
+  ```
+
+## 6. Output All Required Data to the Fragment Shader
+
+- Output these varyings:
+  - `v_texcoord0` (pass-through from `a_texcoord0`)
+  - `v_normal`, `v_tangent`, `v_bitangent` (world space, for per-fragment calculations if needed)
+  - `v_lightDirTS` (light vector in tangent space)
+  - `v_viewDirTS` (view vector in tangent space)
+  - *(Optional)*: `v_color` (vertex color or calculated lighting)
+
+## 7. Update the Fragment Shader
+
+- Ensure it uses `v_lightDirTS`, `v_viewDirTS`, and your normal/gloss maps to perform per-pixel bump/specular/gloss calculations, replicating the DX8 pixel pipeline logic.
+
+---
+
+## Example BGFX GLSL Vertex Shader
+
+```glsl
 $input a_position, a_normal, a_tangent, a_bitangent, a_texcoord0
 $output v_normal, v_tangent, v_bitangent, v_texcoord0
 $output v_lightDirTS, v_viewDirTS, v_color
@@ -38,56 +77,44 @@ $output v_lightDirTS, v_viewDirTS, v_color
 
 uniform mat4 u_modelViewProj;
 uniform mat4 u_model;
-uniform mat4 u_world; // or u_model if that’s world
-uniform vec3 u_eyePos; // world space eye position
-uniform vec3 u_lightDir0; // world space
+uniform vec3 u_eyePos;
+uniform vec3 u_lightDir0;
 uniform vec4 u_lightColor0;
-// Add uniforms for more lights as needed...
 
 void main()
 {
-    // Transform position to clip space
     gl_Position = mul(u_modelViewProj, vec4(a_position, 1.0));
-    
-    // Transform vertex position to world space
     vec3 worldPos = vec3(mul(u_model, vec4(a_position, 1.0)));
-
-    // Transform normal, tangent, bitangent to world space
     vec3 N = normalize(vec3(mul((mat3)u_model, a_normal)));
     vec3 T = normalize(vec3(mul((mat3)u_model, a_tangent)));
     vec3 B = normalize(vec3(mul((mat3)u_model, a_bitangent)));
-
-    // Build TBN matrix
     mat3 TBN = mat3(T, B, N);
-
-    // Light direction (assumed normalized, world space)
     vec3 L = normalize(u_lightDir0);
-
-    // Vector from vertex to eye (in world space)
     vec3 V = normalize(u_eyePos - worldPos);
-
-    // Transform light and view to tangent space
     v_lightDirTS = TBN * L;
     v_viewDirTS  = TBN * V;
-
-    // Pass normal, tangent, bitangent for possible per-fragment use
     v_normal = N;
     v_tangent = T;
     v_bitangent = B;
-
-    // Pass through texcoords
     v_texcoord0 = a_texcoord0;
-
-    // Add color if needed, or calculate lighting here if doing per-vertex
-    v_color = vec4(1.0); // Placeholder, set to vertex color or calculated
+    v_color = vec4(1.0); // Replace if using vertex color or calculated value
 }
-Fragment Shader
-The fragment shader will use v_lightDirTS, v_viewDirTS, and normal map to compute the per-pixel bump/spec/gloss effects, using the same math as your old pixel pipeline.
+```
 
-Action Steps
-Modify your BGFX vertex shader as above:
-Add tangent/bitangent attributes.
-Add/declare necessary uniforms.
-Transform and output tangent-space light and view vectors.
-Pass all needed data to the pixel shader for per-pixel lighting.
-Update your fragment shader to use these vectors and normal/gloss maps.
+---
+
+**Summary Table**
+
+| Step | What to Add/Change          | Why                                 |
+|------|----------------------------|-------------------------------------|
+| 1    | Vertex attributes           | Needed for tangent space lighting   |
+| 2    | Shader uniforms             | Provide transformation & lighting   |
+| 3    | Transform to world space    | Accurate lighting calculations      |
+| 4    | Build TBN matrix            | Convert between spaces              |
+| 5    | Compute light/view in TS    | For per-pixel bump/specular         |
+| 6    | Output all needed varyings  | Data for fragment shader            |
+| 7    | Update fragment shader      | Use new data for effects            |
+
+---
+
+**Follow these steps to update your BGFX shader to achieve feature parity with the DX8 bump specular shader.**
