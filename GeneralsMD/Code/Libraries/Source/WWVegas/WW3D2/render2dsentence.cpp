@@ -39,7 +39,7 @@
 #include "texture.h"
 #include "wwprofile.h"
 #include "wwmemlog.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
 
 #ifdef _INTERNAL
 // for occasional debugging...

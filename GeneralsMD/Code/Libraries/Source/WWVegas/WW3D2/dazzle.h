@@ -32,6 +32,10 @@
 #include "w3derr.h"
 #include "shader.h"
 #include "matrix4.h"
+#include "BGFXVertexBuffer.h" // BGFX abstraction for vertex buffer
+#include "BGFXIndexBuffer.h"  // BGFX abstraction for index buffer
+#include <vector>
+#include <bgfx/bgfx.h>
 
 class CameraClass;
 class DazzleVisibilityClass;
@@ -258,6 +262,12 @@ class DazzleRenderObjClass : public RenderObjClass
 	
 	static bool	_dazzle_rendering_enabled;
 
+	// BGFX: Temporary storage for per-dazzle vertex/index data (used in Render_Dazzle)
+	std::vector<VertexFormatXYZNDUV2> bgfx_vertices;
+	std::vector<uint16_t> bgfx_indices;
+	BGFXVertexBuffer bgfx_vertex_buffer;
+	BGFXIndexBuffer bgfx_index_buffer;
+
 //	static void Draw_Debug_Dazzle(int idx);
 	void vis_render_dazzle(SpecialRenderInfoClass & rinfo);
 
@@ -305,7 +315,7 @@ public:
 
 	// Persistant object save-load interface
 	// Dazzles save their "dazzle-type" and transform
-	virtual const PersistFactoryClass &	Get_Factory (void) const;
+	virtual const PersistFactoryClass&	Get_Factory(void) const;
 
 	// Set the static "current layer" variable. This variable is used in the
 	// Render() call so that the dazzle knows which list to add itself to if

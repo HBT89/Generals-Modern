@@ -43,7 +43,7 @@
 #ifndef COLORSPACE_H
 #define COLORSPACE_H
 
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include <wwmath.h>
 
 void RGB_To_HSV(Vector3 &hsv,const Vector3 &rgb);

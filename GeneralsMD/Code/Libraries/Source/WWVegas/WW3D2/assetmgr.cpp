@@ -107,14 +107,17 @@
 #include "wwstring.h"
 #include "wwmemlog.h"
 #include "dazzle.h"
-#include "dx8wrapper.h"
-#include "dx8renderer.h"
+// TODO: BGFX PORT - All DX8/D3D includes and logic are commented out below. Replace with BGFX equivalents.
+// #include "dx8wrapper.h"
+// #include "dx8renderer.h"
+// #include <D3dx8core.h>
+#include "BGFXWrapper.h"
 #include "metalmap.h"
 #include "w3dexclusionlist.h"
 #include <ini.h>
 #include <windows.h>
 #include <stdio.h>
-#include <D3dx8core.h>
+
 #include "texture.h"
 #include "wwprofile.h"
 #include "assetstatus.h"
@@ -317,11 +320,12 @@ static void Log_Textures(bool inited,unsigned& total_count, unsigned& total_mem)
 		TextureClass * tex=ite.Peek_Value();
 		if (tex->Is_Initialized()!=inited) continue;
 
+		// TODO: BGFX PORT - Replace all D3D8/DX8 usages in Log_Textures with BGFX equivalents.
+		/*
 		D3DSURFACE_DESC desc;
 		IDirect3DTexture8* d3d_texture=tex->Peek_D3D_Texture();
 		if (!d3d_texture) continue;
 		DX8_ErrorCode(d3d_texture->GetLevelDesc(0,&desc));
-
 		StringClass tex_format="Unknown";
 		switch (desc.Format) {
 		case D3DFMT_A8R8G8B8: tex_format="D3DFMT_A8R8G8B8"; break;
@@ -360,8 +364,9 @@ static void Log_Textures(bool inited,unsigned& total_count, unsigned& total_mem)
 		case D3DFMT_D16: tex_format="D3DFMT_D16"; break;
 		case D3DFMT_D24X8: tex_format="D3DFMT_D24X8"; break;
 		case D3DFMT_D24X4S4: tex_format="D3DFMT_D24X4S4"; break;
-		default:	break;
+		default: break;
 		}
+		*/
 
 		unsigned texmem=tex->Get_Texture_Memory_Usage();
 		total_mem+=texmem;

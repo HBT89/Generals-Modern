@@ -57,17 +57,23 @@
 #include "inisup.h"
 #include "persistfactory.h"
 #include "ww3dids.h"
-#include "dx8wrapper.h"
-#include "dx8vertexbuffer.h"
-#include "dx8indexbuffer.h"
+
+// TODO: BGFX PORT - All DX8/D3D includes and logic are commented out below. Replace with BGFX equivalents.
+//#include "dx8wrapper.h"
+//#include "dx8vertexbuffer.h"
+//#include "dx8indexbuffer.h"
 #include "sortingrenderer.h"
 #include "texture.h"
 #include "scene.h"
 #include "wwprofile.h"
 #include "visrasterizer.h"
-#include <cstdio>
-#include <limits.h>
-#include <wwprofile.h>
+#include "BGFXWrapper.h" // BGFX port
+#include "BGFXVertexBuffer.h" // BGFX vertex buffer abstraction
+#include "BGFXIndexBuffer.h"  // BGFX index buffer abstraction
+#include <bgfx/bgfx.h>
+#include <vector>
+
+using namespace std;
 
 
 // All dazzle types appear under Dazzles_List in the dazzle.ini file.
@@ -390,38 +396,41 @@ void LensflareTypeClass::Generate_Vertex_Buffers(
 		if (col[0]>1.0f) col[0]=1.0f;
 		if (col[1]>1.0f) col[1]=1.0f;
 		if (col[2]>1.0f) col[2]=1.0f;
-		unsigned color=DX8Wrapper::Convert_Color(col,1.0f);
+		// TODO: BGFX PORT - Replace DX8Wrapper::Convert_Color with BGFX equivalent
+		// unsigned color=DX8Wrapper::Convert_Color(col,1.0f); // DX8
+		unsigned color=0xFFFFFFFF; // TODO: Use BGFXWrapper::Convert_Color(col, 1.0f) when implemented
 
-		vertex->x=x+ix;
-		vertex->y=y-iy;
-		vertex->z=z;
-		vertex->u1=lic.flare_uv[a][0];
-		vertex->v1=lic.flare_uv[a][1];
-		vertex->diffuse=color;
+		// Set up the quad vertices for the flare sprite
+		vertex->x = x + ix;
+		vertex->y = y - iy;
+		vertex->z = z;
+		vertex->u1 = lic.flare_uv[a][0];
+		vertex->v1 = lic.flare_uv[a][1];
+		vertex->diffuse = color;
 		vertex++;
 
-		vertex->x=x+ix;
-		vertex->y=y+iy;
-		vertex->z=z;
-		vertex->u1=lic.flare_uv[a][2];
-		vertex->v1=lic.flare_uv[a][1];
-		vertex->diffuse=color;
+		vertex->x = x + ix;
+		vertex->y = y + iy;
+		vertex->z = z;
+		vertex->u1 = lic.flare_uv[a][2];
+		vertex->v1 = lic.flare_uv[a][1];
+		vertex->diffuse = color;
 		vertex++;
 
-		vertex->x=x-ix;
-		vertex->y=y+iy;
-		vertex->z=z;
-		vertex->u1=lic.flare_uv[a][2];
-		vertex->v1=lic.flare_uv[a][3];
-		vertex->diffuse=color;
+		vertex->x = x - ix;
+		vertex->y = y + iy;
+		vertex->z = z;
+		vertex->u1 = lic.flare_uv[a][2];
+		vertex->v1 = lic.flare_uv[a][3];
+		vertex->diffuse = color;
 		vertex++;
 
-		vertex->x=x-ix;
-		vertex->y=y-iy;
-		vertex->z=z;
-		vertex->u1=lic.flare_uv[a][0];
-		vertex->v1=lic.flare_uv[a][3];
-		vertex->diffuse=color;
+		vertex->x = x - ix;
+		vertex->y = y - iy;
+		vertex->z = z;
+		vertex->u1 = lic.flare_uv[a][0];
+		vertex->v1 = lic.flare_uv[a][3];
+		vertex->diffuse = color;
 		vertex++;
 
 		vertex_count+=4;
@@ -1014,85 +1023,82 @@ void DazzleRenderObjClass::Render(RenderInfoClass & rinfo)
 
 void DazzleRenderObjClass::Render_Dazzle(CameraClass* camera)
 {
-	WWPROFILE("Dazzle::Render");
-	Matrix4x4 old_view_transform;
-	Matrix4x4 old_world_transform;
-	Matrix4x4 old_projection_transform;
-	Matrix4x4 view_transform;
-	Matrix4x4 world_transform;
-	Matrix4x4 projection_transform;
-	DX8Wrapper::Get_Transform(D3DTS_VIEW,view_transform);
-	DX8Wrapper::Get_Transform(D3DTS_WORLD,world_transform);
-	DX8Wrapper::Get_Transform(D3DTS_PROJECTION,projection_transform);
-	old_view_transform=view_transform;
-	old_world_transform=world_transform;
-	old_projection_transform=projection_transform;
-	Vector3 camera_loc(camera->Get_Position());
-	Vector3 camera_dir(-view_transform[2][0],-view_transform[2][1],-view_transform[2][2]);
+    WWPROFILE("Dazzle::Render");
+    Matrix4x4 old_view_transform;
+    Matrix4x4 old_world_transform;
+    Matrix4x4 old_projection_transform;
+    Matrix4x4 view_transform;
+    Matrix4x4 world_transform;
+    Matrix4x4 projection_transform;
+    DX8Wrapper::Get_Transform(D3DTS_VIEW,view_transform);
+    DX8Wrapper::Get_Transform(D3DTS_WORLD,world_transform);
+    DX8Wrapper::Get_Transform(D3DTS_PROJECTION,projection_transform);
+    old_view_transform=view_transform;
+    old_world_transform=world_transform;
+    old_projection_transform=projection_transform;
+    Vector3 camera_loc(camera->Get_Position());
+    Vector3 camera_dir(-view_transform[2][0],-view_transform[2][1],-view_transform[2][2]);
 
-	int display_width,display_height,display_bits;
-	bool windowed;
-	WW3D::Get_Device_Resolution(display_width,display_height,display_bits,windowed);
-	float w=float(display_width);
-	float h=float(display_height);
-	float screen_x_scale=1.0f;
-	float screen_y_scale=1.0f;
-	if (w>h) {
-		screen_y_scale=w/h;
-	}
-	else {
-		screen_x_scale=h/w;
-	}
+    int display_width,display_height,display_bits;
+    bool windowed;
+    WW3D::Get_Device_Resolution(display_width,display_height,display_bits,windowed);
+    float w=float(display_width);
+    float h=float(display_height);
+    float screen_x_scale=1.0f;
+    float screen_y_scale=1.0f;
+    if (w>h) {
+        screen_y_scale=w/h;
+    }
+    else {
+        screen_x_scale=h/w;
+    }
 
-//	unsigned time_ms=WW3D::Get_Frame_Time();
-//	if (time_ms==0) time_ms=1;
+    // Do NOT scale halo by current scale
+    // because it uses screen parallel primitives
+    // and if it's too big it will be visible until
+    // it collides with the near clip plane and then pop and vanish
+    float halo_scale_x=types[type]->ic.halo_scale_x;
+    float halo_scale_y=types[type]->ic.halo_scale_y;
+    float dazzle_scale_x=types[type]->ic.dazzle_scale_x * current_scale;
+    float dazzle_scale_y=types[type]->ic.dazzle_scale_y * current_scale;
 
-	// Do NOT scale halo by current scale
-	// because it uses screen parallel primitives
-	// and if it's too big it will be visible until
-	// it collides with the near clip plane and then pop and vanish
-	float halo_scale_x=types[type]->ic.halo_scale_x;
-	float halo_scale_y=types[type]->ic.halo_scale_y;
-	float dazzle_scale_x=types[type]->ic.dazzle_scale_x * current_scale;
-	float dazzle_scale_y=types[type]->ic.dazzle_scale_y * current_scale;
+    // Allocate some arrays for the dazzle rendering
+    int vertex_count=4;
 
-	// Allocate some arrays for the dazzle rendering
-	int vertex_count=4;
+    const DazzleTypeClass* params=types[type];
 
-	const DazzleTypeClass* params=types[type];
+    int halo_vertex_count=0;
+    int dazzle_vertex_count=0;
+    int lensflare_vertex_count=0;
 
-	int halo_vertex_count=0;
-	int dazzle_vertex_count=0;
-	int lensflare_vertex_count=0;
+    Vector3 dl;
 
-	Vector3 dl;
+    int lens_max_verts=0;
+    LensflareTypeClass* lensflare = DazzleRenderObjClass::Get_Lensflare_Class(types[type]->lensflare_id);
+    if (lensflare) {
+        lens_max_verts=4*lensflare->lic.flare_count;
+    }
 
-	int lens_max_verts=0;
-	LensflareTypeClass* lensflare = DazzleRenderObjClass::Get_Lensflare_Class(types[type]->lensflare_id);
-	if (lensflare) {
-		lens_max_verts=4*lensflare->lic.flare_count;
-	}
+    DynamicVBAccessClass vb_access(BUFFER_TYPE_DYNAMIC_DX8,dynamic_fvf_type,vertex_count*2+lens_max_verts);
+    {
+        DynamicVBAccessClass::WriteLockClass lock(&vb_access);
+        VertexFormatXYZNDUV2* verts=lock.Get_Formatted_Vertex_Array();
 
-	DynamicVBAccessClass vb_access(BUFFER_TYPE_DYNAMIC_DX8,dynamic_fvf_type,vertex_count*2+lens_max_verts);
-	{
-		DynamicVBAccessClass::WriteLockClass lock(&vb_access);
-		VertexFormatXYZNDUV2* verts=lock.Get_Formatted_Vertex_Array();
+        float halo_size=1.0f;
 
-		float halo_size=1.0f;
+        Vector3 dazzle_dxt(screen_x_scale,0.0f,0.0f);
+        Vector3 halo_dxt=dazzle_dxt*halo_scale_x;
+        dazzle_dxt*=dazzle_scale_x;
 
-		Vector3 dazzle_dxt(screen_x_scale,0.0f,0.0f);
-		Vector3 halo_dxt=dazzle_dxt*halo_scale_x;
-		dazzle_dxt*=dazzle_scale_x;
+        Vector3 dazzle_dyt(0.0f,screen_y_scale,0.0f);
+        Vector3 halo_dyt=dazzle_dyt*halo_scale_y;
+        dazzle_dyt*=dazzle_scale_y;
 
-		Vector3 dazzle_dyt(0.0f,screen_y_scale,0.0f);
-		Vector3 halo_dyt=dazzle_dyt*halo_scale_y;
-		dazzle_dyt*=dazzle_scale_y;
+        if (current_dazzle_intensity>0.0f) {
+            VertexFormatXYZNDUV2* vertex=verts;
+            dazzle_vertex_count+=4;
 
-		if (current_dazzle_intensity>0.0f) {
-			VertexFormatXYZNDUV2* vertex=verts;
-			dazzle_vertex_count+=4;
-
-			Vector3 col(
+            Vector3 col(
 				dazzle_color[0]*params->ic.dazzle_color[0],
 				dazzle_color[1]*params->ic.dazzle_color[1],
 				dazzle_color[2]*params->ic.dazzle_color[2]);
@@ -1104,39 +1110,39 @@ void DazzleRenderObjClass::Render_Dazzle(CameraClass* camera)
 
 			unsigned color=DX8Wrapper::Convert_Color(col,1.0f);
 
-			dl=current_vloc+(dazzle_dxt-dazzle_dyt)*current_dazzle_size;
-			reinterpret_cast<Vector3&>(vertex->x)=dl;
-			vertex->u1=0.0f;
-			vertex->v1=0.0f;
-			vertex->diffuse=color;
-			vertex++;
+            dl=current_vloc+(dazzle_dxt-dazzle_dyt)*current_dazzle_size;
+            reinterpret_cast<Vector3&>(vertex->x)=dl;
+            vertex->u1=0.0f;
+            vertex->v1=0.0f;
+            vertex->diffuse=color;
+            vertex++;
 
-			dl=current_vloc+(dazzle_dxt+dazzle_dyt)*current_dazzle_size;
-			reinterpret_cast<Vector3&>(vertex->x)=dl;
-			vertex->u1=1.0f;
-			vertex->v1=0.0f;
-			vertex->diffuse=color;
-			vertex++;
+            dl=current_vloc+(dazzle_dxt+dazzle_dyt)*current_dazzle_size;
+            reinterpret_cast<Vector3&>(vertex->x)=dl;
+            vertex->u1=1.0f;
+            vertex->v1=0.0f;
+            vertex->diffuse=color;
+            vertex++;
 
-			dl=current_vloc-(dazzle_dxt-dazzle_dyt)*current_dazzle_size;
-			reinterpret_cast<Vector3&>(vertex->x)=dl;
-			vertex->u1=1.0f;
-			vertex->v1=1.0f;
-			vertex->diffuse=color;
-			vertex++;
+            dl=current_vloc-(dazzle_dxt-dazzle_dyt)*current_dazzle_size;
+            reinterpret_cast<Vector3&>(vertex->x)=dl;
+            vertex->u1=1.0f;
+            vertex->v1=1.0f;
+            vertex->diffuse=color;
+            vertex++;
 
-			dl=current_vloc-(dazzle_dxt+dazzle_dyt)*current_dazzle_size;
-			reinterpret_cast<Vector3&>(vertex->x)=dl;
-			vertex->u1=0.0f;
-			vertex->v1=1.0f;
-			vertex->diffuse=color;
-		}
+            dl=current_vloc-(dazzle_dxt+dazzle_dyt)*current_dazzle_size;
+            reinterpret_cast<Vector3&>(vertex->x)=dl;
+            vertex->u1=0.0f;
+            vertex->v1=1.0f;
+            vertex->diffuse=color;
+        }
 
-		if (current_halo_intensity) {
-			VertexFormatXYZNDUV2* vertex=verts+dazzle_vertex_count;
-			halo_vertex_count+=4;
+        if (current_halo_intensity) {
+            VertexFormatXYZNDUV2* vertex=verts+dazzle_vertex_count;
+            halo_vertex_count+=4;
 
-			Vector3 col(
+            Vector3 col(
 				halo_color[0]*params->ic.halo_color[0],
 				halo_color[1]*params->ic.halo_color[1],
 				halo_color[2]*params->ic.halo_color[2]);
@@ -1179,30 +1185,30 @@ void DazzleRenderObjClass::Render_Dazzle(CameraClass* camera)
 			vertex->u1=0.0f;
 			vertex->v1=1.0f;
 			vertex->diffuse=color;
-		}
+        }
 
-		if (lensflare && current_dazzle_intensity>0.0f) {
-			VertexFormatXYZNDUV2* vertex=verts+halo_vertex_count+dazzle_vertex_count;
+        if (lensflare && current_dazzle_intensity>0.0f) {
+            VertexFormatXYZNDUV2* vertex=verts+halo_vertex_count+dazzle_vertex_count;
 
-			lensflare->Generate_Vertex_Buffers(
+            lensflare->Generate_Vertex_Buffers(
 				vertex,
 				lensflare_vertex_count,
 				screen_x_scale,
 				screen_y_scale,
 				current_dazzle_intensity * lensflare_intensity,
 				transformed_loc);
-			vertex_count+=lensflare_vertex_count;
-		}
-	}
+            vertex_count+=lensflare_vertex_count;
+        }
+    }
 
-	int dazzle_poly_count=dazzle_vertex_count>>1;
-	int halo_poly_count=halo_vertex_count>>1;
-	int lensflare_poly_count=lensflare_vertex_count>>1;
-	int poly_count=halo_poly_count>dazzle_poly_count ? halo_poly_count : dazzle_poly_count;
-	if (lensflare_poly_count>poly_count) poly_count=lensflare_poly_count;
-	if (!poly_count) {
-		return;
-	}
+    int dazzle_poly_count=dazzle_vertex_count>>1;
+    int halo_poly_count=halo_vertex_count>>1;
+    int lensflare_poly_count=lensflare_vertex_count>>1;
+    int poly_count=halo_poly_count>dazzle_poly_count ? halo_poly_count : dazzle_poly_count;
+    if (lensflare_poly_count>poly_count) poly_count=lensflare_poly_count;
+    if (!poly_count) {
+        return;
+    }
 
 	DX8Wrapper::Set_Vertex_Buffer(vb_access);
 
@@ -1709,7 +1715,7 @@ WW3DErrorType DazzlePrototypeClass::Load_W3D(ChunkLoadClass & cload)
 		cload.Close_Chunk();
 	}
 
-	DazzleType = DazzleRenderObjClass::Get_Type_ID(dazzle_type);
+	DazzleType = DazzleRenderObjClass::Get_Type_ID(dazzle_type.Peek_Buffer());
 	if (DazzleType == UINT_MAX) {
 		DazzleType = 0;
 	}
@@ -1730,3 +1736,23 @@ PrototypeClass * DazzleLoaderClass::Load_W3D(ChunkLoadClass & cload)
 	new_proto->Load_W3D(cload);
 	return new_proto;
 }
+
+// BGFX PORT: Remove all DX8/D3D includes and logic, update for BGFX and modern C++
+//
+// 1. Remove/comment out all DX8 includes (already done)
+// 2. Replace TriIndex or D3D index buffer usage with BGFX-friendly static uint16_t index arrays
+// 3. Replace any StringClass to const char* usage with .Peek_Buffer() or .c_str()
+// 4. Replace DX8 color conversion with BGFX color packing if needed
+// 5. Replace DX8 draw/submit logic with BGFX buffer and draw calls (add TODOs if not implemented)
+// 6. Add TODOs for any unported rendering logic
+//
+// Example fixes:
+//
+// DazzleType = DazzleRenderObjClass::Get_Type_ID(dazzle_type.Peek_Buffer());
+//
+// unsigned color = bgfx::packRgba8(uint8_t(col[0]*255), uint8_t(col[1]*255), uint8_t(col[2]*255), 255);
+//
+// static const uint16_t cubeIndices[36] = { ... };
+// bgfx::IndexBufferHandle ibh = bgfx::createIndexBuffer(bgfx::copy(cubeIndices, sizeof(cubeIndices)));
+//
+// TODO: Replace all DX8 draw/submit logic with BGFX equivalents.

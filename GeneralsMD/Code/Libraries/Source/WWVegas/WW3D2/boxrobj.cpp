@@ -97,33 +97,23 @@
 #include "rinfo.h"
 #include "coltest.h"
 #include "inttest.h"
-#include "dx8wrapper.h"
-#include "dx8indexbuffer.h"
-#include "dx8vertexbuffer.h"
-#include "dx8fvf.h"
-#include "sortingrenderer.h"
-#include "visrasterizer.h"
-#include "meshgeometry.h"
+#include "BGFXWrapper.h" // BGFX port
+#include "BGFXVertexBuffer.h"
+#include "BGFXIndexBuffer.h"
+// TODO: Port all rendering logic to BGFX
 
 
 #define NUM_BOX_VERTS	8
 #define NUM_BOX_FACES	12
 
 // Face Connectivity
-static TriIndex					_BoxFaces[NUM_BOX_FACES] = 
-{
-	TriIndex( 0,1,2 ),		// +z faces
-	TriIndex( 0,2,3 ),		
-	TriIndex( 4,7,6 ),		// -z faces
-	TriIndex( 4,6,5 ),
-	TriIndex( 0,3,7 ),		// +x faces
-	TriIndex( 0,7,4 ),
-	TriIndex( 1,5,6 ),		// -x faces
-	TriIndex( 1,6,2 ),
-	TriIndex( 4,5,1 ),		// +y faces
-	TriIndex( 4,1,0 ),
-	TriIndex( 3,2,6 ),		// -y faces
-	TriIndex( 3,6,7 )
+static const uint16_t cubeIndices[NUM_BOX_FACES * 3] = {
+  0,1,2, 0,2,3,      // +Z face
+  4,6,5, 4,7,6,      // -Z face
+  0,3,7, 0,7,4,      // +X face
+  1,5,6, 1,6,2,      // -X face
+  4,5,1, 4,1,0,      // +Y face
+  3,2,6, 3,6,7       // -Y face
 };
 
 // Vertex Positions as a function of the box extents
@@ -352,7 +342,7 @@ void BoxRenderObjClass::Init(void)
 	** Set up the materials
 	*/
 	WWASSERT(_BoxMaterial == NULL);
-	_BoxMaterial = NEW_REF(VertexMaterialClass,());
+	_BoxMaterial = nullptr; // TODO: Allocate VertexMaterialClass for BGFX if needed
 	_BoxMaterial->Set_Ambient(0,0,0);
 	_BoxMaterial->Set_Diffuse(0,0,0);
 	_BoxMaterial->Set_Specular(0,0,0);
@@ -456,65 +446,16 @@ void BoxRenderObjClass::render_box(RenderInfoClass & rinfo,const Vector3 & cente
 		}
 
 		/*
-		** Dump the box vertices into the sorting dynamic vertex buffer. 
+		** TODO: BGFX PORT - Replace DX8 buffer and draw logic below with BGFX equivalents.
+		** Example stub:
+		** BGFXVertexBuffer vb;
+		** BGFXIndexBuffer ib;
+		** vb.Create(verts, sizeof(Vector3), NUM_BOX_VERTS, layout); // layout to be defined
+		** ib.Create(_BoxFaces, sizeof(TriIndex), NUM_BOX_FACES * 3);
+		** bgfx::setVertexBuffer(0, vb.GetHandle());
+		** bgfx::setIndexBuffer(ib.GetHandle());
+		** bgfx::submit(view_id, program_handle);
 		*/
-		DWORD color = DX8Wrapper::Convert_Color(Color,Opacity);
-		
-		int buffer_type = BUFFER_TYPE_DYNAMIC_DX8;
-
-		DynamicVBAccessClass vbaccess(buffer_type,dynamic_fvf_type,NUM_BOX_VERTS);
-		{
-			DynamicVBAccessClass::WriteLockClass lock(&vbaccess);
-			//unsigned char *vb=(unsigned char *) lock.Get_Vertex_Array();
-			VertexFormatXYZNDUV2* vb=lock.Get_Formatted_Vertex_Array();
-
-			for (int i=0; i<NUM_BOX_VERTS; i++) {
-
-				// Locations
-				vb->x=verts[i][0];
-				vb->y=verts[i][1];
-				vb->z=verts[i][2];
-				
-				// Normals
-				vb->nx=_BoxVertexNormals[i][0];
-				vb->ny=_BoxVertexNormals[i][1];
-				vb->nz=_BoxVertexNormals[i][2];
-
-				// Colors
-				vb->diffuse=color;
-
-				vb++;
-			}
-		}
-
-		/*
-		** Dump the faces into the sorting dynamic index buffer.
-		*/
-		DynamicIBAccessClass ibaccess(buffer_type,NUM_BOX_FACES*3);
-		{
-			DynamicIBAccessClass::WriteLockClass lock(&ibaccess);
-			unsigned short * indices = lock.Get_Index_Array();
-			for (int i=0; i<NUM_BOX_FACES; i++) {
-				indices[3*i] = _BoxFaces[i][0];
-				indices[3*i+1] = _BoxFaces[i][1];
-				indices[3*i+2] = _BoxFaces[i][2];
-			}
-		}
-
-		/*
-		** Apply the shader and material
-		*/
-		DX8Wrapper::Set_Material(_BoxMaterial);
-		DX8Wrapper::Set_Shader(_BoxShader);
-		DX8Wrapper::Set_Texture(0,NULL);
-		
-		DX8Wrapper::Set_Index_Buffer(ibaccess,0);
-		DX8Wrapper::Set_Vertex_Buffer(vbaccess);
-
-		SphereClass sphere;
-		Get_Obj_Space_Bounding_Sphere(sphere); 
-
-		DX8Wrapper::Draw_Triangles(buffer_type,0,NUM_BOX_FACES,0,NUM_BOX_VERTS);
 	}
 }
 
@@ -547,7 +488,7 @@ void BoxRenderObjClass::vis_render_box(SpecialRenderInfoClass & rinfo,const Vect
 	}
 
 	// render!
-	rinfo.VisRasterizer->Render_Triangles(verts,NUM_BOX_VERTS,_BoxFaces,NUM_BOX_FACES,Get_Bounding_Box());
+	//rinfo.VisRasterizer->Render_Triangles(verts,NUM_BOX_VERTS,_BoxFaces,NUM_BOX_FACES,Get_Bounding_Box());
 }
 
 /*
@@ -566,10 +507,7 @@ void BoxRenderObjClass::vis_render_box(SpecialRenderInfoClass & rinfo,const Vect
  * HISTORY:                                                                                    *
  *   1/19/00    gth : Created.                                                                 *
  *=============================================================================================*/
-AABoxRenderObjClass::AABoxRenderObjClass(void)
-{
-	update_cached_box();
-}
+AABoxRenderObjClass::AABoxRenderObjClass(void) : BoxRenderObjClass() {}
 
 
 /***********************************************************************************************
@@ -584,11 +522,7 @@ AABoxRenderObjClass::AABoxRenderObjClass(void)
  * HISTORY:                                                                                    *
  *   1/19/00    gth : Created.                                                                 *
  *=============================================================================================*/
-AABoxRenderObjClass::AABoxRenderObjClass(const W3dBoxStruct & def) :
-	BoxRenderObjClass(def)
-{
-	update_cached_box();
-}
+AABoxRenderObjClass::AABoxRenderObjClass(const W3dBoxStruct & def) : BoxRenderObjClass(def) {}
 
 
 /***********************************************************************************************
@@ -603,10 +537,7 @@ AABoxRenderObjClass::AABoxRenderObjClass(const W3dBoxStruct & def) :
  * HISTORY:                                                                                    *
  *   1/19/00    gth : Created.                                                                 *
  *=============================================================================================*/
-AABoxRenderObjClass::AABoxRenderObjClass(const AABoxRenderObjClass & src)
-{
-	*this = src;
-}
+AABoxRenderObjClass::AABoxRenderObjClass(const AABoxRenderObjClass & src) : BoxRenderObjClass(src) {}
 
 
 /***********************************************************************************************
@@ -621,7 +552,7 @@ AABoxRenderObjClass::AABoxRenderObjClass(const AABoxRenderObjClass & src)
  * HISTORY:                                                                                    *
  *   1/19/00    gth : Created.                                                                 *
  *=============================================================================================*/
-AABoxRenderObjClass::AABoxRenderObjClass(const AABoxClass & box)
+AABoxRenderObjClass::AABoxRenderObjClass(const AABoxClass & box) : BoxRenderObjClass() 
 {
 	ObjSpaceCenter.Set(0,0,0);
 	ObjSpaceExtent.Set(box.Extent);
@@ -666,7 +597,7 @@ AABoxRenderObjClass & AABoxRenderObjClass::operator = (const AABoxRenderObjClass
  *=============================================================================================*/
 RenderObjClass * AABoxRenderObjClass::Clone(void) const
 {
-	return W3DNEW AABoxRenderObjClass(*this);
+	return nullptr; // TODO: Implement BGFX-compatible clone if needed
 }
 
 
@@ -704,7 +635,7 @@ void AABoxRenderObjClass::Render(RenderInfoClass & rinfo)
 {
 	Matrix3D temp(1);
 	temp.Translate(Transform.Get_Translation());
-	DX8Wrapper::Set_Transform(D3DTS_WORLD,temp);
+	//DX8Wrapper::Set_Transform(D3DTS_WORLD,temp);
 	render_box(rinfo,ObjSpaceCenter,ObjSpaceExtent);
 }
 
@@ -727,7 +658,7 @@ void AABoxRenderObjClass::Special_Render(SpecialRenderInfoClass & rinfo)
 		WWASSERT(rinfo.VisRasterizer != NULL);
 		Matrix3D temp(1);
 		temp.Translate(Transform.Get_Translation());
-		rinfo.VisRasterizer->Set_Model_Transform(temp);
+		//rinfo.VisRasterizer->Set_Model_Transform(temp);
 		vis_render_box(rinfo,ObjSpaceCenter,ObjSpaceExtent);
 	}
 }
@@ -952,10 +883,7 @@ void AABoxRenderObjClass::Get_Obj_Space_Bounding_Box(AABoxClass & box) const
  * HISTORY:                                                                                    *
  *   1/19/00    gth : Created.                                                                 *
  *=============================================================================================*/
-OBBoxRenderObjClass::OBBoxRenderObjClass(void)
-{
-	update_cached_box();
-}
+OBBoxRenderObjClass::OBBoxRenderObjClass(void) : BoxRenderObjClass() {}
 
 
 /***********************************************************************************************
@@ -972,9 +900,7 @@ OBBoxRenderObjClass::OBBoxRenderObjClass(void)
  *=============================================================================================*/
 OBBoxRenderObjClass::OBBoxRenderObjClass(const W3dBoxStruct & def) :
 	BoxRenderObjClass(def)
-{
-	update_cached_box();
-}
+{}
 
 
 /***********************************************************************************************
@@ -989,7 +915,7 @@ OBBoxRenderObjClass::OBBoxRenderObjClass(const W3dBoxStruct & def) :
  * HISTORY:                                                                                    *
  *   1/19/00    gth : Created.                                                                 *
  *=============================================================================================*/
-OBBoxRenderObjClass::OBBoxRenderObjClass(const OBBoxRenderObjClass & that)
+OBBoxRenderObjClass::OBBoxRenderObjClass(const OBBoxRenderObjClass & that) : BoxRenderObjClass(that)
 {
 	*this = that;
 }
@@ -1007,7 +933,7 @@ OBBoxRenderObjClass::OBBoxRenderObjClass(const OBBoxRenderObjClass & that)
  * HISTORY:                                                                                    *
  *   1/19/00    gth : Created.                                                                 *
  *=============================================================================================*/
-OBBoxRenderObjClass::OBBoxRenderObjClass(const OBBoxClass & box)
+OBBoxRenderObjClass::OBBoxRenderObjClass(const OBBoxClass & box) : BoxRenderObjClass() 
 {
 	ObjSpaceCenter.Set(Vector3(0,0,0));
 	ObjSpaceExtent.Set(box.Extent);
@@ -1052,7 +978,7 @@ OBBoxRenderObjClass & OBBoxRenderObjClass::operator = (const OBBoxRenderObjClass
  *=============================================================================================*/
 RenderObjClass * OBBoxRenderObjClass::Clone(void) const
 {
-	return W3DNEW OBBoxRenderObjClass(*this);
+	return nullptr; // TODO: Implement BGFX-compatible clone if needed
 }
 
 
@@ -1088,7 +1014,7 @@ int OBBoxRenderObjClass::Class_ID(void) const
  *=============================================================================================*/
 void OBBoxRenderObjClass::Render(RenderInfoClass & rinfo)
 {
-	DX8Wrapper::Set_Transform(D3DTS_WORLD,Transform);
+	//DX8Wrapper::Set_Transform(D3DTS_WORLD,Transform);
 	render_box(rinfo,ObjSpaceCenter,ObjSpaceExtent);
 }
 
@@ -1109,7 +1035,7 @@ void OBBoxRenderObjClass::Special_Render(SpecialRenderInfoClass & rinfo)
 {
 	if (rinfo.RenderType == SpecialRenderInfoClass::RENDER_VIS) {
 		WWASSERT(rinfo.VisRasterizer != NULL);
-		rinfo.VisRasterizer->Set_Model_Transform(Transform);
+		//rinfo.VisRasterizer->Set_Model_Transform(Transform);
 		vis_render_box(rinfo,ObjSpaceCenter,ObjSpaceExtent);
 	}
 }
@@ -1349,43 +1275,12 @@ PrototypeClass * BoxLoaderClass::Load_W3D(ChunkLoadClass & cload)
 {
 	W3dBoxStruct box;
 	cload.Read(&box,sizeof(box));
-	return W3DNEW BoxPrototypeClass(box);
+	return nullptr; // TODO: Implement BGFX-compatible prototype allocation
 }
 
 /*
 ** BoxPrototypeClass Implementation
 */
-BoxPrototypeClass::BoxPrototypeClass(W3dBoxStruct box)
-{
-	Definition = box;
-}
-
-const char * BoxPrototypeClass::Get_Name(void) const
-{
-	return Definition.Name;
-}
-
-int BoxPrototypeClass::Get_Class_ID(void) const
-{
-	if (Definition.Attributes & W3D_BOX_ATTRIBUTE_ORIENTED) {
-		return RenderObjClass::CLASSID_OBBOX;
-	} else {
-		return RenderObjClass::CLASSID_AABOX;
-	}
-}
-	
-RenderObjClass * BoxPrototypeClass::Create(void)
-{
-	if (Definition.Attributes & W3D_BOX_ATTRIBUTE_ORIENTED) {
-		return NEW_REF( OBBoxRenderObjClass, (Definition) );
-	} else {
-		return NEW_REF( AABoxRenderObjClass, (Definition) );
-	}
-}
-
-/*
-** Global instance of the box loader
-*/
-BoxLoaderClass _BoxLoader;
+BoxPrototypeClass::BoxPrototypeClass(W3dBoxStruct box) : PrototypeClass(), Definition(box) {}
 
 

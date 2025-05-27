@@ -68,7 +68,7 @@
 #include "rinfo.h"
 #include "chunkio.h"
 #include "dx8renderer.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
 #include "sortingrenderer.h"
 #include "coltest.h"
 

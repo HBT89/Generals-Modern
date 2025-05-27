@@ -452,6 +452,8 @@ Package=<4>
     Begin Project Dependency
     Project_Dep_Name launcher
     End Project Dependency
+    # Remove any DirectX-specific project dependencies or references
+    # Add comments or notes for bgfx migration if needed
 }}}
 
 ###############################################################################

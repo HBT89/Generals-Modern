@@ -40,9 +40,9 @@
 #include "texture.h"
 #include "vertmaterial.h"
 #include "realcrc.h"
-#include	"dx8wrapper.h"
-#include "dx8caps.h"
+#include "BGFXWrapper.h" // BGFX abstraction for device/capabilities
 #include "meshmdl.h"
+#include <bgfx/bgfx.h> // For color packing, etc.
 
 
 /**************************************************************************************************
@@ -750,15 +750,24 @@ void MeshMatDescClass::Post_Load_Process(bool lighting_enabled,MeshModelClass * 
 			unsigned * emissive_array = ColorArray[1]->Get_Array();
 
 			for (int vidx=0; vidx<VertexCount; vidx++) {
-				Vector4 diffuse=DX8Wrapper::Convert_Color(diffuse_array[vidx]);
-				Vector4 emissive=DX8Wrapper::Convert_Color(emissive_array[vidx]);
-				diffuse.X *= emissive.X;
-				diffuse.Y *= emissive.Y;
-				diffuse.Z *= emissive.Z;
-				diffuse_array[vidx]=DX8Wrapper::Convert_Color(diffuse);
+				// BGFX: Convert packed color to float, multiply, then repack (manual RGBA8 packing)
+				float dr = ((diffuse_array[vidx] >> 16) & 0xFF) / 255.0f;
+				float dg = ((diffuse_array[vidx] >> 8) & 0xFF) / 255.0f;
+				float db = (diffuse_array[vidx] & 0xFF) / 255.0f;
+				float da = ((diffuse_array[vidx] >> 24) & 0xFF) / 255.0f;
+				float er = ((emissive_array[vidx] >> 16) & 0xFF) / 255.0f;
+				float eg = ((emissive_array[vidx] >> 8) & 0xFF) / 255.0f;
+				float eb = (emissive_array[vidx] & 0xFF) / 255.0f;
+				float ea = ((emissive_array[vidx] >> 24) & 0xFF) / 255.0f;
+				float r = dr * er;
+				float g = dg * eg;
+				float b = db * eb;
+				float a = da * ea;
+				unsigned packed = (uint8_t(a*255) << 24) | (uint8_t(r*255) << 16) | (uint8_t(g*255) << 8) | uint8_t(b*255);
+				diffuse_array[vidx] = packed;
 			}
 		}
-		DIGSource[pass]=VertexMaterialClass::MATERIAL;	// DIG channel no more
+		DIGSource[pass]=VertexMaterialClass::MATERIAL; // DIG channel no more
 
 		if ((DCGSource[pass] != VertexMaterialClass::MATERIAL) && (ColorArray[0] != NULL)) {
 			unsigned * diffuse_array = ColorArray[0]->Get_Array();
@@ -956,7 +965,9 @@ void MeshMatDescClass::Configure_Material(VertexMaterialClass * mtl,int pass,boo
 
 bool MeshMatDescClass::Do_Mappers_Need_Normals(void)
 {
-	if (DX8Wrapper::Is_Initted() && DX8Wrapper::Get_Current_Caps()->Support_NPatches() && WW3D::Get_NPatches_Level()>1) return true;
+    // BGFX: Remove DX8Wrapper::Is_Initted and Support_NPatches logic. Assume NPatches unsupported.
+    // if (BGFXWrapper::Get_Caps().supportNPatches && WW3D::Get_NPatches_Level()>1) return true;
+    // For now, always return false for NPatches hardware path.
 
 	for (int pass=0; pass<PassCount; pass++) {
 		/*
@@ -984,3 +995,6 @@ bool MeshMatDescClass::Do_Mappers_Need_Normals(void)
 
 	return false;
 }
+
+// All DX8Wrapper and DX8Caps usage below must be replaced with BGFX equivalents or project-native logic.
+// In Post_Load_Process and Do_Mappers_Need_Normals, replace DX8Wrapper::Convert_Color, Is_Initted, Get_Current_Caps with BGFXWrapper equivalents or stubs.

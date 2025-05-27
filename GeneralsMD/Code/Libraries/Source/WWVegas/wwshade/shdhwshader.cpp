@@ -40,7 +40,7 @@
 
 #include <stdio.h>
 #include "shdhwshader.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // BGFX port
 #include "rinfo.h"
 #include "shdhw_constants.h"
 
@@ -507,4 +507,6 @@ void ShdHWVertexShader::Light
 	Vector4 specular(0,0,0,0);
 	Light(rinfo,ambient,diffuse,specular);
 }
+
+// TODO: Port all shader logic to BGFX
 

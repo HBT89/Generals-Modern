@@ -35,7 +35,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "dx8fvf.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // BGFX port
 #include "assetmgr.h"
 #include "rinfo.h"
 #include "camera.h"

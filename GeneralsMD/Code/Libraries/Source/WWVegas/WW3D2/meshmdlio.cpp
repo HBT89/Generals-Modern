@@ -88,7 +88,7 @@
 #include "assetmgr.h"
 #include "simplevec.h"
 #include "realcrc.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
 
 #include <stdio.h>
 
@@ -841,7 +841,7 @@ WW3DErrorType MeshModelClass::read_per_tri_materials(ChunkLoadClass & cload,Mesh
 		// read in the mat id for this poly
 		uint16 matid;
 
-		if (cload.Read(&matid,sizeof(uint16)) != sizeof(uint16)) {
+		if (clload.Read(&matid,sizeof(uint16)) != sizeof(uint16)) {
 			return WW3D_ERROR_LOAD_FAILED;
 		}
 
@@ -1275,8 +1275,7 @@ WW3DErrorType MeshModelClass::read_dcg(ChunkLoadClass & cload,MeshLoadContextCla
 
 		for (int i=0; i<Get_Vertex_Count(); i++) {
 			cload.Read(&color,sizeof(color));
-			Vector4 col;
-			col=DX8Wrapper::Convert_Color(dcg[i]);
+			Vector4 col=DX8Wrapper::Convert_Color(dcg[i]);
 			col.W = float(color.A)/255.0f;
 			dcg[i]=DX8Wrapper::Convert_Color(col);
 		}
@@ -2104,8 +2103,8 @@ void MeshLoadContextClass::Add_Legacy_Material(ShaderClass shader,VertexMaterial
 		mat->VertexMaterialIdx = -1;
 	} else {
 		unsigned long crc = vmat->Get_CRC();	
-		for (int vi=0; vi<VertexMaterialCrcs.Count(); vi++) {
-			if (VertexMaterialCrcs[vi] == crc) break;
+		for (int vi=0; vi<VertexMaterials.Count(); vi++) {
+			if (VertexMaterials[vi] == vmat) break;
 		}
 		if (vi == VertexMaterials.Count()) {
 			mat->VertexMaterialIdx = Add_Vertex_Material(vmat);

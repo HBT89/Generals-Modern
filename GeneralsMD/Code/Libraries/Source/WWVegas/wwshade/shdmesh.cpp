@@ -40,11 +40,13 @@
 #include "shdrenderer.h"
 #include "rinfo.h"
 #include "camera.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // BGFX port
 #include "wwdebug.h"
 #include "wwprofile.h"
 #include "mesh.h"
 #include "meshmdl.h"
+
+// TODO: Port all shader logic to BGFX
 
 ShdMeshClass::ShdMeshClass() 
 : 	Name("UnNamed"),

@@ -48,7 +48,7 @@
 #undef PASS_MAX
 #endif
 
-class DX8Wrapper;
+class BGFXWrapper;
 struct W3dMaterial3Struct;
 class StringClass;
 
@@ -86,7 +86,7 @@ enum ShaderShiftConstants
 
 class ShaderClass
 {
-	friend DX8Wrapper;
+	friend BGFXWrapper;
 
 	void	Apply();
 public:

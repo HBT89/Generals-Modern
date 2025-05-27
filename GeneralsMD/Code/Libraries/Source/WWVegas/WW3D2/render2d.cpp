@@ -47,7 +47,7 @@
 #include "texture.h"
 #include "matrix4.h"
 #include "matrix3d.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
 #include "dx8indexbuffer.h"
 #include "dx8vertexbuffer.h"
 #include "sortingrenderer.h"

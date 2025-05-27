@@ -476,7 +476,6 @@ InputPath=.\Source\W3DDevice\GameClient\Water\wave.nvv
 !ENDIF 
 
 # End Source File
-# End Group
 # Begin Group "Shaders"
 
 # PROP Default_Filter ""

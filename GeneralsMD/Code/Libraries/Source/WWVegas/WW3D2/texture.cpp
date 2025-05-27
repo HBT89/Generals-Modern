@@ -41,10 +41,11 @@
 
 #include "texture.h"
 
-#include <d3d8.h>
+// #include <d3d8.h> // Removed for BGFX port
+// TODO: Port all texture logic to BGFX
+
 #include <stdio.h>
-#include <D3dx8core.h>
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // BGFX port
 #include "targa.h"
 #include <nstrdup.h>
 #include "w3d_file.h"
@@ -54,7 +55,8 @@
 #include "missingtexture.h"
 #include "ffactory.h"
 #include "dx8caps.h"
-#include "dx8texman.h"
+// #include "dx8texman.h" // Removed for BGFX port
+// TODO: Port texture management to BGFX
 #include "meshmatdesc.h"
 #include "texturethumbnail.h"
 #include "wwprofile.h"
@@ -653,7 +655,7 @@ TextureClass::TextureClass
 			width, 
 			height, 
 			format, 
-			mip_level_count,
+		 mip_level_count,
 			this,
 			rendertarget
 		);
@@ -1401,7 +1403,7 @@ CubeTextureClass::CubeTextureClass
 			width, 
 			height, 
 			format, 
-			mip_level_count,
+		 mip_level_count,
 			this,
 			rendertarget
 		);

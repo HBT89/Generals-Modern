@@ -88,7 +88,8 @@
 #include "camera.h"
 #include "statistics.h"
 #include "predlod.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
+// #include "dx8wrapper.h" // DX8 include removed for BGFX port
 #include "dx8indexbuffer.h"
 #include "dx8vertexbuffer.h"
 #include "sortingrenderer.h"

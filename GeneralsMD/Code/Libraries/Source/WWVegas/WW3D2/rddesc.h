@@ -44,8 +44,17 @@
 
 #include "vector.h"
 #include "wwstring.h"
-#include <d3d8types.h>
-#include <d3d8caps.h>
+
+// BGFX-agnostic placeholder structs for device capabilities and adapter info
+struct BGFXCaps {
+	// Add BGFX or generic capability fields as needed
+	int dummy = 0;
+};
+
+struct BGFXAdapterIdentifier {
+	// Add BGFX or generic adapter info fields as needed
+	char description[256] = {0};
+};
 
 class ResolutionDescClass
 {
@@ -110,8 +119,8 @@ public:
 	const char *		Get_Hardware_Chipset() const	{ return HardwareChipset; }
 
 	const DynamicVectorClass<ResolutionDescClass> & Enumerate_Resolutions(void) const	{ return ResArray; }
-	const D3DCAPS8& 	Get_Caps() const { return Caps; }
-	const D3DADAPTER_IDENTIFIER8& Get_Adapter_Identifier() const { return AdapterIdentifier; }
+	const BGFXCaps& 	Get_Caps() const { return Caps; }
+	const BGFXAdapterIdentifier& Get_Adapter_Identifier() const { return AdapterIdentifier; }
 
 private:
 
@@ -140,8 +149,8 @@ private:
 	StringClass			HardwareVendor;
 	StringClass			HardwareChipset;
 
-	D3DCAPS8				Caps;
-	D3DADAPTER_IDENTIFIER8 AdapterIdentifier;
+	BGFXCaps				Caps;
+	BGFXAdapterIdentifier	AdapterIdentifier;
 	
 	DynamicVectorClass<ResolutionDescClass>	ResArray;
 
@@ -168,5 +177,5 @@ inline void RenderDeviceDescClass::add_resolution(int w,int h,int bits)
 }
 
 
-#endif 
+#endif
 

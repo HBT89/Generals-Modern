@@ -39,13 +39,15 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "sortingrenderer.h"
-#include "dx8vertexbuffer.h"
-#include "dx8indexbuffer.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
+#include "BGFXVertexBuffer.h"
+#include "BGFXIndexBuffer.h"
+// #include "dx8vertexbuffer.h" // TODO: Port to BGFX vertex buffer
+// #include "dx8indexbuffer.h" // TODO: Port to BGFX index buffer
 #include "vertmaterial.h"
 #include "texture.h"
-#include "d3d8.h"
-#include "D3dx8math.h"
+// #include "d3d8.h" // DX8 include removed for BGFX port
+// #include "D3dx8math.h" // DX8 math include removed for BGFX port
 #include "statistics.h"
 #include <wwprofile.h>
 #include <algorithm>
@@ -222,7 +224,8 @@ void SortingRendererClass::Insert_Triangles(
 	unsigned short vertex_count)
 {
 	if (!WW3D::Is_Sorting_Enabled()) {
-		DX8Wrapper::Draw_Triangles(start_index,polygon_count,min_vertex_index,vertex_count);
+		// TODO: Replace DX8Wrapper::Draw_Triangles with BGFXWrapper equivalent
+		BGFXWrapper::Draw_Triangles(start_index,polygon_count,min_vertex_index,vertex_count);
 		return;
 	}
 
@@ -234,7 +237,8 @@ void SortingRendererClass::Insert_Triangles(
 
 	SortingNodeStruct* state=Get_Sorting_Struct();
 
-	DX8Wrapper::Get_Render_State(state->sorting_state);
+	// TODO: Replace DX8Wrapper::Get_Render_State with BGFXWrapper equivalent
+	BGFXWrapper::Get_Render_State(state->sorting_state);
 
  	WWASSERT(
 		((state->sorting_state.index_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.index_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING) &&
@@ -251,13 +255,12 @@ void SortingRendererClass::Insert_Triangles(
 	WWASSERT(vertex_buffer);
 	WWASSERT(state->vertex_count<=vertex_buffer->Get_Vertex_Count());
 
-	D3DXMATRIX mtx=(D3DXMATRIX&)state->sorting_state.world*(D3DXMATRIX&)state->sorting_state.view;
-	D3DXVECTOR3 vec=(D3DXVECTOR3&)state->bounding_sphere.Center;
-	D3DXVECTOR4 transformed_vec;
-	D3DXVec3Transform(
-		&transformed_vec,
-		&vec,
-		&mtx); 
+	// TODO: Replace D3DXMATRIX and D3DXVECTOR types with project-native Matrix4 and Vector3/4
+	Matrix4 mtx = state->sorting_state.world * state->sorting_state.view;
+	Vector3 vec = state->bounding_sphere.Center;
+	Vector4 transformed_vec;
+	// TODO: Implement vector transform using project math or BGFX math
+	// transformed_vec = mtx * vec;
 	state->transformed_center=Vector3(transformed_vec[0],transformed_vec[1],transformed_vec[2]);
 
 	
@@ -326,7 +329,7 @@ void Release_Refs(SortingNodeStruct* state)
 	}
 	REF_PTR_RELEASE(state->sorting_state.index_buffer);
 	REF_PTR_RELEASE(state->sorting_state.material);
-	for (i=0;i<DX8Wrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
+	for (i=0;i<BGFXWrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
 	{
 		REF_PTR_RELEASE(state->sorting_state.Textures[i]);
 	}
@@ -362,17 +365,18 @@ static void Apply_Render_State(RenderStateStruct& render_state)
 
 
 
-	DX8Wrapper::Set_Shader(render_state.shader);
+	BGFXWrapper::Set_Shader(render_state.shader);
 
-	DX8Wrapper::Set_Material(render_state.material);
+	BGFXWrapper::Set_Material(render_state.material);
 
-	for (int i=0;i<DX8Wrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
+	for (int i=0;i<BGFXWrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
 	{
-		DX8Wrapper::Set_Texture(i,render_state.Textures[i]);
+		BGFXWrapper::Set_Texture(i,render_state.Textures[i]);
 	}
 
-	DX8Wrapper::_Set_DX8_Transform(D3DTS_WORLD,render_state.world);
-	DX8Wrapper::_Set_DX8_Transform(D3DTS_VIEW,render_state.view);
+	// TODO: Replace DX8 transform and light calls with BGFX equivalents
+	// BGFXWrapper::_Set_Transform(World, render_state.world);
+	// BGFXWrapper::_Set_Transform(View, render_state.view);
 
 
 
@@ -383,26 +387,26 @@ static void Apply_Render_State(RenderStateStruct& render_state)
 	if (render_state.LightEnable[0]) 
   {
     
-    DX8Wrapper::Set_DX8_Light(0,&render_state.Lights[0]);
+    BGFXWrapper::Set_DX8_Light(0,&render_state.Lights[0]);
 		if (render_state.LightEnable[1]) 
     {
-			DX8Wrapper::Set_DX8_Light(1,&render_state.Lights[1]);
+			BGFXWrapper::Set_DX8_Light(1,&render_state.Lights[1]);
 			if (render_state.LightEnable[2]) 
       {
-				DX8Wrapper::Set_DX8_Light(2,&render_state.Lights[2]);
+				BGFXWrapper::Set_DX8_Light(2,&render_state.Lights[2]);
 				if (render_state.LightEnable[3]) 
-					DX8Wrapper::Set_DX8_Light(3,&render_state.Lights[3]);
+					BGFXWrapper::Set_DX8_Light(3,&render_state.Lights[3]);
 				else 
-					DX8Wrapper::Set_DX8_Light(3,NULL);
+					BGFXWrapper::Set_DX8_Light(3,NULL);
 			}
 			else 
-				DX8Wrapper::Set_DX8_Light(2,NULL);
+				BGFXWrapper::Set_DX8_Light(2,NULL);
 		}
 		else 
-			DX8Wrapper::Set_DX8_Light(1,NULL);
+			BGFXWrapper::Set_DX8_Light(1,NULL);
 	}
 	else 
-		DX8Wrapper::Set_DX8_Light(0,NULL);
+		BGFXWrapper::Set_DX8_Light(0,NULL);
 
 
 }
@@ -448,7 +452,8 @@ void SortingRendererClass::Flush_Sorting_Pool()
 			memcpy(dest_verts, src_verts, sizeof(VertexFormatXYZNDUV2)*state->vertex_count);
 			dest_verts += state->vertex_count;
 
-			D3DXMATRIX d3d_mtx=(D3DXMATRIX&)state->sorting_state.world*(D3DXMATRIX&)state->sorting_state.view;
+			// TODO: Remove all remaining D3D/DX8 types and logic, replace with BGFX or project-native math
+			Matrix4 d3d_mtx = state->sorting_state.world * state->sorting_state.view;
 			const Matrix4x4& mtx=(const Matrix4x4&)d3d_mtx;
 
 			unsigned short* indices=NULL;
@@ -555,10 +560,10 @@ void SortingRendererClass::Flush_Sorting_Pool()
 
 	// Set index buffer and render!
 
-	DX8Wrapper::Set_Index_Buffer(dyn_ib_access,0); // Override with this buffer (do something to prevent need for this!)
-	DX8Wrapper::Set_Vertex_Buffer(dyn_vb_access); // Override with this buffer (do something to prevent need for this!)
+	// DX8Wrapper::Set_Index_Buffer(dyn_ib_access,0); // Override with this buffer (do something to prevent need for this!)
+	// DX8Wrapper::Set_Vertex_Buffer(dyn_vb_access); // Override with this buffer (do something to prevent need for this!)
 
-	DX8Wrapper::Apply_Render_State_Changes();
+	// DX8Wrapper::Apply_Render_State_Changes();
 
 	unsigned count_to_render=1;
 	unsigned start_index=0;
@@ -568,11 +573,11 @@ void SortingRendererClass::Flush_Sorting_Pool()
 			SortingNodeStruct* state=overlapping_nodes[node_id];
 			Apply_Render_State(state->sorting_state);
 
-			DX8Wrapper::Draw_Triangles(
-				start_index*3,
-				count_to_render,
-				state->min_vertex_index,
-				state->vertex_count);
+			// DX8Wrapper::Draw_Triangles(
+			// 	start_index*3,
+			// 	count_to_render,
+			// 	state->min_vertex_index,
+			// 	state->vertex_count);
 
 			count_to_render=0;
 			start_index=i;
@@ -586,11 +591,11 @@ void SortingRendererClass::Flush_Sorting_Pool()
 		SortingNodeStruct* state=overlapping_nodes[node_id];
 		Apply_Render_State(state->sorting_state);
 
-		DX8Wrapper::Draw_Triangles(
-			start_index*3,
-			count_to_render,
-			state->min_vertex_index,
-			state->vertex_count);
+		// DX8Wrapper::Draw_Triangles(
+		// 	start_index*3,
+		// 	count_to_render,
+		// 	state->min_vertex_index,
+		// 	state->vertex_count);
 	}
 
 	// Release all references and return nodes back to the clean list for the frame...
@@ -694,7 +699,8 @@ void SortingRendererClass::Insert_VolumeParticle(
 	unsigned short layerCount)
 {
 	if (!WW3D::Is_Sorting_Enabled()) {
-		DX8Wrapper::Draw_Triangles(start_index,polygon_count,min_vertex_index,vertex_count);
+		// TODO: Replace DX8Wrapper::Draw_Triangles with BGFXWrapper equivalent
+		BGFXWrapper::Draw_Triangles(start_index,polygon_count,min_vertex_index,vertex_count);
 		return;
 	}
 
@@ -703,7 +709,8 @@ void SortingRendererClass::Insert_VolumeParticle(
 	DX8_RECORD_SORTING_RENDER( polygon_count * layerCount,vertex_count * layerCount);//THIS IS VOLUME_PARTICLE SPECIFIC
 
 	SortingNodeStruct* state=Get_Sorting_Struct();
-	DX8Wrapper::Get_Render_State(state->sorting_state);
+	// TODO: Replace DX8Wrapper::Get_Render_State with BGFXWrapper equivalent
+	BGFXWrapper::Get_Render_State(state->sorting_state);
 
  	WWASSERT(
 		((state->sorting_state.index_buffer_type==BUFFER_TYPE_SORTING || state->sorting_state.index_buffer_type==BUFFER_TYPE_DYNAMIC_SORTING) &&
@@ -721,13 +728,11 @@ void SortingRendererClass::Insert_VolumeParticle(
 
 	// Transform the center point to view space for sorting
 
-	D3DXMATRIX mtx=(D3DXMATRIX&)state->sorting_state.world*(D3DXMATRIX&)state->sorting_state.view;
-	D3DXVECTOR3 vec=(D3DXVECTOR3&)state->bounding_sphere.Center;
-	D3DXVECTOR4 transformed_vec;
-	D3DXVec3Transform(
-		&transformed_vec,
-		&vec,
-		&mtx); 
+	Matrix4 mtx = state->sorting_state.world * state->sorting_state.view;
+	Vector3 vec = state->bounding_sphere.Center;
+	Vector4 transformed_vec;
+	// TODO: Implement vector transform using project math or BGFX math
+	// transformed_vec = mtx * vec;
 	state->transformed_center=Vector3(transformed_vec[0],transformed_vec[1],transformed_vec[2]);
 
 

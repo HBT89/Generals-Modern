@@ -47,7 +47,8 @@
 #include "w3d_file.h"
 #include "ww3d.h"
 #include "dx8fvf.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // BGFX port
+// TODO: Port all shader logic to BGFX
 #include "meshmdl.h"
 #include "texture.h"
 #include "aabtree.h"

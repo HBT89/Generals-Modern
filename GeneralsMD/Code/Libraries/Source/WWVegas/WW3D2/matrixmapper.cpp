@@ -51,7 +51,8 @@
 
 
 #include "matrixmapper.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
+// #include "dx8wrapper.h" // DX8 include removed for BGFX port
 
 
 /***********************************************************************************************
@@ -78,25 +79,6 @@ MatrixMapperClass::MatrixMapperClass(int stage) :
 	GradientUCoord(0.5f)
 {	
 }
-
-/***********************************************************************************************
- * MatrixMapperClass::Set_Texture_Transform -- Sets the viewspace-to-texturespace transform    *
- *                                                                                             *
- * INPUT:                                                                                      *
- *                                                                                             *
- * OUTPUT:                                                                                     *
- *                                                                                             *
- * WARNINGS:                                                                                   *
- *                                                                                             *
- * HISTORY:                                                                                    *
- *   6/20/2001  gth : created                                                                  *
- *=============================================================================================*/
-void MatrixMapperClass::Set_Texture_Transform(const Matrix3D & view_to_texture,float texsize)
-{
-	ViewToTexture = Matrix4x4(view_to_texture);
-	Update_View_To_Pixel_Transform(texsize);
-}
-
 /***********************************************************************************************
  * MatrixMapperClass::Set_Texture_Transform -- Sets the viewspace-to-texturespace transform    *
  *                                                                                             *
@@ -115,6 +97,25 @@ void	MatrixMapperClass::Set_Texture_Transform(const Matrix4x4 & view_to_texture,
 
 	Update_View_To_Pixel_Transform(texsize);
 }
+/***********************************************************************************************
+ * MatrixMapperClass::Set_Texture_Transform -- Sets the viewspace-to-texturespace transform    *
+ *                                                                                             *
+ * INPUT:                                                                                      *
+ *                                                                                             *
+ * OUTPUT:                                                                                     *
+ *                                                                                             *
+ * WARNINGS:                                                                                   *
+ *                                                                                             *
+ * HISTORY:                                                                                    *
+ *   6/20/2001  gth : created                                                                  *
+ *=============================================================================================*/
+void MatrixMapperClass::Set_Texture_Transform(const Matrix3D & view_to_texture,float texsize)
+{
+	ViewToTexture = Matrix4x4(view_to_texture);
+	Update_View_To_Pixel_Transform(texsize);
+}
+
+
 
 /***********************************************************************************************
  * MatrixMapperClass::Update_View_To_Pixel_Transform -- recomputes ViewToPixel                 *
@@ -233,9 +234,9 @@ void MatrixMapperClass::Apply(int uv_array_index)
 		/*
 		** Orthographic projection
 		*/
-		DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE)(D3DTS_TEXTURE0 + Stage),ViewToPixel);
-		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);		
-		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT2);
+		BGFXWrapper::Set_Texture_Transform(Stage, ViewToPixel);
+		BGFXWrapper::Set_Texture_Coord_Source(Stage, BGFXWrapper::CAMERA_SPACE_POSITION);
+		BGFXWrapper::Set_Texture_Transform_Flags(Stage, BGFXWrapper::COUNT2);
 		break;
 	case PERSPECTIVE_PROJECTION:
 		/*
@@ -244,9 +245,9 @@ void MatrixMapperClass::Apply(int uv_array_index)
 		m[0]=ViewToPixel[0];
 		m[1]=ViewToPixel[1];
 		m[2]=ViewToPixel[3];
-		DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE)(D3DTS_TEXTURE0 + Stage),m);
-		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);		
-		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_PROJECTED|D3DTTFF_COUNT3);
+		BGFXWrapper::Set_Texture_Transform(Stage, m);
+		BGFXWrapper::Set_Texture_Coord_Source(Stage, BGFXWrapper::CAMERA_SPACE_POSITION);
+		BGFXWrapper::Set_Texture_Transform_Flags(Stage, BGFXWrapper::PROJECTED | BGFXWrapper::COUNT3);
 		break;
 	case DEPTH_GRADIENT:
 		/*
@@ -257,9 +258,9 @@ void MatrixMapperClass::Apply(int uv_array_index)
 		*/
 		m[0].Set(0,0,0,GradientUCoord);
 		m[1]=ViewToPixel[2];
-		DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE)(D3DTS_TEXTURE0 + Stage),m);
-		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACEPOSITION);
-		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT2);
+		BGFXWrapper::Set_Texture_Transform(Stage, m);
+		BGFXWrapper::Set_Texture_Coord_Source(Stage, BGFXWrapper::CAMERA_SPACE_POSITION);
+		BGFXWrapper::Set_Texture_Transform_Flags(Stage, BGFXWrapper::COUNT2);
 		break;
 	case NORMAL_GRADIENT:
 		/*
@@ -270,13 +271,11 @@ void MatrixMapperClass::Apply(int uv_array_index)
 		*/
 		m[0].Set(0,0,0,GradientUCoord);
 		m[1].Set(ViewSpaceProjectionNormal.X,ViewSpaceProjectionNormal.Y,ViewSpaceProjectionNormal.Z, 0);
-		DX8Wrapper::Set_Transform((D3DTRANSFORMSTATETYPE)(D3DTS_TEXTURE0 + Stage),m);
-		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXCOORDINDEX,D3DTSS_TCI_CAMERASPACENORMAL);		
-		DX8Wrapper::Set_DX8_Texture_Stage_State(Stage,D3DTSS_TEXTURETRANSFORMFLAGS,D3DTTFF_COUNT2);
+		BGFXWrapper::Set_Texture_Transform(Stage, m);
+		BGFXWrapper::Set_Texture_Coord_Source(Stage, BGFXWrapper::CAMERA_SPACE_NORMAL);
+		BGFXWrapper::Set_Texture_Transform_Flags(Stage, BGFXWrapper::COUNT2);
 		break;
 	}
-
-
 }
 
 /***********************************************************************************************

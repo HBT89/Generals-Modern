@@ -155,6 +155,9 @@ void ControlBarResizer::sizeWindowsDefault( void )
 {
 	ResizerWindowList::iterator it = m_resizerWindowsList.begin();
 	GameWindow *win = NULL;
+	// Use scaling factors based on current resolution vs. 800x600 base
+	Real x = (Real)TheDisplay->getWidth() / 800;
+	Real y = (Real)TheDisplay->getHeight() / 600;
 	while (it != m_resizerWindowsList.end())
 	{
 		ResizerWindow *rWin = *it;
@@ -170,9 +173,10 @@ void ControlBarResizer::sizeWindowsDefault( void )
 			it++;
 			continue;
 		}
-		win->winSetPosition(rWin->m_defaultPos.x, rWin->m_defaultPos.y);
-		win->winSetSize(rWin->m_defaultSize.x, rWin->m_defaultSize.y);
-		DEBUG_LOG(("sizeWindowsDefault:%s pos X:%d pos Y: %d size X:%d sizeY: %d",rWin->m_name.str(),rWin->m_defaultPos.x, rWin->m_defaultPos.y,rWin->m_defaultSize.x, rWin->m_defaultSize.y ));
+		// Apply scaling to position and size
+		win->winSetPosition((int)(rWin->m_defaultPos.x * x), (int)(rWin->m_defaultPos.y * y));
+		win->winSetSize((int)(rWin->m_defaultSize.x * x), (int)(rWin->m_defaultSize.y * y));
+		DEBUG_LOG(("sizeWindowsDefault:%s pos X:%d pos Y: %d size X:%d sizeY: %d",rWin->m_name.str(),(int)(rWin->m_defaultPos.x * x), (int)(rWin->m_defaultPos.y * y),(int)(rWin->m_defaultSize.x * x), (int)(rWin->m_defaultSize.y * y) ));
 		it ++;	
 	}
 }

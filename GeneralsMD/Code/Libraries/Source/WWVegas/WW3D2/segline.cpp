@@ -43,7 +43,7 @@
 #include "coltest.h"
 #include "w3d_file.h"
 #include "texture.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
 #include "vp.h"
 #include "vector3i.h"
 #include "sortingrenderer.h"

@@ -1,4 +1,3 @@
-
 # Command & Conquer Generals (inc. Zero Hour) Source Code
 
 This repository includes source code for Command & Conquer Generals, and its expansion pack Zero Hour. This release provides support to the Steam Workshop for both games ([C&C Generals](https://steamcommunity.com/workshop/browse/?appid=2229870) and [C&C Generals - Zero Hour](https://steamcommunity.com/workshop/browse/?appid=2732960)).
@@ -9,17 +8,24 @@ This repository includes source code for Command & Conquer Generals, and its exp
 If you wish to rebuild the source code and tools successfully you will need to find or write new replacements (or remove the code using them entirely) for the following libraries;
 
 - DirectX SDK (Version 9.0 or higher) (expected path `\Code\Libraries\DirectX\`)
+	- Modern replacement: Replace DirectX 9 rendering code with [bgfx](https://bkaradzic.github.io/bgfx/). Refactor the rendering pipeline to use bgfx's cross-platform API, update shaders to supported formats, and remove DirectX-specific dependencies.
 - STLport (4.5.3) - (expected path `\Code\Libraries\STLport-4.5.3`)
+  - Modern replacement: Use the standard C++ STL provided by your compiler (MSVC, GCC, Clang). Remove all STLport-specific code and update includes to use standard headers such as <vector>, <string>, etc.
 - 3DSMax 4 SDK - (expected path `\Code\Libraries\Max4SDK\`)
 - NVASM - (expected path `\Code\Tools\NVASM\`)
-- BYTEmark - (expected path `\Code\Libraries\Source\Benchmark`)
+	- Modern replacement: Use shaderc (bgfx) for shader compilation. Remove all NVASM-specific code and update your build process to use shaderc for compiling shaders compatible with bgfx.
 - RAD Miles Sound System SDK - (expected path `\Code\Libraries\Source\WWVegas\Miles6\`)
-- RAD Bink SDK - (expected path `\Code\GameEngineDevice\Include\VideoDevice\Bink`)
+  - Modern replacement: Use OpenAL Soft
 - SafeDisk API - (expected path `\Code\GameEngine\Include\Common\SafeDisk` and `\Code\Tools\Launcher\SafeDisk\`)
+  - Modern replacement: Remove all SafeDisk code. Modern platforms do not support SafeDisk, and it is not needed for digital distribution.
 - Miles Sound System "Asimp3" - (expected path `\Code\Libraries\WPAudio\Asimp3`)
+  - Modern replacement: Use minimp3
 - GameSpy SDK - (expected path `\Code\Libraries\Source\GameSpy\`)
+  - Modern replacement: Will create new one later
 - ZLib (1.1.4) - (expected path `\Code\Libraries\Source\Compression\ZLib\`)
+  - Modern replacement: Use the latest zlib (currently 1.3.x). Update your build scripts and includes.
 - LZH-Light (1.0) - (expected path `\Code\Libraries\Source\Compression\LZHCompress\CompLibSource` and `CompLibHeader`)
+  - Modern replacement: Switch to zlib
 
 
 ## Compiling (Win32 Only)
@@ -41,7 +47,7 @@ Windows has a policy where executables that contain words “version”, “upda
 
 
 ## STLport
-STLport will require changes to successfully compile this source code. The file [stlport.diff](stlport.diff) has been provided for you so you can review and apply these changes. Please make sure you are using STLport 4.5.3 before attempting to apply the patch.
+STLport is no longer required. Use the standard C++ STL that comes with your compiler (MSVC, GCC, Clang). Remove all STLport-specific code and update all includes to use standard headers (e.g., <vector>, <string>, <map>, etc.).
 
 
 ## Contributing

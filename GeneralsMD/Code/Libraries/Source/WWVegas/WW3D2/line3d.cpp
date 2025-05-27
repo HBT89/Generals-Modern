@@ -53,7 +53,8 @@
 #include "wwdebug.h"
 #include "ww3d.h"
 #include "rinfo.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
+// #include "dx8wrapper.h" // DX8 include removed for BGFX port
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
 #include "dx8fvf.h"
@@ -341,8 +342,7 @@ void Line3DClass::Scale(float scale)
  * Line3DClass::Scale -- Scale object                                     * 
  *                                                                        * 
  * INPUT:	float scalex, scaley, scalez - axis scale factors.            * 
- *                                                                        * 
- * OUTPUT:	none.                                                         * 
+ *                                                                        * OUTPUT:	none.                                                         * 
  *                                                                        * 
  * WARNINGS:                                                              * 
  *                                                                        * 

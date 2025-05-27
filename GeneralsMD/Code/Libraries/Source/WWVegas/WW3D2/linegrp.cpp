@@ -41,7 +41,7 @@
 #include "linegrp.h"
 #include "texture.h"
 #include "vertmaterial.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
 #include "wwmath.h"
 #include "rinfo.h"
 #include "camera.h"

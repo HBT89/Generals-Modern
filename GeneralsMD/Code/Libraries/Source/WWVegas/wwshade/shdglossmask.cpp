@@ -38,7 +38,7 @@
 
 #include <d3dx8math.h>
 #include "dx8fvf.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // BGFX port
 #include "assetmgr.h"
 
 #include "shdglossmask.h"

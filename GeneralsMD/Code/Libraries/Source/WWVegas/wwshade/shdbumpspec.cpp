@@ -35,7 +35,7 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "dx8fvf.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // BGFX port
 #include "assetmgr.h"
 
 #include "shdbumpspec.h"
@@ -233,4 +233,6 @@ ShdInterfaceClass* ShdBumpSpecDefClass::Create() const
 	}
 	return NULL;
 }
+
+// TODO: Port all shader logic to BGFX
 

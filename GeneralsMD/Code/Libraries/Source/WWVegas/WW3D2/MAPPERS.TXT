@@ -140,9 +140,3 @@ UScale=(float) 1.0;
 VScale=(float) 1.0;
 
 
------------
-TODO:
--the ability to affect the period of the zigzag in only one direction (V) while the other (U) continues to offset undisturbed in the original linear fashion.
--groovy scaling
--scale random
--random mapper random time

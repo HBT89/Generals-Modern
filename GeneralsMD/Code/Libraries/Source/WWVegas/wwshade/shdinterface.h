@@ -42,7 +42,7 @@
 
 #include "always.h"
 #include "refcount.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 
 class ShdDefClass;
 class ShdMeshClass;

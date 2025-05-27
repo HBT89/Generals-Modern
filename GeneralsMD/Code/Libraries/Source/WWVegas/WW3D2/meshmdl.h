@@ -57,7 +57,7 @@
 #include "rinfo.h"
 #include "meshgeometry.h"
 #include "meshmatdesc.h"
-#include "dx8list.h"
+// #include "dx8list.h" // Deprecated DX8 include, remove or replace as needed for BGFX.
 
 class TextureClass;
 class RenderInfoClass;

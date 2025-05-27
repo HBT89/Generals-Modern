@@ -40,7 +40,7 @@
 #include "seglinerenderer.h"
 #include "ww3d.h"
 #include "rinfo.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
 #include "sortingrenderer.h"
 #include "vp.h"
 #include "vector3i.h"

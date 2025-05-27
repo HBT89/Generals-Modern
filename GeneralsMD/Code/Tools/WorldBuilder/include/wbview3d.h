@@ -37,7 +37,7 @@
 #include "common/gameType.h"
 #include "common/GlobalData.h"
 #include "common/ModelState.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 
 //#include "GameLogic/Module/BodyModule.h" -- Yikes... not necessary to include this! (KM)
 enum BodyDamageType; //Ahhhh much better!
