@@ -1,18 +1,33 @@
-// BGFX vertex shader for bump diffuse effect
-$input a_position, a_normal, a_texcoord0
-$output v_normal, v_texcoord0, v_tangent, v_bitangent
+$input a_position, a_normal, a_tangent, a_bitangent, a_texcoord0, i_data0, i_data1, i_data2, i_data3
+$output v_texcoord0, v_lightDir, v_color
 
-#include <bgfx_shader.sh>
-
-uniform mat4 u_modelViewProj;
-uniform mat4 u_texTransform0;
+#include "bgfx_shader.sh"
+uniform vec4 u_lightDir0;
 
 void main()
 {
-    gl_Position = mul(u_modelViewProj, vec4(a_position, 1.0));
-    v_normal = a_normal;
-    v_texcoord0 = (u_texTransform0 * vec4(a_texcoord0.xy, 0.0, 1.0)).xy;
-    // For now, assume tangent and bitangent are provided as attributes (expand later if needed)
-    v_tangent = vec3(1.0, 0.0, 0.0); // placeholder
-    v_bitangent = vec3(0.0, 1.0, 0.0); // placeholder
+    // Build model matrix from instance data
+    mat4 model = mtxFromCols(i_data0, i_data1, i_data2, i_data3);
+    mat3 model3x3 = mtxFromCols(i_data0.xyz, i_data1.xyz, i_data2.xyz);
+
+    // Local to world
+    vec4 worldPos = mul(model, vec4(a_position, 1.0));
+    gl_Position = mul(u_viewProj, worldPos);
+
+    // Tangent space basis
+    vec3 tangent = normalize(mul(model3x3, a_tangent));
+    vec3 bitangent = normalize(mul(model3x3, a_bitangent));
+    vec3 normal = normalize(mul(model3x3, a_normal));
+
+    mat3 TBN = mtxFromCols(tangent, bitangent, normal);
+
+    // Light dir transform to tangent space
+    vec3 lightDirWorld = normalize(u_lightDir0.xyz);
+    vec3 lightDirTangent = mul(TBN, lightDirWorld);
+
+    // Output varyings
+    v_texcoord0 = a_texcoord0;
+    v_lightDir = lightDirTangent * 0.5 + 0.5;
+    v_color = vec4_splat(1.0);  // Safer in shaderc context
+
 }

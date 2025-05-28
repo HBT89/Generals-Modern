@@ -1,24 +1,23 @@
-// BGFX fragment shader for bump diffuse effect
-$input v_normal, v_texcoord0, v_tangent, v_bitangent
+$input v_texcoord0, v_lightDir, v_color
+#include "bgfx_shader.sh"
 
-#include <bgfx_shader.sh>
-uniform sampler2D s_texColor;
 uniform sampler2D s_normalMap;
-uniform vec3 u_lightDir;
-uniform vec3 u_lightColor;
+uniform sampler2D s_diffuseMap;
 
 void main()
 {
-    vec3 normal = normalize(v_normal);
-    vec3 tangent = normalize(v_tangent);
-    vec3 bitangent = normalize(v_bitangent);
-    mat3 TBN = mat3(tangent, bitangent, normal);
-    vec3 lightDir = normalize(u_lightDir);
-    // Sample and unpack normal map (assume normal map in tangent space, [0,1] to [-1,1])
-    vec3 nmap = texture2D(s_normalMap, v_texcoord0).xyz * 2.0 - 1.0;
-    vec3 n = normalize(TBN * nmap);
-    float NdotL = max(dot(n, lightDir), 0.0);
-    vec4 texColor = texture2D(s_texColor, v_texcoord0);
-    vec3 color = texColor.rgb * u_lightColor * NdotL;
-    gl_FragColor = vec4(color, texColor.a);
+    // Sample and convert normal from normal map (from [0,1] to [-1,1])
+    vec3 normal = texture2D(s_normalMap, v_texcoord0).xyz * 2.0 - 1.0;
+
+    // Normalize interpolated light direction
+    vec3 light = normalize(v_lightDir);
+
+    // Basic Lambertian diffuse lighting
+    float diff = max(dot(normal, light), 0.0);
+
+    // Sample base color texture
+    vec4 baseColor = texture2D(s_diffuseMap, v_texcoord0);
+
+    // Output final lit color
+    bgfx_VoidFrag = vec4(baseColor.rgb * diff, baseColor.a);
 }

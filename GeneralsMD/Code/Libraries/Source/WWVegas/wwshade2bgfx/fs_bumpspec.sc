@@ -1,27 +1,33 @@
 // BGFX fragment shader for bump specular effect
-$input v_normal, v_texcoord0, v_tangent, v_bitangent
+$input v_texcoord0, v_lightDirTS, v_viewDirTS, v_normal, v_tangent, v_bitangent
 
 #include <bgfx_shader.sh>
 uniform sampler2D s_texColor;
 uniform sampler2D s_normalMap;
-uniform vec3 u_lightDir;
-uniform vec3 u_lightColor;
-uniform vec3 u_viewDir;
+uniform vec4 u_lightColor0;
 
 void main()
 {
-    vec3 normal = normalize(v_normal);
-    vec3 tangent = normalize(v_tangent);
-    vec3 bitangent = normalize(v_bitangent);
-    mat3 TBN = mat3(tangent, bitangent, normal);
-    vec3 lightDir = normalize(u_lightDir);
-    vec3 viewDir = normalize(u_viewDir);
+    // Sample and unpack normal map (tangent space, [0,1] to [-1,1])
     vec3 nmap = texture2D(s_normalMap, v_texcoord0).xyz * 2.0 - 1.0;
-    vec3 n = normalize(TBN * nmap);
-    float NdotL = max(dot(n, lightDir), 0.0);
-    vec3 reflectDir = reflect(-lightDir, n);
-    float spec = pow(max(dot(viewDir, reflectDir), 0.0), 16.0); // Hardcoded shininess
+    vec3 normalTS = normalize(nmap);
+
+    // Use tangent-space light and view vectors from vertex shader
+    vec3 lightDirTS = normalize(v_lightDirTS);
+    vec3 viewDirTS = normalize(v_viewDirTS);
+
+    // Diffuse (Lambert)
+    float NdotL = max(dot(normalTS, lightDirTS), 0.0);
+
+    // Specular (Blinn-Phong, hardcoded shininess)
+    vec3 halfDir = normalize(lightDirTS + viewDirTS);
+    float NdotH = max(dot(normalTS, halfDir), 0.0);
+    float spec = pow(NdotH, 16.0); // You may want to expose shininess as a uniform
+
+    // Sample color texture
     vec4 texColor = texture2D(s_texColor, v_texcoord0);
-    vec3 color = texColor.rgb * u_lightColor * NdotL + vec3(1.0) * spec * 0.5;
+
+    // Combine
+    vec3 color = texColor.rgb * u_lightColor0.rgb * NdotL + u_lightColor0.rgb * spec * 0.5;
     gl_FragColor = vec4(color, texColor.a);
 }

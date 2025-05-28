@@ -4,8 +4,8 @@ $output v_normal, v_texcoord0
 
 #include <bgfx_shader.sh>
 
-uniform mat4 u_modelViewProj;
-uniform mat4 u_texTransform0;
+// uniform mat4 u_modelViewProj;
+//uniform mat4 u_texTransform0;
 
 void main()
 {
