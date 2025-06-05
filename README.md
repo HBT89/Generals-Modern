@@ -46,7 +46,8 @@ STLport will require changes to successfully compile this source code. The file 
 
 ## Contributing
 
-This repository will not be accepting contributions (pull requests, issues, etc). If you wish to create changes to the source code and encourage collaboration, please create a fork of the repository under your GitHub user/organization space.
+This repository will not be accepting contributions (pull requests, issues, etc). If you wish to create changes to the source code please use one of the forks of the repository
+- https://github.com/HBT89/Generals-Modern/blob/Reshade
 
 
 ## Support
