@@ -52,7 +52,8 @@ STLport is no longer required. Use the standard C++ STL that comes with your com
 
 ## Contributing
 
-This repository will not be accepting contributions (pull requests, issues, etc). If you wish to create changes to the source code and encourage collaboration, please create a fork of the repository under your GitHub user/organization space.
+This repository will  be accepting contributions. If you wish to create changes to the source code please create a pull request of the repository under your GitHub user/organization space.
+Create an issue for this pull request
 
 
 ## Support
