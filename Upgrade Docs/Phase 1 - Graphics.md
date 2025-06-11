@@ -27,6 +27,17 @@ See the [[Generals-Modern-main/README|README]] for basic information
 - Ensured that all TODOs are clearly marked for future BGFX implementation
 - No compile errors in processed files after DX8 removal and BGFX stubbing
 
+#### Shader and Pipeline Modernization
+- Inventoried all legacy and new shader files, including `.vsh`, `.psh`, `.sc`, and C++ pipeline files
+- Migrated and refactored all major shaders (bump diffuse, bump specular, cubemap, basic/simple) to BGFX-compatible `.sc` format, ensuring feature parity with DX8 originals
+- Standardized all BGFX shaders to use valid GLSL syntax, explicit mat3 construction, and BGFX best practices (no HLSL types or matrix subscripts)
+- Cleaned up and deduplicated `varying.def.sc` to ensure all attributes and varyings match shader usage
+- Fixed shader compilation errors by correcting attribute declarations, `$input` lines, and matrix math
+- Updated and documented the migration process in `reshade-automate.md` and `reshade-inventory.md`
+- Provided detailed explainers for each C++ shader pipeline and utility class, including code reviews and migration notes
+- Compared and explained differences between legacy and modernized shaders (e.g., self-shadowed vs. regular bump/specular)
+- Ensured all migrated shaders and pipelines compile and function cross-platform with BGFX
+
 ### High-Resolution and UI Modernization
 - ~~Set MaxCameraHeight = 600+ in GameData.ini~~
 - ~~Set EnforceMaxCameraHeight = No~~
