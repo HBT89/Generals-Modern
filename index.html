@@ -3,44 +3,65 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Generals Modern Mod</title>
+  <title>Generals Modern – Engine Modernization</title>
   <style>
-    body { font-family: sans-serif; padding: 2rem; background: #0e0e0e; color: #f8f8f8; }
-    h1 { color: #49b1f5; }
-    img { max-width: 100%; border: 1px solid #444; margin-bottom: 1rem; }
-    .factions { display: flex; flex-wrap: wrap; gap: 1rem; }
-    .faction { flex: 1 1 30%; border: 1px solid #333; padding: 1rem; background: #1e1e1e; }
-    a { color: #a0e7ff; }
+    body { font-family: sans-serif; padding: 2rem; background: #0d1117; color: #c9d1d9; line-height: 1.6; }
+    h1, h2, h3 { color: #58a6ff; }
+    a { color: #79c0ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .section { margin-bottom: 2rem; }
+    pre { background: #161b22; padding: 1rem; overflow-x: auto; border-left: 4px solid #30363d; }
+    .link-list ul { padding-left: 1rem; }
+    .link-list li { margin-bottom: 0.5rem; }
   </style>
 </head>
 <body>
   <h1>Command & Conquer: Generals Modern</h1>
-  <p>
-    A full-engine modernization and faction redesign of Zero Hour. Play in 4K, enjoy new doctrines, drones, cyber warfare, and expanded battlefield strategy.
-  </p>
+  <p><strong>Generals Modern</strong> is an ambitious overhaul of the C&C: Generals Zero Hour engine, focused on modernization, resolution fixes, and new rendering systems using <strong>BGFX</strong>.</p>
 
-  <img src="assets/banner.jpg" alt="Mod Banner">
+  <div class="section">
+    <h2>Engine Upgrade Overview</h2>
+    <p>This project removes the legacy DirectX 8 rendering backend and replaces it with a modern <strong>BGFX-based</strong> rendering system. The goal is to fully support 1440p/4K resolutions, scalable UI, smoother camera behavior, and cross-platform GPU support.</p>
+    <p>We're carefully refactoring the old engine to:</p>
+    <ul>
+      <li>Support high-resolution rendering via BGFX</li>
+      <li>Replace outdated DX8 pipeline with shaderc-compiled GLSL/HLSL shaders</li>
+      <li>Fix broken fullscreen and input behavior</li>
+      <li>Enable new UI layouts and map mechanics</li>
+    </ul>
+  </div>
 
-  <h2>🎖️ Factions</h2>
-  <div class="factions">
-    <div class="faction">
-      <h3>GDP – Global Defense Pact</h3>
-      <p>High-tech, precision warfare. Anti-drone lasers, satellite coordination, advanced NATO-inspired forces.</p>
-    </div>
-    <div class="faction">
-      <h3>ESF – Eurasian Strategic Front</h3>
-      <p>Disruption and brute force. EMPs, GPS denial, cyberblackouts, Russian/Chinese hybrid strategy.</p>
-    </div>
-    <div class="faction">
-      <h3>ARC – Autonomous Resistance Collective</h3>
-      <p>Decentralized warfare. Drone swarms, ambushes, underground logistics, black-market income.</p>
+  <div class="section">
+    <h2>Key Plans & Documentation</h2>
+    <div class="link-list">
+      <ul>
+        <li><a href="https://github.com/YOUR_USERNAME/YOUR_REPO/blob/main/README.md">README.md</a> – Project summary, dependencies, goals</li>
+        <li><a href="https://github.com/YOUR_USERNAME/YOUR_REPO/blob/main/docs/Phase1.md">Phase 1 – Modernization Layer</a> – BGFX migration, resolution fixes</li>
+        <li><a href="https://github.com/YOUR_USERNAME/YOUR_REPO/blob/main/docs/Phase2.md">Phase 2 – Shader System Rebuild</a> – wwshade2bgfx plan and shader migration</li>
+        <li><a href="https://github.com/YOUR_USERNAME/YOUR_REPO/blob/main/docs/UpgradeChecklist.md">UpgradeChecklist.md</a> – All major files to update/replace</li>
+      </ul>
     </div>
   </div>
 
-  <h2>🔗 Join the Community</h2>
-  <ul>
-    <li><a href="https://discord.gg/YOUR_INVITE">Join our Discord</a></li>
-    <li><a href="https://github.com/YOUR_USERNAME/YOUR_REPO/issues">Contribute or report bugs</a></li>
-  </ul>
+  <div class="section">
+    <h2>🛠Current Progress</h2>
+    <p><strong>Status:</strong> In-progress BGFX backend migration</p>
+    <p>Key changes completed so far include:</p>
+    <ul>
+      <li>All Direct3D 8 includes and usage removed</li>
+      <li>Created <code>BGFXWrapper.h/.cpp</code> interface to replace DX8</li>
+      <li>New vertex/index buffer files: <code>BGFXVertexBuffer</code>, <code>BGFXIndexBuffer</code></li>
+      <li>Shader migration underway: <code>wwshade2bgfx</code> system live</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>Additional Links</h2>
+    <ul>
+      <li><a href="https://bkaradzic.github.io/bgfx/">BGFX Official Docs</a></li>
+      <li><a href="https://github.com/bkaradzic/bgfx">BGFX GitHub</a></li>
+      <li><a href="https://github.com/YOUR_USERNAME/YOUR_REPO/issues">Submit feedback or report issues</a></li>
+    </ul>
+  </div>
 </body>
 </html>
