@@ -13,7 +13,7 @@ If you wish to rebuild the source code and tools successfully you will need to f
   - Modern replacement: Use the standard C++ STL provided by your compiler (MSVC, GCC, Clang). Remove all STLport-specific code and update includes to use standard headers such as <vector>, <string>, etc.
 - 3DSMax 4 SDK - (expected path `\Code\Libraries\Max4SDK\`)
 - NVASM - (expected path `\Code\Tools\NVASM\`)
-	- Modern replacement: Use [shaderc](https://github.com/bkaradzic/bgfx/tree/master/tools/shaderc) (from bgfx) for shader compilation. Remove all NVASM-specific code and update your build process to use shaderc for compiling shaders compatible with bgfx. For migration steps, see [Upgrade Docs/Phase 1 - Graphics.md](/Upgrade%20Docs/Phase%201%20-%20Graphics.md).
+	- Modern replacement: Use [shaderc](https://github.com/bkaradzic/bgfx/tree/master/tools/shaderc) (from bgfx) for shader compilation. Remove all NVASM-specific code and update your build process to use shaderc for compiling shaders compatible with bgfx. For migration steps, see [Phase 1 - Graphics.md](/Upgrade%20Docs/Phase%201%20-%20Graphics.md).
 - RAD Miles Sound System SDK - (expected path `\Code\Libraries\Source\WWVegas\Miles6\`)
   - Modern replacement: Use OpenAL Soft. See [Phase 2 - Sound.md](/Upgrade%20Docs/Phase%202%20-%20Sound.md) for details.
 - SafeDisk API - (expected path `\Code\GameEngine\Include\Common\SafeDisk` and `\Code\Tools\Launcher\SafeDisk\`)
