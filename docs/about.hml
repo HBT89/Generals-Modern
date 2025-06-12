@@ -1,1 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About the Developer</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <nav>
+    <a href="index.html">Home</a> |
+    <a href="modernization.html">Modernization</a> |
+    <a href="modplan.html">Future Mod</a> |
+    <a href="about.html">About</a>
+  </nav>
 
+  <main>
+    <h1>About the Developer</h1>
+
+    <p>
+      My name is Joshua Selvidge, and I'm a cybersecurity engineer by trade with over a decade of experience in offensive and defensive security, red teaming, and infrastructure design. I’ve worked across DOD, Oil & Gas, and startup environments — and I’m passionate about learning and building.
+    </p>
+
+    <p>
+      This project began as a personal challenge: to learn game engine internals and shader programming by modernizing one of my favorite games — <strong>Command & Conquer: Generals Zero Hour</strong>. What started as an investigation into DX8 has evolved into a full modernization effort and the groundwork for a total overhaul mod inspired by modern military doctrine and real-world drone warfare.
+    </p>
+
+    <p>
+      My goals with this project are:
+    </p>
+    <ul>
+      <li>Rebuild and modernize the original game engine with working shader and rendering backends (BGFX)</li>
+      <li>Replace deprecated and proprietary dependencies with open-source or modern alternatives</li>
+      <li>Lay the foundation for a fully rebuilt mod that imagines a modern, geopolitically aware C&C experience</li>
+      <li>Open this work to the community to contribute, test, and iterate on</li>
+    </ul>
+
+    <p>
+      This is an open, passion-driven project. If you’re into C&C, game dev, shaders, or security engineering — you’re welcome here.
+    </p>
+  </main>
+</body>
+</html>
