@@ -8,17 +8,17 @@ This repository includes source code for Command & Conquer Generals, and its exp
 If you wish to rebuild the source code and tools successfully you will need to find or write new replacements (or remove the code using them entirely) for the following libraries;
 
 - DirectX SDK (Version 9.0 or higher) (expected path `\Code\Libraries\DirectX\`)
-	- Modern replacement: Replace DirectX 9 rendering code with [bgfx](https://bkaradzic.github.io/bgfx/). Refactor the rendering pipeline to use bgfx's cross-platform API, update shaders to supported formats, and remove DirectX-specific dependencies.
+	- Modern replacement: Replace DirectX 9 rendering code with [bgfx](https://bkaradzic.github.io/bgfx/). Refactor the rendering pipeline to use bgfx's cross-platform API, update shaders to supported formats, and remove DirectX-specific dependencies.See [Phase 1 - Graphics.md](Phase%201%20-%20Graphics.md) for details.
 - STLport (4.5.3) - (expected path `\Code\Libraries\STLport-4.5.3`)
   - Modern replacement: Use the standard C++ STL provided by your compiler (MSVC, GCC, Clang). Remove all STLport-specific code and update includes to use standard headers such as <vector>, <string>, etc.
 - 3DSMax 4 SDK - (expected path `\Code\Libraries\Max4SDK\`)
 - NVASM - (expected path `\Code\Tools\NVASM\`)
-	- Modern replacement: Use shaderc (bgfx) for shader compilation. Remove all NVASM-specific code and update your build process to use shaderc for compiling shaders compatible with bgfx.
+	- Modern replacement: Use shaderc (bgfx) for shader compilation. Remove all NVASM-specific code and update your build process to use shaderc for compiling shaders compatible with bgfx. See [Phase 1 - Graphics.md](Phase%201%20-%20Graphics.md) for details.
 - RAD Miles Sound System SDK - (expected path `\Code\Libraries\Source\WWVegas\Miles6\`)
   - Modern replacement: Use OpenAL Soft
 - SafeDisk API - (expected path `\Code\GameEngine\Include\Common\SafeDisk` and `\Code\Tools\Launcher\SafeDisk\`)
   - Modern replacement: Remove all SafeDisk code. Modern platforms do not support SafeDisk, and it is not needed for digital distribution.
-- Miles Sound System "Asimp3" - (expected path `\Code\Libraries\WPAudio\Asimp3`)
+- Miles Sound System "Asimp3" - (expected path `\Code\Libraries\Source\WPAudio\Asimp3`)
   - Modern replacement: Use minimp3
 - GameSpy SDK - (expected path `\Code\Libraries\Source\GameSpy\`)
   - Modern replacement: Will create new one later
