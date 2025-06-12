@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Modernization Progress - Generals Modern</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <h1>Generals Modern</h1>
+    <nav>
+      <ul>
+        <li><a href="index.html">Overview</a></li>
+        <li><a href="about.html">About the Author</a></li>
+        <li><a href="modernization.html" class="active">Modernization Progress</a></li>
+        <li><a href="future-mod.html">Future Mod Ideas</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>Modernization Phase 1: Engine and Rendering Upgrades</h2>
+      <p>
+        This phase focuses on rebuilding the Command & Conquer: Generals Zero Hour engine to run natively on modern hardware. This includes replacing outdated DirectX 8 dependencies, improving resolution support, and preparing the engine for future visual and UI upgrades.
+      </p>
+    </section>
+
+    <section>
+      <h3>Core Goals</h3>
+      <ul>
+        <li>Switch rendering backend to <strong>BGFX</strong> for cross-platform GPU support</li>
+        <li>Add native resolution support for 1440p, 4K, and ultrawide monitors</li>
+        <li>Fix HUD/UI stretching and alignment issues</li>
+        <li>Improve camera height, zoom, and input responsiveness</li>
+        <li>Enable modern shader systems and lighting pipelines</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Replaced Libraries and Components</h3>
+      <ul>
+        <li><strong>DirectX 8.1</strong> → Replaced with BGFX</li>
+        <li><strong>Miles Sound System</strong> → Planned replacement with OpenAL Soft</li>
+        <li><strong>Shader System (WWShade)</strong> → Replaced with a new BGFX shader pipeline</li>
+        <li><strong>MP3 Decoder (Asimp3)</strong> → Replaced with minimp3</li>
+        <li><strong>LZH Compression</strong> → Replaced with zlib</li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Reference Docs and Tools</h3>
+      <ul>
+        <li><a href="https://github.com/selvidge-tech/Generals-Modern/blob/main/README.md" target="_blank">Project README</a></li>
+        <li><a href="https://github.com/selvidge-tech/Generals-Modern/blob/main/docs/Phase%201.md" target="_blank">Phase 1 Technical Plan</a></li>
+        <li><a href="https://github.com/selvidge-tech/Generals-Modern/blob/main/docs/Phase%202.md" target="_blank">Phase 2 (UI & Map Features)</a></li>
+      </ul>
+    </section>
+
+    <section>
+      <h3>Current Status</h3>
+      <p>
+        The core BGFX rendering wrapper is in place. Direct3D 8 references have been removed. The shader system is being actively converted, and new resolution and camera handling code has been successfully tested at 1440p.
+      </p>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Joshua Selvidge | <a href="https://selvidge.tech">selvidge.tech</a></p>
+  </footer>
+</body>
+</html>
