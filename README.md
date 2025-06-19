@@ -1,37 +1,66 @@
-This branch is for recompiling the code in Visual Studio 2022, this means some things will likely change
+# Command & Conquer Generals (inc. Zero Hour) Source Code
 
-1. 
-Install Visual Studio Community 2022:
+This repository includes source code for Command & Conquer Generals, and its expansion pack Zero Hour. This release provides support to the Steam Workshop for both games ([C&C Generals](https://steamcommunity.com/workshop/browse/?appid=2229870) and [C&C Generals - Zero Hour](https://steamcommunity.com/workshop/browse/?appid=2732960)).
 
-Make sure to select the "Desktop development with C++" workload during installation. This will give you the necessary C++ compiler, build tools, and project templates.
-Manual Project Creation and File Addition:
 
-Create a new C++ project in Visual Studio 2022. For most legacy applications, a "Console App" (even if it has a GUI, it's a good starting point for a Win32 application) or an "Empty Project" would be appropriate.
-Manually add your existing source files: In the Solution Explorer, right-click on your new project, go to "Add" -> "Existing Item..." and browse to all your .cpp, .c, .h, .rc (resource files), etc., from your old project.
-Reconfigure Project Settings (the most critical part):
-Right-click on your project in Solution Explorer and select "Properties."
-Configuration Manager: Set up your desired configurations (e.g., Debug, Release) and platforms (e.g., x64, x86). Many older projects were 32-bit (x86).
-VC++ Directories: This is vital. You'll need to add:
-Include Directories: Paths to any external libraries your project uses (e.g., old SDKs, third-party libraries).
-Library Directories: Paths to the .lib files for those external libraries.
-C/C++ -> General:
-Additional Include Directories: Same as above, if not already covered.
-Warning Level: You'll likely get many more warnings than with VC6. You might need to adjust this temporarily or resolve the warnings.
-Conformance Mode: This is crucial. Visual C++ 6.0 was notoriously non-standard compliant. Modern Visual Studio is much stricter. You might need to set "Conformance Mode" to /permissive- (if it's not already, or even consider turning it off temporarily if you hit too many errors). However, the goal is usually to fix the non-compliant code.
-C/C++ -> Preprocessor -> Preprocessor Definitions: Copy over any _DEBUG, _WINDOWS, _AFXDLL, etc., that were defined in your old project settings.
-Linker -> General -> Additional Library Directories: Again, paths to .lib files.
-Linker -> Input -> Additional Dependencies: List all the .lib files your project explicitly links against (e.g., user32.lib, gdi32.lib, comctl32.lib, custom library names).
-Linker -> System -> SubSystem: If it's a GUI application, it's usually "Windows (/SUBSYSTEM:WINDOWS)". For console apps, "Console (/SUBSYSTEM:CONSOLE)".
-Platform Toolset: This will likely default to "Visual Studio 2022 (v143)". This is the modern compiler.
-Character Set: Many old projects were ANSI. Modern Visual Studio defaults to Unicode. You might need to change "Character Set" under "General" to "Use Multi-Byte Character Set" if your code heavily relies on char* and specific ANSI functions without proper Unicode handling. Ideally, you'd migrate to Unicode.
-Challenges you'll likely face:
+## Dependencies
 
-Compiler Conformance: Visual C++ 6.0 was quite lenient. VS2022 is much stricter about C++ standards. You will almost certainly encounter numerous compilation errors related to:
-Implicit type conversions
-Use of deprecated functions
-Strictness around const correctness
-Header file includes (some old headers might not be directly available or their contents have moved)
-Linker Errors: If you miss any required .lib files or their paths are incorrect.
-Runtime Library Mismatch: If your old project used a specific C runtime library (e.g., multi-threaded DLL, static), you need to ensure your new project settings align or update your code.
-Old Third-Party Libraries: If your project depends on ancient third-party .lib or .dll files, you might have trouble linking with them or finding compatible versions. You might need to recompile those libraries if you have their source code.
-MFC/ATL Versions: If it's an MFC or ATL project, the versions might be very different, requiring code changes.
+If you wish to rebuild the source code and tools successfully you will need to find or write new replacements (or remove the code using them entirely) for the following libraries;
+
+- DirectX SDK (Version 9.0 or higher) (expected path `\Code\Libraries\DirectX\`)
+	- Modern replacement: Replace DirectX 9 rendering code with [bgfx](https://bkaradzic.github.io/bgfx/). Refactor the rendering pipeline to use bgfx's cross-platform API, update shaders to supported formats, and remove DirectX-specific dependencies.See [Phase 1 - Graphics.md](/Upgrade%20Docs/Phase%201%20-%20Graphics.md) for details.
+- STLport (4.5.3) - (expected path `\Code\Libraries\STLport-4.5.3`)
+  - Modern replacement: Use the standard C++ STL provided by your compiler (MSVC, GCC, Clang). Remove all STLport-specific code and update includes to use standard headers such as <vector>, <string>, etc.
+- 3DSMax 4 SDK - (expected path `\Code\Libraries\Max4SDK\`)
+- NVASM - (expected path `\Code\Tools\NVASM\`)
+	- Modern replacement: Use [shaderc](https://github.com/bkaradzic/bgfx/tree/master/tools/shaderc) (from bgfx) for shader compilation. Remove all NVASM-specific code and update your build process to use shaderc for compiling shaders compatible with bgfx. For migration steps, see [Phase 1 - Graphics.md](/Upgrade%20Docs/Phase%201%20-%20Graphics.md).
+- RAD Miles Sound System SDK - (expected path `\Code\Libraries\Source\WWVegas\Miles6\`)
+  - Modern replacement: Use OpenAL Soft. See [Phase 2 - Sound.md](/Upgrade%20Docs/Phase%202%20-%20Sound.md) for details.
+- SafeDisk API - (expected path `\Code\GameEngine\Include\Common\SafeDisk` and `\Code\Tools\Launcher\SafeDisk\`)
+  - Modern replacement: Remove all SafeDisk code. Modern platforms do not support SafeDisk, and it is not needed for digital distribution.
+- Miles Sound System "Asimp3" - (expected path `\Code\Libraries\Source\WPAudio\Asimp3`)
+  - Modern replacement: Use minimp3. See [Phase 2 - Sound.md](/Upgrade%20Docs/Phase%202%20-%20Sound.md) for details.
+- GameSpy SDK - (expected path `\Code\Libraries\Source\GameSpy\`)
+  - Modern replacement: Will create new one later
+- ZLib (1.1.4) - (expected path `\Code\Libraries\Source\Compression\ZLib\`)
+  - Modern replacement: Use the latest zlib (currently 1.3.x). Update your build scripts and includes.
+- LZH-Light (1.0) - (expected path `\Code\Libraries\Source\Compression\LZHCompress\CompLibSource` and `CompLibHeader`)
+  - Modern replacement: Switch to zlib
+
+
+## Compiling (Win32 Only)
+
+To use the compiled binaries, you must own the game. The C&C Ultimate Collection is available for purchase on [EA App](https://www.ea.com/en-gb/games/command-and-conquer/command-and-conquer-the-ultimate-collection/buy/pc) or [Steam](https://store.steampowered.com/bundle/39394/Command__Conquer_The_Ultimate_Collection/).
+
+The quickest way to build all configurations in the project is to open `rts.dsw` in Microsoft Visual Studio C++ 6.0 (SP6 recommended for binary matching to Generals patch 1.08 and Zero Hour patch 1.04) and select Build -> Batch Build, then hit the “Rebuild All” button.
+
+If you wish to compile the code under a modern version of Microsoft Visual Studio, you can convert the legacy project file to a modern MSVC solution by opening `rts.dsw` in Microsoft Visual Studio .NET 2003, and then opening the newly created project and solution file in MSVC 2015 or newer.
+
+NOTE: As modern versions of MSVC enforce newer revisions of the C++ standard, you will need to make extensive changes to the codebase before it successfully compiles, even more so if you plan on compiling for the Win64 platform.
+
+When the workspace has finished building, the compiled binaries will be copied to the folder called `/Run/` found in the root of each games directory. 
+
+
+## Known Issues
+
+Windows has a policy where executables that contain words “version”, “update” or “install” in their filename will require UAC Elevation to run. This will affect “versionUpdate” and “buildVersionUpdate” projects from running as post-build events. Renaming the output binary name for these projects to not include these words should resolve the issue for you.
+
+
+## STLport
+STLport is no longer required. Use the standard C++ STL that comes with your compiler (MSVC, GCC, Clang). Remove all STLport-specific code and update all includes to use standard headers (e.g., <vector>, <string>, <map>, etc.).
+
+
+## Contributing
+
+This repository will  be accepting contributions. If you wish to create changes to the source code please create a pull request of the repository under your GitHub user/organization space.
+Create an issue for this pull request
+
+
+## Support
+
+This repository is for preservation purposes only and is archived without support. 
+
+
+## License
+
+This repository and its contents are licensed under the GPL v3 license, with additional terms applied. Please see [LICENSE.md](LICENSE.md) for details.
