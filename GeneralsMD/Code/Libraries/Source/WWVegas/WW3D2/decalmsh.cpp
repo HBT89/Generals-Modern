@@ -62,7 +62,7 @@
 #include "dx8indexbuffer.h"
 #include "simplevec.h"
 #include "texture.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "dx8caps.h"
 
 #define DISABLE_CLIPPING	0

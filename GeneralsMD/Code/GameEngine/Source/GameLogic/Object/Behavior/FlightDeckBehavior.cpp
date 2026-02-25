@@ -405,10 +405,10 @@ FlightDeckBehavior::FlightDeckInfo* FlightDeckBehavior::findPPI(ObjectID id)
 	for (std::vector<FlightDeckInfo>::iterator it = m_spaces.begin(); it != m_spaces.end(); ++it)
 	{
 		if (it->m_objectInSpace == id)
-			return it;
+			return &(*it);
 	}
 
-	return NULL; 
+	return NULL;
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -420,7 +420,7 @@ FlightDeckBehavior::FlightDeckInfo* FlightDeckBehavior::findEmptyPPI()
 	for (std::vector<FlightDeckInfo>::iterator it = m_spaces.begin(); it != m_spaces.end(); ++it)
 	{
 		if( it->m_objectInSpace == INVALID_ID )
-			return it;
+			return &(*it);
 	}
 
 	return NULL;
@@ -879,7 +879,7 @@ Bool FlightDeckBehavior::calcBestParkingAssignment( ObjectID id, Coord3D *pos, I
 	//the back and keep looking at empty spaces until we find one with a plane blocking.
 
 	Bool checkForPlaneInWay = FALSE;
-	std::vector<FlightDeckInfo>::iterator bestIt = NULL;
+	FlightDeckInfo* bestIt = NULL;
 	Object *bestJet = NULL;
 	Int bestIndex = 0, index = 0;
 	for( std::vector<FlightDeckInfo>::iterator thatIt = m_spaces.begin(); thatIt != m_spaces.end(); thatIt++, index++ )
@@ -923,7 +923,7 @@ Bool FlightDeckBehavior::calcBestParkingAssignment( ObjectID id, Coord3D *pos, I
 				if( !checkForPlaneInWay )
 				{
 					//We can take this spot! But first find the flight deck info entry for it.Now handle assignment swap.
-					bestIt = thatIt;
+					bestIt = &(*thatIt);
 					bestJet = nonIdleJet;
 					bestIndex = index;
 					checkForPlaneInWay = TRUE;
@@ -1354,7 +1354,7 @@ void FlightDeckBehavior::exitObjectViaDoor( Object *newObj, ExitDoorType exitDoo
 		return;
 	}
 
-	newObj->setPosition( pCreationLocations->begin() );
+	newObj->setPosition( &(*pCreationLocations->begin()) );
 	newObj->setOrientation( m_runways[ ppi->m_runway ].m_startOrient );
 	TheAI->pathfinder()->addObjectToPathfindMap( newObj );
 

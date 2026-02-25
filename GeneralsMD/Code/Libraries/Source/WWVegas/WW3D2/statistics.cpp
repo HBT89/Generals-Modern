@@ -20,7 +20,7 @@
 #include "wwstring.h"
 #include "simplevec.h"
 #include "dx8renderer.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "dx8caps.h"
 #include "textureloader.h"
 #include "texture.h"

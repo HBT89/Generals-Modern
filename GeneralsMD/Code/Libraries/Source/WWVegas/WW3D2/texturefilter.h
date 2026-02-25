@@ -40,11 +40,9 @@
 #ifndef TEXTUREFILTER_H
 #define TEXTUREFILTER_H
 
-#ifndef DX8_WRAPPER_H
-//#include "dx8wrapper.h"
-#endif
-
-enum MipCountType 
+// MipCountType must be defined before any wrapper include to avoid
+// circular dependency: texture.h -> texturefilter.h -> dx8wrapper.h -> BGFXWrapper.h -> texture.h
+enum MipCountType
 {
 	MIP_LEVELS_ALL=0,		// generate all mipmap levels down to 1x1 size
 	MIP_LEVELS_1,			// no mipmapping at all (just one mip level)
@@ -60,6 +58,10 @@ enum MipCountType
 	MIP_LEVELS_12,
 	MIP_LEVELS_MAX			// This isn't to be used (use MIP_LEVELS_ALL instead), it is just an enum for creating static tables etc.
 };
+
+#ifndef DX8_WRAPPER_H
+#include "dx8wrapper.h"
+#endif
 
 
 // NOTE: Since "texture wrapping" (NOT TEXTURE WRAP MODE - THIS IS

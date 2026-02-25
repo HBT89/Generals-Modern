@@ -44,17 +44,7 @@
 
 #include "vector.h"
 #include "wwstring.h"
-
-// BGFX-agnostic placeholder structs for device capabilities and adapter info
-struct BGFXCaps {
-	// Add BGFX or generic capability fields as needed
-	int dummy = 0;
-};
-
-struct BGFXAdapterIdentifier {
-	// Add BGFX or generic adapter info fields as needed
-	char description[256] = {0};
-};
+#include "BGFXCaps.h"
 
 class ResolutionDescClass
 {

@@ -26,7 +26,6 @@
 class DX8IndexBufferClass;
 class RenderInfoClass;
 class TextureClass;
-struct IDirect3DVertexBuffer8;
 
 class W3DSnowManager : public SnowManager
 {

@@ -60,7 +60,7 @@
 #endif
 
 #include	<windows.h>
-//#include <mmsystem.h>
+#include <mmsystem.h>
 //#include	<windowsx.h>
 //#include	<winnt.h>
 //#include	<winuser.h>

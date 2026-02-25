@@ -45,11 +45,16 @@
 
 #include "always.h"
 #include "matrix3d.h"
+#include "matrix4.h"
 #include "vector3i.h"
+
+// Matrix4 was renamed to Matrix4x4 to avoid 3DSMax conflicts
+typedef Matrix4x4 Matrix4;
 
 #include <srVector3i.hpp>
 #include <srVector3.hpp>
 #include <srVector2.hpp>
+#include <srVector4.hpp>
 #include <srMatrix4x3.hpp>
 
 class srNode;

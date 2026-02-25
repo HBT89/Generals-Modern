@@ -24,6 +24,7 @@
 #include "shdinterface.h"
 #include "shddef.h"
 #include "meshmatdesc.h"
+#include "texture.h"
 
 /**
 ** ShdLegacyW3DDefClass - This ShaderDef's sole purpose for existance is to let us make the 

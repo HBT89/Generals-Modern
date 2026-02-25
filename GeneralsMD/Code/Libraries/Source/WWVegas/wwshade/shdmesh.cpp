@@ -38,6 +38,8 @@
 #include "shdmesh.h"
 #include "shdsubmesh.h"
 #include "shdrenderer.h"
+#include "chunkio.h"
+#include "texture.h"
 #include "rinfo.h"
 #include "camera.h"
 #include "BGFXWrapper.h" // BGFX port

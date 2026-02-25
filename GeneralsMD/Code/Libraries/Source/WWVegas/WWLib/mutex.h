@@ -25,6 +25,7 @@
 
 #include "always.h"
 #include "thread.h"
+#include <intrin.h>
 
 
 // Always use mutex or critical section when accessing the same data from multiple threads!
@@ -129,36 +130,11 @@ public:
 	public:
 		__forceinline LockClass(FastCriticalSectionClass& critical_section) : cs(critical_section)
 		{
-		  unsigned& nFlag=cs.Flag;
-
-		  #define ts_lock _emit 0xF0
-		  assert(((unsigned)&nFlag % 4) == 0);
-
-      // I'm terribly sorry for these emits in here but
-      // VC won't inline any functions that have labels in them...
-
-      // Had to remove the emits back to normal
-      // ASM statements because sometimes the jump
-      // would be 1 byte off....
-      
-		  __asm mov ebx, [nFlag]
-		  __asm ts_lock
-		  __asm bts dword ptr [ebx], 0
-		  __asm jnc BitSet
-      //__asm _emit 0x73
-      //__asm _emit 0x0f
-
-		  The_Bit_Was_Previously_Set_So_Try_Again:
+		  // Original code used inline x86 assembly with LOCK BTS spinlock.
+		  // Replaced with MSVC intrinsic for modern compiler compatibility.
+		  while (_interlockedbittestandset((volatile long*)&cs.Flag, 0)) {
 		    ThreadClass::Switch_Thread();
-		  __asm mov ebx, [nFlag]
-		  __asm ts_lock
-		  __asm bts dword ptr [ebx], 0
-		  __asm jc  The_Bit_Was_Previously_Set_So_Try_Again
-      //_asm _emit 0x72
-      //_asm _emit 0xf1
-
-      BitSet:
-        ;
+		  }
 		}
 
 		~LockClass()

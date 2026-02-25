@@ -85,7 +85,7 @@
 #include "wwstring.h"
 #include "camera.h"
 #include "statistics.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
 #include "sortingrenderer.h"

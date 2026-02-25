@@ -52,7 +52,7 @@
 #include "vector.h"
 #include "dx8list.h"
 #include "shader.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "meshmatdesc.h"
 
 class IndexBufferClass;

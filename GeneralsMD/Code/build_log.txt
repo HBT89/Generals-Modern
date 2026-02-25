@@ -1,0 +1,4 @@
+CMake is re-running because C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/build/CMakeFiles/generate.stamp is out-of-date.
+  the file 'C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/CMakeLists.txt'
+  is newer than 'C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/build/CMakeFiles/generate.stamp.depend'
+  result='0'

@@ -40,13 +40,15 @@
 #include "seglinerenderer.h"
 #include "ww3d.h"
 #include "rinfo.h"
-#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
+#include "dx8wrapper.h"
 #include "sortingrenderer.h"
 #include "vp.h"
 #include "vector3i.h"
 #include "random.h"
 #include "v3_rnd.h"
 #include "meshgeometry.h"
+#include "vertmaterial.h"
+#include "w3d_file.h"
 
 
 /* We have chunking logic which handles N segments at a time. To simplify the subdivision logic,

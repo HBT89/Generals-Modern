@@ -41,6 +41,8 @@
 #include "dx8indexbuffer.h"
 #include "dx8wrapper.h"
 #include "dx8caps.h"
+#include "texture.h"
+#include "ww3d.h"
 #include "sphere.h"
 #include "thread.h"
 #include "wwmemlog.h"

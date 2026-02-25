@@ -57,9 +57,7 @@
 #include "GameClient/GameText.h"
 #include "GameClient/Keyboard.h"
 #include "GameClient/Mouse.h"
-#if defined(DEBUG_STACKTRACE) || defined(IG_DEBUG_STACKTRACE)
-	#include "Common/StackDump.h"
-#endif
+#include "Common/StackDump.h"
 
 // Horrible reference, but we really, really need to know if we are windowed.
 extern bool DX8Wrapper_IsWindowed;

@@ -45,22 +45,20 @@
 #define FORMCONV_H
 
 #include "ww3dformat.h"
+#include "RenderTypes.h"
 #include <bgfx/bgfx.h>
 
 /*
-** This file is used for conversions between D3DFORMAT and WW3DFormat.
+** Format conversion between WW3DFormat, D3DFORMAT (placeholder), and BGFX.
+** D3DFORMAT values are used in DDS file headers and legacy code paths.
+** These are pure enum mappings — no D3D API calls.
 */
 
-// DX8/D3D8 includes removed for BGFX port
-// #include <d3d8.h>
-// TODO: Port all format conversion logic to BGFX
-#if 0
+// D3DFORMAT <-> WW3DFormat conversions (enum-to-enum, no D3D dependency)
 D3DFORMAT WW3DFormat_To_D3DFormat(WW3DFormat ww3d_format);
 WW3DFormat D3DFormat_To_WW3DFormat(D3DFORMAT d3d_format);
-
 D3DFORMAT WW3DZFormat_To_D3DFormat(WW3DZFormat ww3d_zformat);
 WW3DZFormat D3DFormat_To_WW3DZFormat(D3DFORMAT d3d_format);
-#endif
 
 void Init_D3D_To_WW3_Conversion();
 

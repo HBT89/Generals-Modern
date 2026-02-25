@@ -157,7 +157,7 @@ Build_List_From_String
 				// Copy this entry into its own string
 				//
 				StringClass entry_string = entry;
-				char *delim_start = ::strstr (entry_string, delimiter);				
+				char *delim_start = const_cast<char*>(::strstr ((const char*)entry_string, delimiter));				
 				if (delim_start != NULL) {
 					delim_start[0] = 0;
 				}

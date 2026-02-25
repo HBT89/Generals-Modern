@@ -97,7 +97,29 @@ generatedVersion.h
 *.vsh_code.h
 *.psh_code.h
 
+# CMake build directory
+/Code/build/
+
+# CMake generated files
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+CTestTestfile.cmake
+*.vcxproj
+*.vcxproj.filters
+*.sln
+
 # Visual C++ files
 *.ncb
 *.opt
 *.plg
+*.suo
+*.user
+.vs/
+
+# Build logs
+*.log
+
+# Backup/reference files
+*.OLD
+*.orig

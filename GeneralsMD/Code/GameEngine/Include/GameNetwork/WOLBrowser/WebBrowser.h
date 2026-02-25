@@ -22,35 +22,14 @@
 //																																						//
 ////////////////////////////////////////////////////////////////////////////////
 
-/******************************************************************************
-*
-* NAME
-*     $Archive:  $
-*
-* DESCRIPTION
-*     Web Browser
-*
-* PROGRAMMER
-*     Bryan Cleveland
-*     $Author:  $
-*
-* VERSION INFO
-*     $Revision:  $
-*     $Modtime:  $
-*
-******************************************************************************/
-
 #pragma once
 
 #ifndef __WEBBROWSER_H__
 #define __WEBBROWSER_H__
 
 #include "Common/SubsystemInterface.h"
-#include <atlbase.h>
 #include <windows.h>
 #include <Common/GameMemory.h>
-#include "EABrowserDispatch/BrowserDispatch.h"
-#include "FEBDispatch.h"
 
 class GameWindow;
 
@@ -74,7 +53,12 @@ public:
 
 };
 
-
+#if __has_include(<atlbase.h>)
+// Full ATL-based WebBrowser implementation
+#include <atlbase.h>
+#include <comutil.h>
+#include "EABrowserDispatch/BrowserDispatch.h"
+#include "FEBDispatch.h"
 
 class WebBrowser :
 		public FEBDispatch<WebBrowser, IBrowserDispatch, &IID_IBrowserDispatch>,
@@ -101,9 +85,6 @@ class WebBrowser :
 		WebBrowser(const WebBrowser&);
 		const WebBrowser& operator=(const WebBrowser&);
 
-//		Bool RetrievePageURL(const char* page, char* url, int size);
-//		Bool RetrieveHTMLPath(char* path, int size);
-
 	protected:
 		ULONG mRefCount;
 		WebBrowserURL *m_urlList;
@@ -124,4 +105,28 @@ class WebBrowser :
 	};
 
 extern CComObject<WebBrowser> *TheWebBrowser;
+
+#else
+// ATL not available - WOL browser is non-functional stub
+class WebBrowser : public SubsystemInterface
+{
+public:
+	void init( void ) {}
+	void reset( void ) {}
+	void update( void ) {}
+
+	virtual Bool createBrowserWindow(char *tag, GameWindow *win) { return FALSE; }
+	virtual void closeBrowserWindow(GameWindow *win) {}
+
+	WebBrowserURL *makeNewURL(AsciiString tag) { return NULL; }
+	WebBrowserURL *findURL(AsciiString tag) { return NULL; }
+
+protected:
+	WebBrowserURL *m_urlList;
+};
+
+extern WebBrowser *TheWebBrowser;
+
+#endif // __has_include(<atlbase.h>)
+
 #endif // __WEBBROWSER_H__

@@ -46,7 +46,7 @@
 
 #include "always.h"
 #include "texture.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "ww3dformat.h"
 #include "dx8list.h"
 #include "ww3dformat.h"

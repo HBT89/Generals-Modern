@@ -35,13 +35,12 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "dynamesh.h"
-#include "BGFXVertexBuffer.h"
-#include "BGFXIndexBuffer.h"
-#include "BGFXWrapper.h"
+#include "dx8wrapper.h"
 #include "sortingrenderer.h"
 #include "rinfo.h"
 #include "camera.h"
 #include "formconv.h"
+#include "meshmatdesc.h"
 #include <bgfx/bgfx.h>
 
 
@@ -227,7 +226,7 @@ void DynamicMeshModel::Render(RenderInfoClass & rinfo)
     bgfx::setVertexBuffer(0, vb.GetHandle());
     bgfx::setIndexBuffer(ib.GetHandle());
     // TODO: Set uniforms, textures, and submit with the correct shader
-    bgfx::submit(0); // Use view 0 for now
+    bgfx::submit(0, BGFX_INVALID_HANDLE); // Use view 0 for now, no shader program yet
 }
 
 void DynamicMeshModel::Initialize_Texture_Array(int pass, int stage, TextureClass *texture)
@@ -288,7 +287,7 @@ bool DynamicMeshClass::End_Vertex()
 	}
 
 	// if we are multi colored, record the color
-	for (int color_array_index = 0; color_array_index < MAX_COLOR_ARRAYS; color_array_index++) {
+	for (int color_array_index = 0; color_array_index < MeshMatDescClass::MAX_COLOR_ARRAYS; color_array_index++) {
 		if (MultiVertexColor[color_array_index]) {
 //			Vector4 * color = &((Model->Get_Color_Array(color_array_index))[VertCount]);
 //			color->X = CurVertexColor[color_array_index].X;
@@ -361,7 +360,7 @@ DynamicMeshClass::DynamicMeshClass(int max_poly, int max_vert) :
 	TriMode(TRI_MODE_STRIPS),
 	SortLevel(SORT_LEVEL_NONE)
 {
-	int pass = MAX_PASSES;
+	int pass = MeshMatDescClass::MAX_PASSES;
 	while (pass--) {
 		MultiTexture[pass] = false;
 		TextureIdx[pass] = -1;
@@ -370,7 +369,7 @@ DynamicMeshClass::DynamicMeshClass(int max_poly, int max_vert) :
 		VertexMaterialIdx[pass] = -1;
 	}
 
-	for (int color_array_index = 0; color_array_index < MAX_COLOR_ARRAYS; color_array_index++) {
+	for (int color_array_index = 0; color_array_index < MeshMatDescClass::MAX_COLOR_ARRAYS; color_array_index++) {
 		MultiVertexColor[color_array_index] = false;
 		CurVertexColor[color_array_index].Set(1.0f, 1.0f, 1.0f, 1.0f);
 	}
@@ -387,7 +386,7 @@ DynamicMeshClass::DynamicMeshClass(int max_poly, int max_vert, MaterialInfoClass
 	TriMode(TRI_MODE_STRIPS),
 	SortLevel(SORT_LEVEL_NONE)
 {
-	int pass = MAX_PASSES;
+	int pass = MeshMatDescClass::MAX_PASSES;
 	while (pass--) {
 		MultiTexture[pass] = false;
 		TextureIdx[pass] = -1;
@@ -396,7 +395,7 @@ DynamicMeshClass::DynamicMeshClass(int max_poly, int max_vert, MaterialInfoClass
 		VertexMaterialIdx[pass] = -1;
 	}
 
-	for (int color_array_index = 0; color_array_index < MAX_COLOR_ARRAYS; color_array_index++) {
+	for (int color_array_index = 0; color_array_index < MeshMatDescClass::MAX_COLOR_ARRAYS; color_array_index++) {
 		MultiVertexColor[color_array_index] = false;
 		CurVertexColor[color_array_index].Set(1.0f, 1.0f, 1.0f, 1.0f);
 	}
@@ -414,7 +413,7 @@ DynamicMeshClass::DynamicMeshClass(const DynamicMeshClass & src) :
 	TriMode(src.TriMode),
 	SortLevel(src.SortLevel)
 {
-	int pass = MAX_PASSES;
+	int pass = MeshMatDescClass::MAX_PASSES;
 	while (pass--) {
 		MultiTexture[pass] = src.MultiTexture[pass];
 		TextureIdx[pass] = src.TextureIdx[pass];
@@ -426,7 +425,7 @@ DynamicMeshClass::DynamicMeshClass(const DynamicMeshClass & src) :
 		CurVertexColor[pass]  = src.CurVertexColor[pass];
 	}
 
-	for (int color_array_index = 0; color_array_index < MAX_COLOR_ARRAYS; color_array_index++) {
+	for (int color_array_index = 0; color_array_index < MeshMatDescClass::MAX_COLOR_ARRAYS; color_array_index++) {
 		MultiVertexColor[color_array_index] = src.MultiVertexColor[color_array_index];
 		CurVertexColor[color_array_index] = src.CurVertexColor[color_array_index];
 	}
@@ -442,7 +441,7 @@ void DynamicMeshClass::Resize(int max_polys, int max_verts)
 	Model = NEW_REF(DynamicMeshModel, (max_polys, max_verts));
 
 	// reset all the texture & vertex material indices
-	int pass = MAX_PASSES;
+	int pass = MeshMatDescClass::MAX_PASSES;
 	while (pass--) {
 		TextureIdx[pass] = -1;
 		VertexMaterialIdx[pass] = -1;
@@ -502,7 +501,7 @@ void DynamicMeshClass::Translate_Vertices(const Vector3 & offset)
 {
 	Vector3 * loc = Model->Get_Vertex_Array();
 	assert(loc);
-	for (int i=0; i < Get_Num_Vertices(); i++) {
+	for (int i=0; i < VertCount; i++) {
 		loc[i].X += offset.X;
 		loc[i].Y += offset.Y;
 		loc[i].Z += offset.Z;

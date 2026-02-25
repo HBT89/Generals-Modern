@@ -39,13 +39,12 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 #include "sortingrenderer.h"
-#include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
-#include "BGFXVertexBuffer.h"
-#include "BGFXIndexBuffer.h"
-// #include "dx8vertexbuffer.h" // TODO: Port to BGFX vertex buffer
-// #include "dx8indexbuffer.h" // TODO: Port to BGFX index buffer
+#include "dx8wrapper.h"
+#include "sr_util.h"
 #include "vertmaterial.h"
 #include "texture.h"
+#include "dllist.h"
+#include "ww3d.h"
 // #include "d3d8.h" // DX8 include removed for BGFX port
 // #include "D3dx8math.h" // DX8 math include removed for BGFX port
 #include "statistics.h"

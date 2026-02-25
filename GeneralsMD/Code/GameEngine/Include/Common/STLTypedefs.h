@@ -70,7 +70,8 @@ enum DrawableID;
 
 #include <algorithm>
 #include <bitset>
-#include <hash_map>
+#include <unordered_map>
+#include <unordered_set>
 #include <list>
 #include <map>
 #include <queue>
@@ -78,6 +79,15 @@ enum DrawableID;
 #include <stack>
 #include <string>
 #include <vector>
+
+// Compatibility: the original code used STLport/MSVC's std::hash_map.
+// Modern C++ uses std::unordered_map. Provide an alias in std namespace.
+namespace std {
+    template<typename Key, typename T, typename Hash = std::hash<Key>, typename Pred = std::equal_to<Key>>
+    using hash_map = std::unordered_map<Key, T, Hash, Pred>;
+    template<typename Key, typename Hash = std::hash<Key>, typename Pred = std::equal_to<Key>>
+    using hash_set = std::unordered_set<Key, Hash, Pred>;
+}
 
 // List of AsciiStrings to allow list of ThingTemplate names from INI and such
 typedef std::list< AsciiString >													AsciiStringList;

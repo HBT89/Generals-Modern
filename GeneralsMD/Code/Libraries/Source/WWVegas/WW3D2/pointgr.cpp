@@ -81,13 +81,13 @@
 #include "vp.h"
 #include "matrix4.h"
 #include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
-//#include "dx8wrapper.h" // DX8 include removed for BGFX port
+#include "dx8wrapper.h"
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
 #include "rinfo.h"
 #include "camera.h"
 #include "dx8fvf.h"
-#include "D3DXMath.h"
+// #include "D3DXMath.h" // Removed for BGFX port
 #include "sortingrenderer.h"
 
 // Upgraded to DX8 2/2/01 HY
@@ -1212,7 +1212,15 @@ void PointGroupClass::Update_Arrays(
 					if (!Billboard) {
 						// If we're not billboarding, then the coordinate we have is in screen space.
 						Matrix4x4 rotMat;
-						D3DXMatrixRotationZ(&(D3DXMATRIX&) rotMat, ((float)point_orientation[i] / 255.0f * 2 * D3DX_PI));
+						{
+							float angle = (float)point_orientation[i] / 255.0f * 2.0f * 3.14159265358979f;
+							float c = cosf(angle), s = sinf(angle);
+							memset(&rotMat, 0, sizeof(rotMat));
+							rotMat[0][0] = c;  rotMat[0][1] = s;
+							rotMat[1][0] = -s; rotMat[1][1] = c;
+							rotMat[2][2] = 1.0f;
+							rotMat[3][3] = 1.0f;
+						}
 						
 						Vector4 orientedVecX = rotMat * GroundMultiplierX;
 						Vector4 orientedVecY = rotMat * GroundMultiplierY;

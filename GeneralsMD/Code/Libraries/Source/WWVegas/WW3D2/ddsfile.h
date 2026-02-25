@@ -30,8 +30,7 @@
 #include "wwstring.h"
 #include "vector3.h"
 
-struct IDirect3DSurface8;
-struct IDirect3DVolume8;
+#include "RenderTypes.h"
 
 // ----------------------------------------------------------------------------
 //

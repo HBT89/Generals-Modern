@@ -50,11 +50,11 @@
 
 #include "surfaceclass.h"
 #include "formconv.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "vector2i.h"
 #include "colorspace.h"
 #include "bound.h"
-#include <d3dx8.h>
+// #include <d3dx8.h> // Types provided by RenderTypes.h via BGFXWrapper.h
 
 /***********************************************************************************************
  * PixelSize -- Helper Function to find the size in bytes of a pixel                           *

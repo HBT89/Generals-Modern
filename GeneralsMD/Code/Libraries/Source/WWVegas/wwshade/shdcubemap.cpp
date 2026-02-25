@@ -37,7 +37,7 @@
  * Currently unsupported due to cube map texture management needed by W3D
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <d3dx8math.h>
+#include "RenderTypes.h"
 #include "dx8fvf.h"
 #include "BGFXWrapper.h" // BGFX port
 #include "assetmgr.h"

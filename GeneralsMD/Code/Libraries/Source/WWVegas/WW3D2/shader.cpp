@@ -45,6 +45,7 @@
 #include "wwdebug.h"
 #include "Dx8Wrapper.h"
 #include "dx8caps.h"
+#include "ww3d.h"
 
 
 bool ShaderClass::ShaderDirty=true;

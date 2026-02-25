@@ -169,7 +169,9 @@ void initSubsystem(SUBSYSTEM*& sysref, AsciiString name, SUBSYSTEM* sys, Xfer *p
 
 //-------------------------------------------------------------------------------------------------
 extern HINSTANCE ApplicationHInstance;  ///< our application instance
+#if __has_include(<atlbase.h>)
 extern CComModule _Module;
+#endif
 
 //-------------------------------------------------------------------------------------------------
 static void updateTGAtoDDS();
@@ -190,7 +192,9 @@ GameEngine::GameEngine( void )
 	m_quitting = FALSE;
 	m_isActive = FALSE;
 
+#if __has_include(<atlbase.h>)
 	_Module.Init(NULL, ApplicationHInstance);
+#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -228,7 +232,9 @@ GameEngine::~GameEngine()
 
 	Drawable::killStaticImages();
 
+#if __has_include(<atlbase.h>)
 	_Module.Term();
+#endif
 
 #ifdef PERF_TIMERS
 	PerfGather::termPerfDump();

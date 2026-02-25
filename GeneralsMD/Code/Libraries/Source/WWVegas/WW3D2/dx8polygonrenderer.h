@@ -50,7 +50,7 @@
 #include "dx8list.h"
 #include "sortingrenderer.h"
 #include "mesh.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 
 class DX8PolygonRendererClass;
 class DX8TextureCategoryClass;

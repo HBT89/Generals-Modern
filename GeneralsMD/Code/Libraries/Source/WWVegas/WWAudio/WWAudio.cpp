@@ -1579,7 +1579,7 @@ WWAudioClass::Build_3D_Driver_List (void)
 			m_Driver3DList.Add (info);
 			::AIL_close_3D_provider (provider);
 		} else {
-			char *error_info = ::AIL_last_error ();
+			const char *error_info = ::AIL_last_error ();
 			WWDEBUG_SAY (("WWAudio: Unable to open %s.\r\n", name));
 			WWDEBUG_SAY (("WWAudio: Reason %s.\r\n", error_info));
 		}

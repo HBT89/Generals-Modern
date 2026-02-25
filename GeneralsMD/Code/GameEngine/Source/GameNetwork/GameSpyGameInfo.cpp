@@ -28,6 +28,7 @@
 
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
+#include <snmp.h>     // For RFC1157VarBind, RFC1157VarBindList types used in IP enumeration
 #include "Common/GameEngine.h"
 #include "Common/Player.h"
 #include "Common/PlayerList.h"

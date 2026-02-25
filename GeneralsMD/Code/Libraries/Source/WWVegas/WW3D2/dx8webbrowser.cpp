@@ -32,7 +32,7 @@
 
 #include "dx8webbrowser.h"
 #include "ww3d.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 
 #if ENABLE_EMBEDDED_BROWSER
 

@@ -61,6 +61,11 @@
 #include "Common/SubsystemInterface.h"
 #include "Common/GameMemory.h"
 
+// Safety: ensure AnimateWindow is not a Win32 macro at this point
+#ifdef AnimateWindow
+#undef AnimateWindow
+#endif
+
 //-----------------------------------------------------------------------------
 // FORWARD REFERENCES /////////////////////////////////////////////////////////
 //-----------------------------------------------------------------------------

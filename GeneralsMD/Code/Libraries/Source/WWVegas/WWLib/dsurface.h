@@ -40,7 +40,7 @@
 #include	"palette.h"
 #include	"win.h"
 #include	"xsurface.h"
-#include	<ddraw.h>
+#include	"RenderTypes.h" // replaces ddraw.h
 
 /*
 **	This is a concrete surface class that is based on the DirectDraw

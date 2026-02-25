@@ -20,7 +20,7 @@
 #include "missingtexture.h"
 #include "texture.h"
 #include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
-#include <D3dx8core.h>
+// #include <D3dx8core.h> // Removed for BGFX port
 
 static unsigned missing_image_width=128;
 static unsigned missing_image_height=128;

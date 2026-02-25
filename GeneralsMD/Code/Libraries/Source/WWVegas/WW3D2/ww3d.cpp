@@ -104,7 +104,7 @@
 #include "ini.h"
 #include "dazzle.h"
 #include "meshmdl.h"
-// #include "dx8renderer.h"
+#include "dx8renderer.h"
 // #include "render2d.h"
 #include "bound.h"
 #include "rddesc.h"
@@ -115,7 +115,7 @@
 #include "sortingrenderer.h"
 #include "thread.h"
 #include "cpudetect.h"
-// #include "dx8texman.h"
+#include "dx8texman.h"
 #include "formconv.h"
 #include "animatedsoundmgr.h"
 #include "static_sort_list.h"
@@ -277,7 +277,7 @@ WW3DErrorType WW3D::Init(void *hwnd, char *defaultpal, bool lite)
 	*/
 	Init_D3D_To_WW3_Conversion();
 	WWDEBUG_SAY(("Init BGFXWrapper\n"));
-	if (!BGFXWrapper::Init(_Hwnd, 0, 0, 0)) {
+	if (!BGFXWrapper::Init(_Hwnd, Lite)) {
 		return(WW3D_ERROR_INITIALIZATION_FAILED);
 	}
 	WWDEBUG_SAY(("Allocate Debug Resources\n"));

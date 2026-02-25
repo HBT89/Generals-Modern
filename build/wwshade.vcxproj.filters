@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shd6bumpdiff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shd6bumpspec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shd7bumpdiff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shd7bumpspec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shd8bumpdiff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shd8bumpspec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdbumpdiff.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdbumpspec.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdcubemap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shddef.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shddeffactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shddefmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdforcelinks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdglossmask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdhwshader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdinterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdlegacyw3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdlib.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdloader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdmesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdrenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdsimple.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade\shdsubmesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0DC38988-A034-31DB-8278-E3DA5DA171F1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

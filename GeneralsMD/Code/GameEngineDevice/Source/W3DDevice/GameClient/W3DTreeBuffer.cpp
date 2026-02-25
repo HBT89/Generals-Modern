@@ -86,7 +86,7 @@ enum
 #include "WW3D2/Matinfo.h"
 #include "WW3D2/Mesh.h"
 #include "WW3D2/MeshMdl.h"
-#include "d3dx8tex.h"
+// #include "d3dx8tex.h" // Types provided by RenderTypes.h via BGFXWrapper.h
 
 #ifdef _INTERNAL
 // for occasional debugging...

@@ -1,0 +1,449 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{822AF8D3-EC10-3988-B4E7-4A1584194686}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>Win32</Platform>
+    <ProjectName>GeneralsZH</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\TheLab\Development\Generals-Modern\build\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneralsZH.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">GeneralsZH</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\TheLab\Development\Generals-Modern\build\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneralsZH.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">GeneralsZH</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\TheLab\Development\Generals-Modern\build\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">GeneralsZH.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">GeneralsZH</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\TheLab\Development\Generals-Modern\build\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">GeneralsZH.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">GeneralsZH</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /FS /Zc:__cplusplus</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <ConformanceMode>false</ConformanceMode>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4267;4996;4005;4273;4018;4305;4309;4800;4838;4102;4473;5043;4146;4804</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
+      <ForcedIncludeFiles>"PreRTS.h"</ForcedIncludeFiles>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <WarningLevel>Level2</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;NOMINMAX;DIRECTINPUT_VERSION=0x0800;__STDC_FORMAT_MACROS;BX_CONFIG_DEBUG=1;CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;_CRT_SECURE_NO_WARNINGS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;NOMINMAX;DIRECTINPUT_VERSION=0x0800;__STDC_FORMAT_MACROS;BX_CONFIG_DEBUG=1;CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>Debug\GameEngineDevice.lib;Debug\GameEngine.lib;Debug\ww3d2.lib;Debug\wwshade.lib;Debug\wwlib.lib;Debug\wwmath.lib;Debug\wwaudio.lib;Debug\wwdebug.lib;Debug\wwsaveload.lib;Debug\wwutil.lib;Debug\wwdownload.lib;Debug\compression.lib;Debug\bgfx.lib;Debug\bx.lib;Debug\bimg.lib;Debug\gamespyhttp.lib;Debug\gamespypatching.lib;Debug\gamespypeer.lib;Debug\gamespypresence.lib;Debug\gamespystats.lib;winmm.lib;wsock32.lib;ws2_32.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wininet.lib;imagehlp.lib;snmpapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;shell32.lib;mapi32.lib;advapi32.lib;user32.lib;gdi32.lib;comdlg32.lib;d3d11.lib;dxgi.lib;Debug\ww3d2.lib;Debug\wwmath.lib;Debug\wwaudio.lib;Debug\bgfx.lib;Debug\bimg.lib;Debug\bx.lib;Debug\wwlib.lib;Debug\wwdebug.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/TheLab/Development/Generals-Modern/build/Debug/GeneralsZH.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/TheLab/Development/Generals-Modern/build/Debug/GeneralsZH.pdb</ProgramDataBaseFile>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /FS /Zc:__cplusplus</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ConformanceMode>false</ConformanceMode>
+      <DisableSpecificWarnings>4244;4267;4996;4005;4273;4018;4305;4309;4800;4838;4102;4473;5043;4146;4804</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
+      <ForcedIncludeFiles>"PreRTS.h"</ForcedIncludeFiles>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <WarningLevel>Level2</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;NOMINMAX;DIRECTINPUT_VERSION=0x0800;__STDC_FORMAT_MACROS;BX_CONFIG_DEBUG=0;CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;NOMINMAX;DIRECTINPUT_VERSION=0x0800;__STDC_FORMAT_MACROS;BX_CONFIG_DEBUG=0;CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>Release\GameEngineDevice.lib;Release\GameEngine.lib;Release\ww3d2.lib;Release\wwshade.lib;Release\wwlib.lib;Release\wwmath.lib;Release\wwaudio.lib;Release\wwdebug.lib;Release\wwsaveload.lib;Release\wwutil.lib;Release\wwdownload.lib;Release\compression.lib;Release\bgfx.lib;Release\bx.lib;Release\bimg.lib;Release\gamespyhttp.lib;Release\gamespypatching.lib;Release\gamespypeer.lib;Release\gamespypresence.lib;Release\gamespystats.lib;winmm.lib;wsock32.lib;ws2_32.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wininet.lib;imagehlp.lib;snmpapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;shell32.lib;mapi32.lib;advapi32.lib;user32.lib;gdi32.lib;comdlg32.lib;d3d11.lib;dxgi.lib;Release\ww3d2.lib;Release\wwmath.lib;Release\wwaudio.lib;Release\bgfx.lib;Release\bimg.lib;Release\bx.lib;Release\wwlib.lib;Release\wwdebug.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/TheLab/Development/Generals-Modern/build/Release/GeneralsZH.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/TheLab/Development/Generals-Modern/build/Release/GeneralsZH.pdb</ProgramDataBaseFile>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /FS /Zc:__cplusplus</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ConformanceMode>false</ConformanceMode>
+      <DisableSpecificWarnings>4244;4267;4996;4005;4273;4018;4305;4309;4800;4838;4102;4473;5043;4146;4804</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
+      <ForcedIncludeFiles>"PreRTS.h"</ForcedIncludeFiles>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <WarningLevel>Level2</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;NOMINMAX;DIRECTINPUT_VERSION=0x0800;__STDC_FORMAT_MACROS;BX_CONFIG_DEBUG=0;CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;NOMINMAX;DIRECTINPUT_VERSION=0x0800;__STDC_FORMAT_MACROS;BX_CONFIG_DEBUG=0;CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>MinSizeRel\GameEngineDevice.lib;MinSizeRel\GameEngine.lib;MinSizeRel\ww3d2.lib;MinSizeRel\wwshade.lib;MinSizeRel\wwlib.lib;MinSizeRel\wwmath.lib;MinSizeRel\wwaudio.lib;MinSizeRel\wwdebug.lib;MinSizeRel\wwsaveload.lib;MinSizeRel\wwutil.lib;MinSizeRel\wwdownload.lib;MinSizeRel\compression.lib;MinSizeRel\bgfx.lib;MinSizeRel\bx.lib;MinSizeRel\bimg.lib;MinSizeRel\gamespyhttp.lib;MinSizeRel\gamespypatching.lib;MinSizeRel\gamespypeer.lib;MinSizeRel\gamespypresence.lib;MinSizeRel\gamespystats.lib;winmm.lib;wsock32.lib;ws2_32.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wininet.lib;imagehlp.lib;snmpapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;shell32.lib;mapi32.lib;advapi32.lib;user32.lib;gdi32.lib;comdlg32.lib;d3d11.lib;dxgi.lib;MinSizeRel\ww3d2.lib;MinSizeRel\wwmath.lib;MinSizeRel\wwaudio.lib;MinSizeRel\bgfx.lib;MinSizeRel\bimg.lib;MinSizeRel\bx.lib;MinSizeRel\wwlib.lib;MinSizeRel\wwdebug.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/TheLab/Development/Generals-Modern/build/MinSizeRel/GeneralsZH.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/TheLab/Development/Generals-Modern/build/MinSizeRel/GeneralsZH.pdb</ProgramDataBaseFile>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /FS /Zc:__cplusplus</AdditionalOptions>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>Default</BasicRuntimeChecks>
+      <ConformanceMode>false</ConformanceMode>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <DisableSpecificWarnings>4244;4267;4996;4005;4273;4018;4305;4309;4800;4838;4102;4473;5043;4146;4804</DisableSpecificWarnings>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <ForceConformanceInForLoopScope>false</ForceConformanceInForLoopScope>
+      <ForcedIncludeFiles>"PreRTS.h"</ForcedIncludeFiles>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <MinimalRebuild></MinimalRebuild>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <SupportJustMyCode></SupportJustMyCode>
+      <UseFullPaths>false</UseFullPaths>
+      <UseStandardPreprocessor>true</UseStandardPreprocessor>
+      <WarningLevel>Level2</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;NOMINMAX;DIRECTINPUT_VERSION=0x0800;__STDC_FORMAT_MACROS;BX_CONFIG_DEBUG=0;CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <ScanSourceForModuleDependencies>false</ScanSourceForModuleDependencies>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;_CRT_SECURE_NO_WARNINGS;_SILENCE_STDEXT_HASH_DEPRECATION_WARNINGS;NOMINMAX;DIRECTINPUT_VERSION=0x0800;__STDC_FORMAT_MACROS;BX_CONFIG_DEBUG=0;CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include\Precompiled;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\DX90SDK\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWLib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDebug;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWSaveLoad;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WW3D2;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWAudio;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWDownload;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\Wwutil;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\wwshade;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\GameSpy;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\MSS;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Bink;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Granny;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\Lib;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Include\rts;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bgfx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bimg\include;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\3rdparty;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\bx\include\compat\msvc;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC;C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>RelWithDebInfo\GameEngineDevice.lib;RelWithDebInfo\GameEngine.lib;RelWithDebInfo\ww3d2.lib;RelWithDebInfo\wwshade.lib;RelWithDebInfo\wwlib.lib;RelWithDebInfo\wwmath.lib;RelWithDebInfo\wwaudio.lib;RelWithDebInfo\wwdebug.lib;RelWithDebInfo\wwsaveload.lib;RelWithDebInfo\wwutil.lib;RelWithDebInfo\wwdownload.lib;RelWithDebInfo\compression.lib;RelWithDebInfo\bgfx.lib;RelWithDebInfo\bx.lib;RelWithDebInfo\bimg.lib;RelWithDebInfo\gamespyhttp.lib;RelWithDebInfo\gamespypatching.lib;RelWithDebInfo\gamespypeer.lib;RelWithDebInfo\gamespypresence.lib;RelWithDebInfo\gamespystats.lib;winmm.lib;wsock32.lib;ws2_32.lib;dinput8.lib;dxguid.lib;dsound.lib;vfw32.lib;wininet.lib;imagehlp.lib;snmpapi.lib;comctl32.lib;ole32.lib;oleaut32.lib;uuid.lib;shell32.lib;mapi32.lib;advapi32.lib;user32.lib;gdi32.lib;comdlg32.lib;d3d11.lib;dxgi.lib;RelWithDebInfo\ww3d2.lib;RelWithDebInfo\wwmath.lib;RelWithDebInfo\wwaudio.lib;RelWithDebInfo\bgfx.lib;RelWithDebInfo\bimg.lib;RelWithDebInfo\bx.lib;RelWithDebInfo\wwlib.lib;RelWithDebInfo\wwdebug.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImageHasSafeExceptionHandlers>false</ImageHasSafeExceptionHandlers>
+      <ImportLibrary>C:/TheLab/Development/Generals-Modern/build/RelWithDebInfo/GeneralsZH.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/TheLab/Development/Generals-Modern/build/RelWithDebInfo/GeneralsZH.pdb</ProgramDataBaseFile>
+      <SubSystem>Windows</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\bin\cmake.exe -SC:/TheLab/Development/Generals-Modern/GeneralsMD/Code -BC:/TheLab/Development/Generals-Modern/build --check-stamp-file C:/TheLab/Development/Generals-Modern/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeRCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\bin\cmake.exe -SC:/TheLab/Development/Generals-Modern/GeneralsMD/Code -BC:/TheLab/Development/Generals-Modern/build --check-stamp-file C:/TheLab/Development/Generals-Modern/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeRCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\bin\cmake.exe -SC:/TheLab/Development/Generals-Modern/GeneralsMD/Code -BC:/TheLab/Development/Generals-Modern/build --check-stamp-file C:/TheLab/Development/Generals-Modern/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeRCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\bin\cmake.exe -SC:/TheLab/Development/Generals-Modern/GeneralsMD/Code -BC:/TheLab/Development/Generals-Modern/build --check-stamp-file C:/TheLab/Development/Generals-Modern/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeRCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Main\WinMain.cpp" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\ZERO_CHECK.vcxproj">
+      <Project>{22488531-102F-348A-AD8F-297EC3758477}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\GameEngine.vcxproj">
+      <Project>{8708A9C4-DA9E-335A-A416-5A7EDC114517}</Project>
+      <Name>GameEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\GameEngineDevice.vcxproj">
+      <Project>{11648973-0A9D-3941-9BC7-742FA193350E}</Project>
+      <Name>GameEngineDevice</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\bgfx.vcxproj">
+      <Project>{EBD089FD-A684-3B62-9B9C-B0186F08841E}</Project>
+      <Name>bgfx</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\bimg.vcxproj">
+      <Project>{DD07E8ED-8219-3A67-B2A1-57A35BFC1569}</Project>
+      <Name>bimg</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\bx.vcxproj">
+      <Project>{8BB44DCF-55B0-3226-A96D-141BB261F9DF}</Project>
+      <Name>bx</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\compression.vcxproj">
+      <Project>{1D498EB7-62B1-3E6A-8524-76FDD68C3D5D}</Project>
+      <Name>compression</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespyhttp.vcxproj">
+      <Project>{004CB9B6-02B9-35EC-8B00-E1AABC590AB5}</Project>
+      <Name>gamespyhttp</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespypatching.vcxproj">
+      <Project>{714F57E5-B657-3001-9640-68E99F37C6DF}</Project>
+      <Name>gamespypatching</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespypeer.vcxproj">
+      <Project>{8AD6A78D-3786-393D-AD74-D1C976107D48}</Project>
+      <Name>gamespypeer</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespypresence.vcxproj">
+      <Project>{C7EC1088-8584-30E6-A470-176D8289F38F}</Project>
+      <Name>gamespypresence</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespystats.vcxproj">
+      <Project>{758BDB4B-A11C-3694-AC9C-DE5AC1F433BB}</Project>
+      <Name>gamespystats</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\ww3d2.vcxproj">
+      <Project>{84354312-0408-3D40-8B52-CDA86490770A}</Project>
+      <Name>ww3d2</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwaudio.vcxproj">
+      <Project>{0EECB030-2B66-35E9-B410-E327C3780C77}</Project>
+      <Name>wwaudio</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwdebug.vcxproj">
+      <Project>{81270847-370C-30ED-94ED-9F4413DCB16D}</Project>
+      <Name>wwdebug</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwdownload.vcxproj">
+      <Project>{326F32AA-0E51-3919-8576-45EB9C21A589}</Project>
+      <Name>wwdownload</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwlib.vcxproj">
+      <Project>{7C90C707-52C7-3438-9B0C-240A4617657B}</Project>
+      <Name>wwlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwmath.vcxproj">
+      <Project>{AAE72828-6B4D-3B3C-A56C-79295345CAF5}</Project>
+      <Name>wwmath</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwsaveload.vcxproj">
+      <Project>{04D99FBF-FDF5-3C66-960F-083957D8C4F5}</Project>
+      <Name>wwsaveload</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwshade.vcxproj">
+      <Project>{44988DEE-2064-323F-BC27-795836A397DD}</Project>
+      <Name>wwshade</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwutil.vcxproj">
+      <Project>{D772656A-A818-3867-A07E-8E8EAC316289}</Project>
+      <Name>wwutil</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

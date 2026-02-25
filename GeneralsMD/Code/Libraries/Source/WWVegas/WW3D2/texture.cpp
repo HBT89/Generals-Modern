@@ -55,7 +55,7 @@
 #include "missingtexture.h"
 #include "ffactory.h"
 #include "dx8caps.h"
-// #include "dx8texman.h" // Removed for BGFX port
+#include "dx8texman.h"
 // TODO: Port texture management to BGFX
 #include "meshmatdesc.h"
 #include "texturethumbnail.h"

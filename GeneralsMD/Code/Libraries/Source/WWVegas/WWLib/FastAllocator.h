@@ -621,8 +621,8 @@ WWINLINE bool operator!=(const FastSTLAllocator<T>&, const FastSTLAllocator<T>&)
 #include <map>
 #include <string>
 #include <memory>
-#include <hash_set> //Uncomment this if you have hash containers available.
-#include <hash_map>
+#include <unordered_set>
+#include <unordered_map>
 using namespace std;
 
 
@@ -642,10 +642,10 @@ typedef set<int, less<int>, FastSTLAllocator<int> >                    IntSet;
 typedef multiset<int, less<int>, FastSTLAllocator<int> >               IntMultiSet;
 
 //If you have the hashing containers available, here's how you do it:
-typedef hash_map<int, int, hash<int>, equal_to<int>, FastSTLAllocator<int> >        IntHashMap;
-typedef hash_multimap<int, int, hash<int>, equal_to<int>, FastSTLAllocator<int> >   IntHashMultiMap;
-typedef hash_set<int, hash<int>, equal_to<int>, FastSTLAllocator<int> >             IntHashSet;
-typedef hash_multiset<int, hash<int>, equal_to<int>, FastSTLAllocator<int> >        IntHashMultiSet;
+typedef unordered_map<int, int, hash<int>, equal_to<int>, FastSTLAllocator<int> >        IntHashMap;
+//typedef hash_multimap - not available in modern C++
+typedef unordered_set<int, hash<int>, equal_to<int>, FastSTLAllocator<int> >             IntHashSet;
+//typedef hash_multiset - not available in modern C++
 
 typedef basic_string<char, char_traits<char>, FastSTLAllocator<char> > CharString;
 

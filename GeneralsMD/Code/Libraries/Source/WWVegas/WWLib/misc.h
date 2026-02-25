@@ -38,7 +38,7 @@
 #define MISC_H
 
 #include	"win.h"
-#include	"ddraw.h"
+#include	"RenderTypes.h" // replaces ddraw.h
 
 extern unsigned char CurrentPalette[768];
 extern bool Debug_Windowed;

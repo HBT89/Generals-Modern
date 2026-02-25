@@ -34,7 +34,7 @@
 #include "part_ldr.h"
 #include "rendobj.h"
 #include "hanim.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "dx8indexbuffer.h"
 #include "dx8vertexbuffer.h"
 #include "dx8renderer.h"
@@ -95,7 +95,7 @@
 #include "ImpassableOptions.h"
 
 
-#include <d3dx8.h>
+// #include <d3dx8.h> // Types provided by RenderTypes.h via BGFXWrapper.h
 
 #ifdef _INTERNAL
 // for occasional debugging...

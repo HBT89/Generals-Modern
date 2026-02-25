@@ -49,7 +49,7 @@
 #include "ww3d.h"
 #include "texfcach.h"
 #include "assetmgr.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "dx8caps.h"
 #include "missingtexture.h"
 #include "targa.h"

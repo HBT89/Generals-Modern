@@ -38,8 +38,8 @@
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 #include <cstdint>
 #include <bgfx/bgfx.h>
+#include "formconv.h"
 #include "BGFXWrapper.h"
-#include "ww3dformat.h"
 
 // Conversion tables: map WW3DFormat to bgfx::TextureFormat::Enum
 static const bgfx::TextureFormat::Enum WW3DFormatToBGFXFormatConversionArray[WW3D_FORMAT_COUNT] = {
@@ -47,7 +47,7 @@ static const bgfx::TextureFormat::Enum WW3DFormatToBGFXFormatConversionArray[WW3
     bgfx::TextureFormat::RGB8,    // WW3D_FORMAT_R8G8B8
     bgfx::TextureFormat::RGBA8,   // WW3D_FORMAT_A8R8G8B8
     bgfx::TextureFormat::BGRA8,   // WW3D_FORMAT_X8R8G8B8 (approx)
-    bgfx::TextureFormat::RGB565,  // WW3D_FORMAT_R5G6B5
+    bgfx::TextureFormat::R5G6B5,  // WW3D_FORMAT_R5G6B5
     bgfx::TextureFormat::Unknown, // WW3D_FORMAT_X1R5G5B5
     bgfx::TextureFormat::Unknown, // WW3D_FORMAT_A1R5G5B5
     bgfx::TextureFormat::Unknown, // WW3D_FORMAT_A4R4G4B4
@@ -78,8 +78,83 @@ bgfx::TextureFormat::Enum WW3DFormat_To_BGFXFormat(WW3DFormat ww3d_format) {
     }
 }
 
-// TODO: Add Z/depth format conversion if needed for BGFX
-
 void Init_BGFX_To_WW3_Conversion() {
     // No-op for BGFX, but keep for interface compatibility
+}
+
+void Init_D3D_To_WW3_Conversion() {
+    // No-op — conversion tables are compile-time constants
+}
+
+// ============================================================================
+// D3DFORMAT <-> WW3DFormat conversions
+// These map between the placeholder D3DFORMAT enum (in RenderTypes.h) and
+// the engine's WW3DFormat enum. Used by DDS file loading and legacy code paths.
+// Pure enum mapping — no D3D API calls.
+// ============================================================================
+
+static const D3DFORMAT WW3DFormatToD3DFormatArray[WW3D_FORMAT_COUNT] = {
+    D3DFMT_UNKNOWN,     // WW3D_FORMAT_UNKNOWN
+    D3DFMT_R8G8B8,      // WW3D_FORMAT_R8G8B8
+    D3DFMT_A8R8G8B8,    // WW3D_FORMAT_A8R8G8B8
+    D3DFMT_X8R8G8B8,    // WW3D_FORMAT_X8R8G8B8
+    D3DFMT_R5G6B5,      // WW3D_FORMAT_R5G6B5
+    D3DFMT_X1R5G5B5,    // WW3D_FORMAT_X1R5G5B5
+    D3DFMT_A1R5G5B5,    // WW3D_FORMAT_A1R5G5B5
+    D3DFMT_A4R4G4B4,    // WW3D_FORMAT_A4R4G4B4
+    D3DFMT_R3G3B2,      // WW3D_FORMAT_R3G3B2
+    D3DFMT_A8,          // WW3D_FORMAT_A8
+    D3DFMT_A8R3G3B2,    // WW3D_FORMAT_A8R3G3B2
+    D3DFMT_X4R4G4B4,    // WW3D_FORMAT_X4R4G4B4
+    D3DFMT_A8P8,        // WW3D_FORMAT_A8P8
+    D3DFMT_P8,          // WW3D_FORMAT_P8
+    D3DFMT_L8,          // WW3D_FORMAT_L8
+    D3DFMT_A8L8,        // WW3D_FORMAT_A8L8
+    D3DFMT_A4L4,        // WW3D_FORMAT_A4L4
+    D3DFMT_V8U8,        // WW3D_FORMAT_V8U8
+    D3DFMT_L6V5U5,      // WW3D_FORMAT_L6V5U5
+    D3DFMT_X8L8V8U8,    // WW3D_FORMAT_X8L8V8U8
+    D3DFMT_DXT1,        // WW3D_FORMAT_DXT1
+    D3DFMT_DXT2,        // WW3D_FORMAT_DXT2
+    D3DFMT_DXT3,        // WW3D_FORMAT_DXT3
+    D3DFMT_DXT4,        // WW3D_FORMAT_DXT4
+    D3DFMT_DXT5         // WW3D_FORMAT_DXT5
+};
+
+D3DFORMAT WW3DFormat_To_D3DFormat(WW3DFormat ww3d_format) {
+    if (ww3d_format >= WW3D_FORMAT_COUNT) return D3DFMT_UNKNOWN;
+    return WW3DFormatToD3DFormatArray[(unsigned int)ww3d_format];
+}
+
+WW3DFormat D3DFormat_To_WW3DFormat(D3DFORMAT d3d_format) {
+    for (unsigned i = 0; i < WW3D_FORMAT_COUNT; ++i) {
+        if (WW3DFormatToD3DFormatArray[i] == d3d_format) return (WW3DFormat)i;
+    }
+    return WW3D_FORMAT_UNKNOWN;
+}
+
+D3DFORMAT WW3DZFormat_To_D3DFormat(WW3DZFormat ww3d_zformat) {
+    switch (ww3d_zformat) {
+    case WW3D_ZFORMAT_D16_LOCKABLE: return (D3DFORMAT)70;
+    case WW3D_ZFORMAT_D32:          return (D3DFORMAT)71;
+    case WW3D_ZFORMAT_D15S1:        return (D3DFORMAT)73;
+    case WW3D_ZFORMAT_D24S8:        return (D3DFORMAT)75;
+    case WW3D_ZFORMAT_D16:          return (D3DFORMAT)80;
+    case WW3D_ZFORMAT_D24X8:        return (D3DFORMAT)77;
+    case WW3D_ZFORMAT_D24X4S4:      return (D3DFORMAT)79;
+    default: return D3DFMT_UNKNOWN;
+    }
+}
+
+WW3DZFormat D3DFormat_To_WW3DZFormat(D3DFORMAT d3d_format) {
+    switch ((int)d3d_format) {
+    case 70: return WW3D_ZFORMAT_D16_LOCKABLE;
+    case 71: return WW3D_ZFORMAT_D32;
+    case 73: return WW3D_ZFORMAT_D15S1;
+    case 75: return WW3D_ZFORMAT_D24S8;
+    case 80: return WW3D_ZFORMAT_D16;
+    case 77: return WW3D_ZFORMAT_D24X8;
+    case 79: return WW3D_ZFORMAT_D24X4S4;
+    default: return WW3D_ZFORMAT_UNKNOWN;
+    }
 }

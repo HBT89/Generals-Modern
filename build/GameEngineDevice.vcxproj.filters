@@ -1,0 +1,322 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\MilesAudioDevice\MilesAudioManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\VideoDevice\Bink\BinkVideoPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\Common\System\W3DFunctionLexicon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\Common\System\W3DRadar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\Common\Thing\W3DModuleFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\Common\Thing\W3DThingFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\Common\W3DConvert.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\BaseHeightMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DDebrisDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DDefaultDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DDependencyModelDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DLaserDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DModelDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DOverlordAircraftDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DOverlordTankDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DOverlordTruckDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DPoliceCarDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DProjectileStreamDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DPropDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DRopeDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DScienceModelDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DSupplyDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DTankDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DTankTruckDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DTracerDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DTreeDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Drawable\Draw\W3DTruckDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\FlatHeightMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\GUICallbacks\W3DControlBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\GUICallbacks\W3DMOTD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\GUICallbacks\W3DMainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DCheckBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DComboBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DHorizontalSlider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DListBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DProgressBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DPushButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DRadioButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DStaticText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DTabControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DTextEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\Gadget\W3DVerticalSlider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\W3DGameFont.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\W3DGameWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\GUI\W3DGameWindowManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\HeightMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Shadow\W3DBufferManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Shadow\W3DProjectedShadow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Shadow\W3DShadow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Shadow\W3DVolumetricShadow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\TerrainTex.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\TileData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DAssetManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DAssetManagerExposed.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DBibBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DBridgeBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DCustomEdging.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DDebugDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DDebugIcons.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DDisplayString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DDisplayStringManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DDynamicLight.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DFileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DGameClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DGranny.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DInGameUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DMouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DParticleSys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DPoly.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DPropBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DRoadBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DScene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DShaderManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DShroud.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DSmudge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DSnow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DStatusCircle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DTerrainBackground.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DTerrainTracks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DTerrainVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DTreeBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DVideoBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DView.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3DWebBrowser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\W3dWaypointBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Water\W3DWater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\Water\W3DWaterTracks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\WorldHeightMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameClient\camerashakesystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameLogic\W3DGameLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameLogic\W3DGhostObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\W3DDevice\GameLogic\W3DTerrainLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\Common\Win32BIGFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\Common\Win32BIGFileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\Common\Win32CDManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\Common\Win32GameEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\Common\Win32LocalFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\Common\Win32LocalFileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\Common\Win32OSDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\GameClient\Win32DIKeyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\GameClient\Win32DIMouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngineDevice\Source\Win32Device\GameClient\Win32Mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0DC38988-A034-31DB-8278-E3DA5DA171F1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

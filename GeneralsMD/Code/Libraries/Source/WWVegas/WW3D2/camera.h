@@ -180,8 +180,7 @@ public:
 
 	// Access to the projection matrices for this camera
 	void								Get_Projection_Matrix(Matrix4x4 * set_tm);
-	// TODO: BGFX PORT - Remove or replace D3D-specific projection and state methods below for BGFX.
-	// void Get_D3D_Projection_Matrix(Matrix4x4 * set_tm); // Obsolete, port to BGFX
+	void								Get_D3D_Projection_Matrix(Matrix4x4 * set_tm);
 	void								Get_View_Matrix(Matrix3D * set_tm);
 	const Matrix4x4 &				Get_Projection_Matrix(void);
 	const Matrix3D &				Get_View_Matrix(void);
@@ -229,8 +228,7 @@ public:
 	void								Device_To_World_Space(const Vector2 & device_coord,Vector3 * world_coord);
 	float								Compute_Projected_Sphere_Radius(float dist,float radius);
 
-	// TODO: BGFX PORT - Remove or replace D3D-specific Apply method for BGFX.
-	// void Apply(void); // Obsolete, port to BGFX
+	void								Apply(void);
 
 	// utility class to convert to old space of 0..1
 	static void	Convert_Old(Vector3 &pos);

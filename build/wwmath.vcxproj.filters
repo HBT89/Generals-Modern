@@ -1,0 +1,118 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\aabox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\aabtreecull.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\cardinalspline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\catmullromspline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmathaabox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmathaabtri.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmathfrustum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmathline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmathobbobb.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmathobbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmathobbtri.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmathplane.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\colmathsphere.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\cullsys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\curve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\euler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\frustum.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\gridcull.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\hermitespline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\lineseg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\lookuptable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\matrix3.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\matrix3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\matrix4.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\obbox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\ode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\pot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\quat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\tcbspline.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\tri.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\v3_rnd.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\vehiclecurve.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\vp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\WWVegas\WWMath\wwmath.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0DC38988-A034-31DB-8278-E3DA5DA171F1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

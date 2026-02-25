@@ -1,0 +1,281 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ResolveNugetPackages>false</ResolveNugetPackages>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E9CD1EC3-254A-3B59-AEB5-9148AAF15C46}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0.26100.0</WindowsTargetPlatformVersion>
+    <Platform>Win32</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\CMakeLists.txt">
+      <UseUtf8Encoding>Always</UseUtf8Encoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\bin\cmake.exe -SC:/TheLab/Development/Generals-Modern/GeneralsMD/Code -BC:/TheLab/Development/Generals-Modern/build --check-stamp-file C:/TheLab/Development/Generals-Modern/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeRCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\bin\cmake.exe -SC:/TheLab/Development/Generals-Modern/GeneralsMD/Code -BC:/TheLab/Development/Generals-Modern/build --check-stamp-file C:/TheLab/Development/Generals-Modern/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeRCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\bin\cmake.exe -SC:/TheLab/Development/Generals-Modern/GeneralsMD/Code -BC:/TheLab/Development/Generals-Modern/build --check-stamp-file C:/TheLab/Development/Generals-Modern/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeRCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/TheLab/Development/Generals-Modern/GeneralsMD/Code/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\bin\cmake.exe -SC:/TheLab/Development/Generals-Modern/GeneralsMD/Code -BC:/TheLab/Development/Generals-Modern/build --check-stamp-file C:/TheLab/Development/Generals-Modern/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeCXXCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeRCCompiler.cmake;C:\TheLab\Development\Generals-Modern\build\CMakeFiles\3.31.4\CMakeSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCXXInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeCommonLanguageInclude.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeGenericSystem.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeInitializeConfigs.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeLanguageInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeRCInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\CMakeSystemSpecificInitialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\CMakeCommonCompilerMacros.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Compiler\MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCXXLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Internal\CMakeCommonLinkerInformation.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Linker\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-Initialize.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-C.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC-CXX.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows-MSVC.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\Windows.cmake;C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\share\cmake-3.31\Modules\Platform\WindowsPaths.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\TheLab\Development\Generals-Modern\build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\ZERO_CHECK.vcxproj">
+      <Project>{22488531-102F-348A-AD8F-297EC3758477}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\GameEngine.vcxproj">
+      <Project>{8708A9C4-DA9E-335A-A416-5A7EDC114517}</Project>
+      <Name>GameEngine</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\GameEngineDevice.vcxproj">
+      <Project>{11648973-0A9D-3941-9BC7-742FA193350E}</Project>
+      <Name>GameEngineDevice</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\GeneralsZH.vcxproj">
+      <Project>{822AF8D3-EC10-3988-B4E7-4A1584194686}</Project>
+      <Name>GeneralsZH</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\benchmark.vcxproj">
+      <Project>{D97DF1EC-58E5-3A66-BB0F-570A9DB23256}</Project>
+      <Name>benchmark</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\bgfx.vcxproj">
+      <Project>{EBD089FD-A684-3B62-9B9C-B0186F08841E}</Project>
+      <Name>bgfx</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\bimg.vcxproj">
+      <Project>{DD07E8ED-8219-3A67-B2A1-57A35BFC1569}</Project>
+      <Name>bimg</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\bx.vcxproj">
+      <Project>{8BB44DCF-55B0-3226-A96D-141BB261F9DF}</Project>
+      <Name>bx</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\compression.vcxproj">
+      <Project>{1D498EB7-62B1-3E6A-8524-76FDD68C3D5D}</Project>
+      <Name>compression</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\eabrowserdispatch.vcxproj">
+      <Project>{4C4DD504-B195-3679-9D7F-7B1F6E4B777D}</Project>
+      <Name>eabrowserdispatch</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespyhttp.vcxproj">
+      <Project>{004CB9B6-02B9-35EC-8B00-E1AABC590AB5}</Project>
+      <Name>gamespyhttp</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespypatching.vcxproj">
+      <Project>{714F57E5-B657-3001-9640-68E99F37C6DF}</Project>
+      <Name>gamespypatching</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespypeer.vcxproj">
+      <Project>{8AD6A78D-3786-393D-AD74-D1C976107D48}</Project>
+      <Name>gamespypeer</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespypresence.vcxproj">
+      <Project>{C7EC1088-8584-30E6-A470-176D8289F38F}</Project>
+      <Name>gamespypresence</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\gamespystats.vcxproj">
+      <Project>{758BDB4B-A11C-3694-AC9C-DE5AC1F433BB}</Project>
+      <Name>gamespystats</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\test_math.vcxproj">
+      <Project>{6DDFE56F-52CA-3FA0-ACEA-528E763AC736}</Project>
+      <Name>test_math</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\test_stub_compilation.vcxproj">
+      <Project>{9C9942FC-6D97-3A24-830D-528CEED927EC}</Project>
+      <Name>test_stub_compilation</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\ww3d2.vcxproj">
+      <Project>{84354312-0408-3D40-8B52-CDA86490770A}</Project>
+      <Name>ww3d2</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwaudio.vcxproj">
+      <Project>{0EECB030-2B66-35E9-B410-E327C3780C77}</Project>
+      <Name>wwaudio</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwdebug.vcxproj">
+      <Project>{81270847-370C-30ED-94ED-9F4413DCB16D}</Project>
+      <Name>wwdebug</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwdownload.vcxproj">
+      <Project>{326F32AA-0E51-3919-8576-45EB9C21A589}</Project>
+      <Name>wwdownload</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwlib.vcxproj">
+      <Project>{7C90C707-52C7-3438-9B0C-240A4617657B}</Project>
+      <Name>wwlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwmath.vcxproj">
+      <Project>{AAE72828-6B4D-3B3C-A56C-79295345CAF5}</Project>
+      <Name>wwmath</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwsaveload.vcxproj">
+      <Project>{04D99FBF-FDF5-3C66-960F-083957D8C4F5}</Project>
+      <Name>wwsaveload</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwshade.vcxproj">
+      <Project>{44988DEE-2064-323F-BC27-795836A397DD}</Project>
+      <Name>wwshade</Name>
+    </ProjectReference>
+    <ProjectReference Include="C:\TheLab\Development\Generals-Modern\build\wwutil.vcxproj">
+      <Project>{D772656A-A818-3867-A07E-8E8EAC316289}</Project>
+      <Name>wwutil</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

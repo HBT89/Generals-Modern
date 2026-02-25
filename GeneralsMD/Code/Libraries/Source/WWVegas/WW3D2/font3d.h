@@ -162,6 +162,7 @@ public:
 	** access texture material
 	*/
 	TextureClass *Peek_Texture( void ) { return FontData->Peek_Texture(); }
+	TextureClass *Peek_Texture( char ) { return FontData->Peek_Texture(); }
 
 	/*
 	** The non-scaled monospace char width in pixels ( set to 0 for proportional spaced font )

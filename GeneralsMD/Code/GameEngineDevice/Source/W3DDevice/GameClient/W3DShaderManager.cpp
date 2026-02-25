@@ -53,7 +53,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "assetmgr.h"
 #include "Lib/BaseType.h"
 #include "Common/File.h"
@@ -70,7 +70,7 @@
 #include "GameLogic/GameLogic.h"
 #include "common/GlobalData.h"
 #include "common/GameLOD.h"
-#include "d3dx8tex.h"
+// #include "d3dx8tex.h" // Types provided by RenderTypes.h via BGFXWrapper.h
 #include "dx8caps.h"
 #include "common/gamelod.h"
 #include "Benchmark.h"

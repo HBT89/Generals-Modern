@@ -1,0 +1,1765 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Audio\AudioEventRTS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Audio\AudioRequest.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Audio\DynamicAudioEventInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Audio\GameAudio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Audio\GameMusic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Audio\GameSounds.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Audio\simpleplayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Audio\urllaunch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Bezier\BezFwdIterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Bezier\BezierSegment.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\BitFlags.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\CRCDebug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\CommandLine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\DamageFX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Dict.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\DiscreteCircle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\GameEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\GameLOD.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\GameMain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\GlobalData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIAiData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIAnimation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIAudioEventInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INICommandButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INICommandSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIControlBarScheme.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INICrate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIDamageFX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIDrawGroupInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIGameData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIMapCache.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIMapData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIMappedImage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIMiscAudio.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIModel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIMultiplayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIParticleSys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INISpecialPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INITerrain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INITerrainBridge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INITerrainRoad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIVideo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIWater.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIWeapon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\INI\INIWebpageURL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Language.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\MessageStream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\MiniLog.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\MultiplayerSettings.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\NameKeyGenerator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\PartitionSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\PerfTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\AcademyStats.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\ActionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\Energy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\Handicap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\MissionStats.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\Money.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\Player.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\PlayerList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\PlayerTemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\ProductionPrerequisite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\ResourceGatheringManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\Science.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\ScoreKeeper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\SpecialPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\Team.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RTS\TunnelTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\RandomValue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Recorder.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\SkirmishBattleHonors.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\StateMachine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\StatsCollector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\ArchiveFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\ArchiveFileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\AsciiString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\BuildAssistant.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\CDManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\Compression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\CopyProtection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\CriticalSection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\DataChunk.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\Debug.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\Directory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\DisabledTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\File.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\FileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\FunctionLexicon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\GameCommon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\GameMemory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\GameType.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\Geometry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\KindOf.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\List.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\LocalFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\LocalFileSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\MemoryInit.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\ObjectStatusTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\QuickTrig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\QuotedPrintable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\RAMFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\Radar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\SaveGame\GameState.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\SaveGame\GameStateMap.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\Snapshot.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\StackDump.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\StreamingArchiveFile.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\String.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\SubsystemInterface.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\Trig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\UnicodeString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\Upgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\Xfer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\XferCRC.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\XferLoad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\XferSave.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\encrypt.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\System\registry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\TerrainTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Thing\DrawModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Thing\Module.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Thing\ModuleFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Thing\Thing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Thing\ThingFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\Thing\ThingTemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\UserPreferences.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\crc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Common\version.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Color.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Credits.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Display.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\DisplayString.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\DisplayStringManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\DrawGroupInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Drawable.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Drawable\DrawableManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Drawable\Update\AnimatedParticleSysBoneClientUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Drawable\Update\BeaconClientUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Drawable\Update\SwayClientUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\DrawableManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Eva.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\FXList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\AnimateWindowManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ChallengeGenerals.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarBeacon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarCommand.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarCommandProcessing.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarMultiSelect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarOCLTimer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarObserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarPrintPositions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarResizer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarScheme.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarStructureInventory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ControlBar\ControlBarUnderConstruction.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\DisconnectMenu\DisconnectMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\EstablishConnectionsMenu\EstablishConnectionsMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\ControlBarCallback.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\ControlBarPopupDescription.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Diplomacy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\ExtendedMessageBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\GeneralsExpPoints.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\IMECandidate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\InGameChat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\InGamePopupMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\ChallengeMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\CreditsMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\DifficultySelect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\DisconnectWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\DownloadMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\EstablishConnectionsWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\GameInfoWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\KeyboardOptionsMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\LanGameOptionsMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\LanLobbyMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\LanMapSelectMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\MainMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\MapSelectMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\NetworkDirectConnect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\OptionsMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\PopupCommunicator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\PopupHostGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\PopupJoinGame.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\PopupLadderSelect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\PopupPlayerInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\PopupReplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\PopupSaveLoad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\QuitMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\ReplayMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\ScoreScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\SinglePlayerMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\SkirmishGameOptionsMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\SkirmishMapSelectMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLBuddyOverlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLCustomScoreScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLGameSetupMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLLadderScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLLobbyMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLLocaleSelectPopup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLLoginMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLMapSelectMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLMessageWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLQMScoreScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLQuickMatchMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLStatusMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\Menus\WOLWelcomeMenu.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\MessageBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GUICallbacks\ReplayControls.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetCheckBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetComboBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetHorizontalSlider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetListBox.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetProgressBar.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetPushButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetRadioButton.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetStaticText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetTabControl.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetTextEntry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Gadget\GadgetVerticalSlider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GameFont.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GameWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GameWindowGlobal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GameWindowManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GameWindowManagerScript.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GameWindowTransitions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\GameWindowTransitionsStyles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\HeaderTemplate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\IMEManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\LoadScreen.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\ProcessAnimateWindow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Shell\Shell.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\Shell\ShellMenuScheme.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\WinInstanceData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\WindowLayout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GUI\WindowVideoManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GameClient.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GameClientDispatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GameText.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GlobalLanguage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\GraphDraw.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\InGameUI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Input\Keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Input\Mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\LanguageFilter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Line2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MapUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MessageStream\CommandXlat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MessageStream\GUICommandTranslator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MessageStream\HintSpy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MessageStream\HotKey.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MessageStream\LookAtXlat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MessageStream\MetaEvent.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MessageStream\PlaceEventTranslator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MessageStream\SelectionXlat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\MessageStream\WindowXlat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\ParabolicEase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\RadiusDecal.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\SelectionInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Snow.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Statistics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\System\Anim2D.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\System\CampaignManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\System\Debug Displayers\AudioDebugDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\System\DebugDisplay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\System\Image.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\System\ParticleSys.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\System\RayEffect.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\System\Smudge.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Terrain\TerrainRoads.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Terrain\TerrainVisual.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\VideoPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\VideoStream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\View.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameClient\Water.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AIDock.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AIGroup.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AIGuard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AIGuardRetaliate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AIPathfind.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AIPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AISkirmishPlayer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AIStates.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\AITNGuard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\Squad.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\AI\TurretAI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Map\PolygonTrigger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Map\SidesList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Map\TerrainLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Armor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\AutoHealBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\BattleBusSlowDeathBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\BehaviorModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\BridgeBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\BridgeScaffoldBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\BridgeTowerBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\BunkerBusterBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\CountermeasuresBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\DumbProjectileBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\FireWeaponWhenDamagedBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\FireWeaponWhenDeadBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\FlightDeckBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\GenerateMinefieldBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\GrantStealthBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\InstantDeathBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\JetSlowDeathBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\MinefieldBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\NeutonBlastBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\OverchargeBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\POWTruckBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\ParkingPlaceBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\PoisonedBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\PrisonBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\PropagandaCenterBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\PropagandaTowerBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\RebuildHoleBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\SlowDeathBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\SpawnBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\SupplyWarehouseCripplingBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Behavior\TechBuildingBehavior.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Body\ActiveBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Body\BodyModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Body\HighlanderBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Body\HiveStructureBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Body\ImmortalBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Body\InactiveBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Body\StructureBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Body\UndeadBody.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CollideModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\ConvertToCarBombCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\ConvertToHijackedVehicleCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\CrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\HealCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\MoneyCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\SabotageCommandCenterCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\SabotageFakeBuilding.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\SabotageInternetCenterCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\SabotageMilitaryFactoryCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\SabotagePowerPlantCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\SabotageSuperweaponCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\SabotageSupplyCenterCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\SabotageSupplyDropzoneCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\SalvageCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\ShroudCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\UnitCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\CrateCollide\VeterancyCrateCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\FireWeaponCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Collide\SquishCollide.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\CaveContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\GarrisonContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\HealContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\HelixContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\InternetHackContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\MobNexusContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\OpenContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\OverlordContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\ParachuteContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\RailedTransportContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\RiderChangeContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\TransportContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Contain\TunnelContain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Create\CreateModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Create\GrantUpgradeCreate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Create\LockWeaponCreate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Create\PreorderCreate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Create\SpecialPowerCreate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Create\SupplyCenterCreate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Create\SupplyWarehouseCreate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Create\VeterancyGainCreate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Damage\BoneFXDamage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Damage\DamageModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Damage\TransitionDamageFX.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Destroy\DestroyModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\CreateCrateDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\CreateObjectDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\CrushDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\DamDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\DestroyDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\DieModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\EjectPilotDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\FXListDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\KeepObjectDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\RebuildHoleExposeDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\SpecialPowerCompletionDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Die\UpgradeDie.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\ExperienceTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\FiringTracker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\GhostObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Helper\ObjectDefectionHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Helper\ObjectHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Helper\ObjectRepulsorHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Helper\ObjectSMCHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Helper\ObjectWeaponStatusHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Helper\StatusDamageHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Helper\SubdualDamageHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Helper\TempWeaponBonusHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Locomotor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\ObjectCreationList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\ObjectTypes.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\PartitionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SimpleObjectIterator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\BaikonurLaunchPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\CashBountyPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\CashHackSpecialPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\CleanupAreaPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\DefectorSpecialPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\DemoralizeSpecialPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\FireWeaponPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\OCLSpecialPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\SpecialAbility.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\SpecialPowerModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\SpecialPower\SpyVisionSpecialPower.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\AssaultTransportAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\ChinookAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\DeliverPayloadAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\DeployStyleAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\DozerAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\HackInternetAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\JetAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\MissileAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\POWTruckAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\RailedTransportAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\RailroadGuideAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\SupplyTruckAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\TransportAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\WanderAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AIUpdate\WorkerAIUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AnimationSteeringUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AssistedTargetingUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AutoDepositUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\AutoFindHealingUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\BaseRenerateUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\BattlePlanUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\BoneFXUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\CheckpointUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\CleanupHazardUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\CommandButtonHuntUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DeletionUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DemoTrapUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DockUpdate\DockUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DockUpdate\PrisonDockUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DockUpdate\RailedTransportDockUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DockUpdate\RepairDockUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DockUpdate\SupplyCenterDockUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DockUpdate\SupplyWarehouseDockUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DynamicGeometryInfoUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\DynamicShroudClearingRangeUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\EMPUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\EnemyNearUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\FireOCLAfterWeaponCooldownUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\FireSpreadUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\FireWeaponUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\FirestormDynamicGeometryInfoUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\FlammableUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\FloatUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\HeightDieUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\HelicopterSlowDeathUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\HijackerUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\HordeUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\LaserUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\LifetimeUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\MissileLauncherBuildingUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\MobMemberSlavedUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\NeutronMissileSlowDeathUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\NeutronMissileUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\OCLUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\ParticleUplinkCannonUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\PhysicsUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\PilotFindVehicleUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\PointDefenseLaserUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\PowerPlantUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\ProductionExitUpdate\DefaultProductionExitUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\ProductionExitUpdate\QueueProductionExitUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\ProductionExitUpdate\SpawnPointProductionExitUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\ProductionExitUpdate\SupplyCenterProductionExitUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\ProductionUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\ProjectileStreamUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\ProneUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\RadarUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\RadiusDecalUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\SlavedUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\SmartBombTargetHomingUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\SpecialAbilityUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\SpecialPowerUpdateModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\SpectreGunshipDeploymentUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\SpectreGunshipUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\SpyVisionUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\StealthDetectorUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\StealthUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\StickyBombUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\StructureCollapseUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\StructureToppleUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\TensileFormationUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\ToppleUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\UpdateModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\WaveGuideUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Update\WeaponBonusUpdate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\ActiveShroudUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\ArmorUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\CommandSetUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\CostModifierUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\ExperienceScalarUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\GrantScienceUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\LocomotorSetUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\MaxHealthUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\ModelConditionUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\ObjectCreationUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\PassengersFireUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\PowerPlantUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\RadarUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\ReplaceObjectUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\StatusBitsUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\StealthUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\SubObjectsUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\UnpauseSpecialPowerUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\UpgradeModule.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\WeaponBonusUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Upgrade\WeaponSetUpgrade.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\Weapon.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\Object\WeaponSet.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\ScriptEngine\ScriptActions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\ScriptEngine\ScriptConditions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\ScriptEngine\ScriptEngine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\ScriptEngine\Scripts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\ScriptEngine\VictoryConditions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\System\CaveSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\System\CrateSystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\System\Damage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\System\GameLogic.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\System\GameLogicDispatch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameLogic\System\RankInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\Connection.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\ConnectionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\DisconnectManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\DownloadManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\FileTransfer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\FirewallHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\FrameData.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\FrameDataManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\FrameMetrics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GUIUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameMessageParser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\Chat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\GSConfig.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\LadderDefs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\LobbyUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\MainMenuUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\PeerDefs.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\StagingRoomGameInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\Thread\BuddyThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\Thread\GameResultsThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\Thread\PeerThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\Thread\PersistentStorageThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\Thread\PingThread.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpy\Thread\ThreadUtils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpyChat.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpyGP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpyGameInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\GameSpyOverlay.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\IPEnumeration.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\LANAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\LANAPICallbacks.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\LANAPIhandlers.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\LANGameInfo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\NAT.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\NetCommandList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\NetCommandMsg.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\NetCommandRef.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\NetCommandWrapperList.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\NetMessageStream.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\NetPacket.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\Network.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\NetworkUtil.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\Transport.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\User.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\GameNetwork\udp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\GameEngine\Source\Precompiled\PreRTS.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0DC38988-A034-31DB-8278-E3DA5DA171F1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

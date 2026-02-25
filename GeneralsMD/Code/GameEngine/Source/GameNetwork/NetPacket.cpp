@@ -5569,7 +5569,7 @@ NetCommandMsg * NetPacket::readDisconnectChatMessage(UnsignedByte *data, Int &i)
 	text[length] = 0;
 
 	UnicodeString unitext;
-	unitext.set(text);
+	unitext.set((const wchar_t*)text);
 
 	//DEBUG_LOG(("NetPacket::readDisconnectChatMessage - read message, message is %ls\n", unitext.str()));
 
@@ -5596,7 +5596,7 @@ NetCommandMsg * NetPacket::readChatMessage(UnsignedByte *data, Int &i) {
 
 
 	UnicodeString unitext;
-	unitext.set(text);
+	unitext.set((const wchar_t*)text);
 
 	//DEBUG_LOG(("NetPacket::readChatMessage - read message, message is %ls\n", unitext.str()));
 

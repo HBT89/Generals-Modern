@@ -139,7 +139,9 @@ class AutoPoolClass
 public:
 
 	static void *	operator new(size_t size);
+	static void *	operator new(size_t size, const char *, int) { return operator new(size); }
 	static void		operator delete(void * memory);
+	static void		operator delete(void * memory, const char *, int) { operator delete(memory); }
 
 private:
 

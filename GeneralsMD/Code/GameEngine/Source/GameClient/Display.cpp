@@ -89,8 +89,6 @@ Display::Display()
 	m_currentlyPlayingMovie.clear();
 	m_letterBoxFadeStartTime = 0;
 	// End Add
-
-	initializeRenderer();
 }
 
 /**
@@ -102,8 +100,6 @@ Display::~Display()
 	stopMovie();
 	// delete all our views if present
 	deleteViews();
-
-	shutdownRenderer();
 }
 
 /**
@@ -188,13 +184,6 @@ Bool Display::setDisplayMode( UnsignedInt xres, UnsignedInt yres, UnsignedInt bi
 	TheTacticalView->setHeight((Real)oldViewHeight/(Real)oldDisplayHeight*(Real)yres);
 	TheTacticalView->setOrigin((Real)oldViewOriginX/(Real)oldDisplayWidth*(Real)xres,
 	(Real)oldViewOriginY/(Real)oldDisplayHeight*(Real)yres);
-
-	// Apply world scaling if needed
-	if (TheTacticalView)
-	{
-		float worldScale = getWorldScale();
-		TheTacticalView->setWorldScale(worldScale);
-	}
 
 	return TRUE;
 }
@@ -419,74 +408,3 @@ Display::DebugDisplayCallback *Display::getDebugDisplayCallback()
 	return m_debugDisplayCallback;
 }
 
-// Add: Detect native desktop resolution
-void Display::detectAndSetNativeResolution()
-{
-	// Get the native screen resolution using Windows API
-	int nativeWidth = GetSystemMetrics(SM_CXSCREEN);
-	int nativeHeight = GetSystemMetrics(SM_CYSCREEN);
-	// Optionally, choose a default bit depth (e.g., 32)
-	UnsignedInt bitDepth = 32;
-	// Set display mode to native resolution (windowed or fullscreen as needed)
-	setDisplayMode(nativeWidth, nativeHeight, bitDepth, m_windowed);
-}
-
-// Add: Get native resolution (utility)
-void Display::getNativeResolution(int& width, int& height)
-{
-	width = GetSystemMetrics(SM_CXSCREEN);
-	height = GetSystemMetrics(SM_CYSCREEN);
-}
-
-// Add: World scaling factor based on resolution
-float Display::getWorldScale() const
-{
-	// Assume 1920x1080 is the base scale (1.0)
-	const float baseWidth = 1920.0f;
-	const float baseHeight = 1080.0f;
-	float scaleX = m_width / baseWidth;
-	float scaleY = m_height / baseHeight;
-	// Use the smaller scale to maintain aspect ratio
-	return (scaleX < scaleY) ? scaleX : scaleY;
-}
-
-// -----------------------------------------------------------------------------
-// High-Resolution Rendering Support (Modernization Layer Phase 1)
-//
-// - Adds support for enumerating all available display modes (resolutions)
-//   using the Windows API (EnumDisplaySettings), enabling 1440p, 4K, and
-//   ultrawide resolutions.
-// - Provides a DisplayMode struct for storing mode info.
-// - This is a foundation for allowing the UI and engine to present and use
-//   any supported resolution natively, as required for modern hardware.
-// -----------------------------------------------------------------------------
-std::vector<DisplayMode> Display::enumerateDisplayModes() {
-	std::vector<DisplayMode> modes;
-	DEVMODE devMode = {0};
-	devMode.dmSize = sizeof(DEVMODE);
-	int modeNum = 0;
-	while (EnumDisplaySettings(NULL, modeNum++, &devMode)) {
-		DisplayMode mode;
-		mode.width = devMode.dmPelsWidth;
-		mode.height = devMode.dmPelsHeight;
-		mode.bitDepth = devMode.dmBitsPerPel;
-		mode.windowed = FALSE; // Fullscreen by default; windowed handled separately
-		modes.push_back(mode);
-	}
-	return modes;
-}
-
-void Display::initializeRenderer()
-{
-    bgfx::Init init;
-    init.type = bgfx::RendererType::Count; // Auto-detect renderer
-    init.resolution.width = m_width;
-    init.resolution.height = m_height;
-    init.resolution.reset = BGFX_RESET_VSYNC;
-    bgfx::init(init);
-}
-
-void Display::shutdownRenderer()
-{
-    bgfx::shutdown();
-}

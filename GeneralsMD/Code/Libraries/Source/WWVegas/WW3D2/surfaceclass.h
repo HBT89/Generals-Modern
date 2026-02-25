@@ -45,8 +45,8 @@
 
 #include "ww3dformat.h"
 #include "refcount.h"
+#include "RenderTypes.h"
 
-struct IDirect3DSurface8;
 class Vector2i;
 class Vector3;
 

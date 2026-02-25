@@ -96,7 +96,7 @@ public:
 	float	Print( Font3DInstanceClass *font, char ch, float screen_x, float screen_y);
 	float	Print( Font3DInstanceClass *font, const char *message, float screen_x, float screen_y);
 
-	void	Set_Text_Color( const Vector3 & color )		{ Set_Vertex_Color(color); }
+	void	Set_Text_Color( const Vector3 & color )		{ Set_Vertex_Color(Vector4(color.X, color.Y, color.Z, 1.0f)); }
 
 	/*
 	** dump the font image (debuging)

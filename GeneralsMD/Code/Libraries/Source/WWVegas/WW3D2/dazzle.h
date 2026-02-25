@@ -37,9 +37,10 @@
 #include <vector>
 #include <bgfx/bgfx.h>
 
+#include "BGFXVertexFormats.h"
+
 class CameraClass;
 class DazzleVisibilityClass;
-struct VertexFormatXYZNDUV2;
 
 class DazzleInitClass
 {

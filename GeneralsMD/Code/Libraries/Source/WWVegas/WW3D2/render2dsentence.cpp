@@ -40,6 +40,7 @@
 #include "wwprofile.h"
 #include "wwmemlog.h"
 #include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
+#include "ww3d.h"
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -1720,8 +1721,8 @@ FontCharsClass::Grow_Unicode_Array (WCHAR ch)
 		return ;
 	} 
 
-	uint16 first_index	= min( FirstUnicodeChar, ch );
-	uint16 last_index		= max( LastUnicodeChar, ch );
+	uint16 first_index	= min( (uint16)FirstUnicodeChar, (uint16)ch );
+	uint16 last_index		= max( (uint16)LastUnicodeChar, (uint16)ch );
 	uint16 count			= (last_index - first_index) + 1;
 
 	//

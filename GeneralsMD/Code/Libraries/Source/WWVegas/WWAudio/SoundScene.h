@@ -175,9 +175,10 @@ class SoundSceneClass
 		virtual void			Save_Static_Sounds (ChunkSaveClass &csave);
 		virtual void			Load_Static_Sounds (ChunkLoadClass &cload);
 
+	public:  // Needs to be public for DEFINE_AUTO_POOL macro at file scope
 		//////////////////////////////////////////////////////////////////////
 		//	Collection methods
-		//////////////////////////////////////////////////////////////////////		
+		//////////////////////////////////////////////////////////////////////
 		class AudibleInfoClass : public MultiListObjectClass, public AutoPoolClass<AudibleInfoClass, 64>
 		{
 		public:

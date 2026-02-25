@@ -108,9 +108,8 @@
 #include "wwmemlog.h"
 #include "dazzle.h"
 // TODO: BGFX PORT - All DX8/D3D includes and logic are commented out below. Replace with BGFX equivalents.
-// #include "dx8wrapper.h"
-// #include "dx8renderer.h"
-// #include <D3dx8core.h>
+#include "dx8wrapper.h"
+#include "dx8renderer.h"
 #include "BGFXWrapper.h"
 #include "metalmap.h"
 #include "w3dexclusionlist.h"
@@ -813,7 +812,7 @@ RenderObjClass * WW3DAssetManager::Create_Render_Obj(const char * name)
 		AssetStatusClass::Peek_Instance()->Report_Load_On_Demand_RObj(name);
 
 		char filename [MAX_PATH];
-		char *mesh_name = ::strchr (name, '.');
+		char *mesh_name = const_cast<char*>(::strchr (name, '.'));
 		if (mesh_name != NULL) {
 			::lstrcpyn (filename, name, ((int)mesh_name) - ((int)name) + 1);
 			::lstrcat (filename, ".w3d");
@@ -994,7 +993,7 @@ HAnimClass *	WW3DAssetManager::Get_HAnim(const char * name)
 			AssetStatusClass::Peek_Instance()->Report_Load_On_Demand_HAnim(name);
 
 			char filename[ MAX_PATH ];
-			char *animname = strchr( name, '.');
+			char *animname = const_cast<char*>(strchr( name, '.'));
 			if (animname != NULL) {
 				sprintf( filename, "%s.w3d", animname+1);
 			} else {

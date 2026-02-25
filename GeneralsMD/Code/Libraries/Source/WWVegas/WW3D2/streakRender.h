@@ -48,7 +48,7 @@
 class RenderInfoClass;
 class SphereClass;
 struct W3dEmitterLinePropertiesStruct;
-struct VertexFormatXYZUV1;
+#include "BGFXVertexFormats.h"
 
 // The maximum allowable level of subdivision. This should be no more than 7 to avoid increasing
 // the chunk buffer size too much

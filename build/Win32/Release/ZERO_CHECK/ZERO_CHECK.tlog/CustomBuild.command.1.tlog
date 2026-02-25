@@ -1,0 +1,10 @@
+^C:\THELAB\DEVELOPMENT\GENERALS-MODERN\BUILD\CMAKEFILES\6E8337B22D9E5BB4EEF524A15A817666\GENERATE.STAMP.RULE
+setlocal
+C:\TheLab\Development\Generals-Modern\cmake\cmake-3.31.4-windows-x86_64\bin\cmake.exe -SC:/TheLab/Development/Generals-Modern/GeneralsMD/Code -BC:/TheLab/Development/Generals-Modern/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/TheLab/Development/Generals-Modern/build/GeneralsZH.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

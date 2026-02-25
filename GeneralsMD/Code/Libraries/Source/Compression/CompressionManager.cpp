@@ -21,6 +21,10 @@
 // LZH wrapper taken from Nox, originally from Jeff Brown
 //////////////////////////////////////////////////////////////////////////////
 
+#include <cstring>
+#include <cmath>
+#include <algorithm>
+#include "LZHCompress/Lib/basetype.h"
 #include "Compression.h"
 #include "LZHCompress/NoxCompress.h"
 extern "C" {

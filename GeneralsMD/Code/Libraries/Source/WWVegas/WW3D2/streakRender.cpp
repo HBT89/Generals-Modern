@@ -30,6 +30,8 @@
 #include "rinfo.h"
 #include "dx8wrapper.h"
 #include "sortingrenderer.h"
+#include "vertmaterial.h"
+#include "w3d_file.h"
 #include "vp.h"
 #include "vector3i.h"
 #include "random.h"

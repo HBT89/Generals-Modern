@@ -25,8 +25,7 @@
 
 #include "always.h"
 
-struct IDirect3DTexture8;
-struct IDirect3DSurface8;
+#include "RenderTypes.h"
 
 class MissingTexture
 {

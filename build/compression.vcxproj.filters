@@ -1,0 +1,46 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\CompressionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC\btreeabout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC\btreedecode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC\btreeencode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC\huffabout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC\huffdecode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC\huffencode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC\refabout.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC\refdecode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\EAC\refencode.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\Libraries\Source\Compression\LZHCompress\NoxCompress.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\TheLab\Development\Generals-Modern\GeneralsMD\Code\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0DC38988-A034-31DB-8278-E3DA5DA171F1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

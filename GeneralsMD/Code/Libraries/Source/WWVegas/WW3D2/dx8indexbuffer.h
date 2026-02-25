@@ -47,10 +47,10 @@
 #include "wwdebug.h"
 #include "refcount.h"
 #include "sphere.h"
+#include "RenderTypes.h"
 
 class DX8Wrapper;
 class SortingRendererClass;
-struct IDirect3DIndexBuffer8;
 class DX8IndexBufferClass;
 class SortingIndexBufferClass;
 

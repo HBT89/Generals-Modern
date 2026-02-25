@@ -269,7 +269,7 @@ static Bool handleSlashCommands( UnicodeString message, Bool isAction, GameWindo
 	return false;
 }
 
-static handleUnicodeMessage( const char *nick, UnicodeString msg, Bool isPublic, Bool isAction );
+static void handleUnicodeMessage( const char *nick, UnicodeString msg, Bool isPublic, Bool isAction );
 
 Bool GameSpySendChat( UnicodeString message, Bool isAction, GameWindow *playerListbox )
 {
@@ -387,7 +387,7 @@ void PlayerMessageCallback(PEER peer,
 	handleUnicodeMessage(nick, QuotedPrintableToUnicodeString(message), false, (messageType == ActionMessage));
 }
 
-static handleUnicodeMessage( const char *nick, UnicodeString msg, Bool isPublic, Bool isAction )
+static void handleUnicodeMessage( const char *nick, UnicodeString msg, Bool isPublic, Bool isAction )
 {
 	GameSpyColors style;
 

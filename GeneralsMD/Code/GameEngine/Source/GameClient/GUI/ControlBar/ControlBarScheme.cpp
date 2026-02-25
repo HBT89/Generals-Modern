@@ -438,8 +438,8 @@ void ControlBarScheme::init(void)
 		TheControlBar->setArrowImage( m_genArrow);
 	}
 	GameWindow *win = NULL;
-	// Use a central scaling factor for both X and Y for high-DPI/4K support
-	float scale = TheDisplay->getWorldScale();
+	// Scaling factor for UI (TODO: implement proper DPI scaling)
+	float scale = 1.0f;
 	win= TheWindowManager->winGetWindowFromId( NULL, TheNameKeyGenerator->nameToKey( "ControlBar.wnd:PopupCommunicator" ) );
 	if(win)	
 	{

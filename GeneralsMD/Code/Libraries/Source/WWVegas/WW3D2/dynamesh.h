@@ -60,7 +60,7 @@ class	IntersectionResultClass;
 */
 class DynamicMeshModel : public MeshGeometryClass
 {
-	// BGFX: Removed W3DMPO_GLUE(DynamicMeshModel) macro, obsolete with BGFX
+	W3DMPO_GLUE(DynamicMeshModel)
 
 public:
 
@@ -139,34 +139,156 @@ private:
 	BGFXIndexBuffer m_ib;
 };
 
+
+/*
+** DynamicMeshClass: High-level dynamic mesh rendering class.
+** Provides vertex/polygon building interface atop DynamicMeshModel.
+*/
+class DynamicMeshClass : public RenderObjClass
+{
+public:
+
+	enum TriModeEnum {
+		TRI_MODE_STRIPS,
+		TRI_MODE_FANS
+	};
+
+	DynamicMeshClass(int max_poly, int max_vert);
+	DynamicMeshClass(int max_poly, int max_vert, MaterialInfoClass *mat_info);
+	DynamicMeshClass(const DynamicMeshClass & src);
+	virtual ~DynamicMeshClass();
+
+	virtual RenderObjClass * Clone(void) const;
+	virtual int Class_ID(void) const { return CLASSID_DYNAMESH; }
+
+	void Render(RenderInfoClass & rinfo);
+	void Resize(int max_polys, int max_verts);
+
+	// Vertex building interface
+	virtual void Location(float x, float y, float z = 0.0f);
+	virtual void Move_Vertex(int index, float x, float y, float z = 0.0f);
+	void Get_Vertex(int index, float &x, float &y, float &z);
+	void Translate_Vertices(const Vector3 & offset);
+	virtual void Set_Position(const Vector3 &v);
+
+	bool End_Vertex();
+
+	// Material/texture interface
+	int Set_Vertex_Material(int idx, int pass = 0);
+	int Set_Vertex_Material(VertexMaterialClass *material, bool dont_search = false, int pass = 0);
+	int Set_Texture(int idx, int pass = 0);
+	int Set_Texture(TextureClass *texture, bool dont_search = false, int pass = 0);
+
+	// Tri mode
+	void Set_Tri_Mode(TriModeEnum mode) { TriMode = mode; }
+	void Begin_Fan() { TriMode = TRI_MODE_FANS; FanVertex = VertCount; TriVertexCount = 0; }
+
+	// Vertex color
+	void Set_Vertex_Color(const Vector4 &color, int color_array_index = 0) { CurVertexColor[color_array_index] = color; }
+	void Enable_Multi_Vertex_Color(bool onoff, int color_array_index = 0) { MultiVertexColor[color_array_index] = onoff; }
+	void Enable_Multi_Texture(bool onoff, int pass = 0) { MultiTexture[pass] = onoff; }
+	void Enable_Multi_Vertex_Material(bool onoff, int pass = 0) { MultiVertexMaterial[pass] = onoff; }
+
+	// Model access
+	DynamicMeshModel * Peek_Model(void) { return Model; }
+	MaterialInfoClass * Peek_Material_Info(void) { return Model->Peek_Material_Info(); }
+	int Get_Pass_Count(void) { return Model->Get_Pass_Count(); }
+	void Set_Pass_Count(int passes) { Model->Set_Pass_Count(passes); }
+
+	// Immediate-mode geometry building
+	void Set_Shader(ShaderClass shader) { Model->Set_Single_Shader(shader); }
+	void Set_Shader(ShaderClass shader, int pass) { Model->Set_Single_Shader(shader, pass); }
+	void Set_Material_Info(MaterialInfoClass* info) { Model->Set_Material_Info(info); }
+	void Begin_Tri_Strip() { TriMode = TRI_MODE_STRIPS; TriVertexCount = 0; }
+	void Begin_Tri_Fan() { Begin_Fan(); }
+	void End_Tri_Fan() {}
+	void Begin_Vertex() {}
+	void Location_Inline(const Vector3& v) { Location(v.X, v.Y, v.Z); }
+	void Normal(const Vector3&) {}
+	void Color(unsigned) {}
+	void UV(const Vector2&, int stage = 0) {}
+	void Vertex(float x, float y, float z, float u, float v) { (void)u; (void)v; Location(x, y, z); End_Vertex(); }
+	void Vertex(const Vector2& v) { Location(v.X, v.Y, 0.0f); End_Vertex(); }
+	void End_Tri_Strip() {}
+	void Set_Dirty() {}
+	void Set_Dirty_Bounds() {}
+	void Set_Dirty_Planes() {}
+	void Clear_Dirty_Vertex_Normals() {}
+
+	// Sort level
+	void Set_Sort_Level(int level) { SortLevel = level; }
+	int Get_Sort_Level(void) { return SortLevel; }
+	void Enable_Sort(void) { SortLevel = 1; }
+	void Disable_Sort(void) { SortLevel = 0; }
+
+	// Reset
+	void Reset(void) { PolyCount = 0; VertCount = 0; TriVertexCount = 0; }
+	void Reset_Mesh_Counters(void) { Reset(); }
+	void Reset_Flags(void);
+
+protected:
+
+	virtual bool Flip_Face(void) { return (TriVertexCount & 1) != 0; }
+
+	DynamicMeshModel *	Model;
+
+	int		PolyCount;
+	int		VertCount;
+	int		TriVertexCount;
+	int		FanVertex;
+
+	TriModeEnum TriMode;
+	int		SortLevel;
+
+	bool	MultiTexture[MeshMatDescClass::MAX_PASSES];
+	int		TextureIdx[MeshMatDescClass::MAX_PASSES];
+
+	bool	MultiVertexMaterial[MeshMatDescClass::MAX_PASSES];
+	int		VertexMaterialIdx[MeshMatDescClass::MAX_PASSES];
+
+	bool	MultiVertexColor[MeshMatDescClass::MAX_COLOR_ARRAYS];
+	Vector4	CurVertexColor[MeshMatDescClass::MAX_COLOR_ARRAYS];
+};
+
+
+/*
+** DynamicScreenMeshClass: Dynamic mesh with screen-space coordinate mapping.
+*/
+class DynamicScreenMeshClass : public DynamicMeshClass
+{
+public:
+	DynamicScreenMeshClass(int max_poly, int max_vert) : DynamicMeshClass(max_poly, max_vert), Aspect(0.75f) {}
+	DynamicScreenMeshClass(int max_poly, int max_vert, MaterialInfoClass *mat_info) : DynamicMeshClass(max_poly, max_vert, mat_info), Aspect(0.75f) {}
+	DynamicScreenMeshClass(const DynamicScreenMeshClass & src) : DynamicMeshClass(src), Aspect(src.Aspect) {}
+
 	// function to clone a dynamic screen mesh class
-	virtual RenderObjClass * 		Clone(void) const	{ return NEW_REF( DynamicScreenMeshClass, (*this)); }
+	virtual RenderObjClass * Clone(void) const { return NEW_REF(DynamicScreenMeshClass, (*this)); }
 
 	// class id of this render object
-	virtual int	Class_ID(void) const	{ return CLASSID_DYNASCREENMESH; }
+	virtual int Class_ID(void) const { return CLASSID_DYNASCREENMESH; }
 
 	// Remap locations to match a screen
-	virtual void Location( float x, float y, float z = 0.0f);
+	virtual void Location(float x, float y, float z = 0.0f);
 
 	// For moving a vertex after the DynaMesh has already been created.
-   virtual void Move_Vertex(int index, float x, float y, float z = 0.0f);
+	virtual void Move_Vertex(int index, float x, float y, float z = 0.0f);
 
 	// Set position
 	virtual void Set_Position(const Vector3 &v);
 
-	virtual void Reset( void);
+	virtual void Reset(void);
 
-	virtual void Set_Aspect(float aspect) { Aspect=aspect; };
+	virtual void Set_Aspect(float aspect) { Aspect = aspect; }
 
 protected:
 
-	//	 Aspect Ratio of the virtual screen.
+	//  Aspect Ratio of the virtual screen.
 	//  1.0 gives a -1,-1 to 1,1 display
-	//  3/4 givs a -1,-3/4 to 1,3/4 display
+	//  3/4 gives a -1,-3/4 to 1,3/4 display
 	float		Aspect;
 
 	// tells when the triangle needs to be back flipped
-	virtual	bool	Flip_Face( void) { return !DynamicMeshClass::Flip_Face(); }
+	virtual bool Flip_Face(void) { return !DynamicMeshClass::Flip_Face(); }
 };
 
 #endif	// DYNAMESH

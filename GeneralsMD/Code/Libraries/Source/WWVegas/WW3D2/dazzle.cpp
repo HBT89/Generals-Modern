@@ -58,10 +58,9 @@
 #include "persistfactory.h"
 #include "ww3dids.h"
 
-// TODO: BGFX PORT - All DX8/D3D includes and logic are commented out below. Replace with BGFX equivalents.
-//#include "dx8wrapper.h"
-//#include "dx8vertexbuffer.h"
-//#include "dx8indexbuffer.h"
+#include "dx8wrapper.h"
+#include "dx8vertexbuffer.h"
+#include "dx8indexbuffer.h"
 #include "sortingrenderer.h"
 #include "texture.h"
 #include "scene.h"

@@ -54,7 +54,7 @@
 #include "ww3d.h"
 #include "rinfo.h"
 #include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
-// #include "dx8wrapper.h" // DX8 include removed for BGFX port
+#include "dx8wrapper.h"
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
 #include "dx8fvf.h"

@@ -841,7 +841,7 @@ WW3DErrorType MeshModelClass::read_per_tri_materials(ChunkLoadClass & cload,Mesh
 		// read in the mat id for this poly
 		uint16 matid;
 
-		if (clload.Read(&matid,sizeof(uint16)) != sizeof(uint16)) {
+		if (cload.Read(&matid,sizeof(uint16)) != sizeof(uint16)) {
 			return WW3D_ERROR_LOAD_FAILED;
 		}
 

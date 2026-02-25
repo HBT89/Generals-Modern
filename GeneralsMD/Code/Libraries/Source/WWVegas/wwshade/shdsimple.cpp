@@ -36,7 +36,7 @@
  * Functions:                                                                                  *
  * - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
-#include <d3dx8math.h>
+#include "RenderTypes.h"
 #include "dx8fvf.h"
 #include "BGFXWrapper.h" // BGFX port
 #include "assetmgr.h"
@@ -209,6 +209,7 @@ void Shd6SimpleClass::Init()
 }
 
 void Shd6SimpleClass::Shutdown()
+{
 }
 
 

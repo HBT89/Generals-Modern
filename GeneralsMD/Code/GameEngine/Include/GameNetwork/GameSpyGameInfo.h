@@ -28,7 +28,7 @@
 
 #pragma once
 
-#error this file is obsolete
+// #error this file is obsolete  // Commented out for compilation
 
 #ifndef __GAMESPYGAMEINFO_H__
 #define __GAMESPYGAMEINFO_H__

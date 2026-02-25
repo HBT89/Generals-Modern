@@ -59,7 +59,6 @@ class Vector4;
 class StringClass;
 class DX8VertexBufferClass;
 class FVFInfoClass;
-struct IDirect3DVertexBuffer8;
 class VertexBufferClass;
 struct VertexFormatXYZNDUV2;
 

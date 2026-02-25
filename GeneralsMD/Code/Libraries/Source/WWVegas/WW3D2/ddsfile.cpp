@@ -21,11 +21,11 @@
 #include "ffactory.h"
 #include "bufffile.h"
 #include "formconv.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "bitmaphandler.h"
 #include "colorspace.h"
 #include <string.h>
-#include <ddraw.h>
+// #include <ddraw.h> // Types provided by RenderTypes.h via BGFXWrapper.h
 
 // ----------------------------------------------------------------------------
 

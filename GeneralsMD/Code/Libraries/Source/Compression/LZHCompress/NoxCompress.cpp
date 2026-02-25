@@ -22,6 +22,9 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <algorithm>
+using std::min;
+using std::max;
 #include "Lib/basetype.h"
 #include "Noxcompress.h"
 #include "CompLibHeader/lzhl.h"

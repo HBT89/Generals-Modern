@@ -42,7 +42,7 @@
 #include "rinfo.h"
 #include "camera.h"
 #include "scene.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "light.h"
 #include "D3dx8math.h"
 #include "simplevec.h"

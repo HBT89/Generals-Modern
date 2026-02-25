@@ -34,7 +34,7 @@
 #include "w3d_file.h"
 #include "dx8vertexbuffer.h"
 #include "dx8indexbuffer.h"
-#include "dx8wrapper.h"
+#include "BGFXWrapper.h"
 #include "shader.h"
 #include "vertmaterial.h"
 #include "Lib/BaseType.h"

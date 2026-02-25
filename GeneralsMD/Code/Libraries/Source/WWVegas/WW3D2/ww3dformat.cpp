@@ -42,8 +42,9 @@
 #include "wwdebug.h"
 #include "targa.h"
 #include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
-// #include "dx8wrapper.h" // DX8 include removed for BGFX port
+#include "dx8wrapper.h"
 #include "dx8caps.h"
+#include "ww3d.h"
 // #include <d3d8.h> // Removed for BGFX port
 // TODO: Port all format conversion logic to BGFX
 
