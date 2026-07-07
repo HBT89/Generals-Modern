@@ -1330,6 +1330,7 @@ static Bool parseDrawData( char *token, WinInstanceData *instData,
 		first = FALSE;
 	
 		c = strtok( NULL, seps );  // value
+		if( c == NULL ) break;  // buffer exhausted
 		if( strcmp( c, "NoImage" ) )
 			drawData->image = TheMappedImageCollection->findImageByName( AsciiString( c ) );
 		else
@@ -1617,6 +1618,11 @@ static void setWindowText( GameWindow *window, AsciiString textLabel )
 		window->winSetText( theText );
 
 }  // end setWindowText
+
+static void pwLog(const char* msg) {
+	FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+	if (logf) { fprintf(logf, "    PW: %s\n", msg); fflush(logf); fclose(logf); }
+}
 
 // createGadget ===============================================================
 /** Create a gadget based on the 'type' parm */
@@ -2087,6 +2093,7 @@ static GameWindow *createWindow( char *type,
 													 width, height,
                            instData, 
 													 data );
+		pwLog("createWindow: createGadget returned");
 		if( window )
 		{
 
@@ -2129,13 +2136,17 @@ static GameWindow *createWindow( char *type,
 	{
 
 		// set any text read from the textLabel
+		pwLog("createWindow: setWindowText...");
 		setWindowText( window, instData->m_textLabelString );
+		pwLog("createWindow: setWindowText done");
 
 	}  // end if
 
   // If there is a parent window, send it the SCRIPT_CREATE message
+  pwLog("createWindow: winSendInputMsg (SCRIPT_CREATE)...");
   if( window && parent )
 		TheWindowManager->winSendInputMsg( parent, GWM_SCRIPT_CREATE, id, 0 );
+  pwLog("createWindow: winSendInputMsg done");
 
   return window;
 
@@ -2319,6 +2330,7 @@ static GameWindowParse gameWindowFieldList[] =
 //=============================================================================
 static GameWindow *parseWindow( File *inFile, char *buffer )
 {
+	pwLog("enter parseWindow");
 	GameWindowParse *parse;
 	GameWindow *window = NULL;
 	GameWindow *parent = peekWindow();
@@ -2345,19 +2357,23 @@ static GameWindow *parseWindow( File *inFile, char *buffer )
 	theDrawString.clear();
 
 	// get the size of the parent, or if no parent present the screen
+	pwLog("getting parent size");
 	if( parent )
 	{
 		parent->winGetSize( &parentSize.x, &parentSize.y );
 	}  // end if
 	else
 	{
+		if (!TheDisplay) { pwLog("TheDisplay is NULL!"); return NULL; }
 		parentSize.x = TheDisplay->getWidth();
 		parentSize.y = TheDisplay->getHeight();
 	}  // end else
 
 	// Initialize the instance data to the defaults
 	/// @todo need to support enabled/disabled/hilite text colors here
+	pwLog("instData.init()");
 	instData.init();
+	pwLog("instData.init() done");
 	instData.m_enabledText.color = defTextColor;
 	instData.m_enabledText.borderColor = defTextColor;
 	instData.m_disabledText.color = defTextColor;
@@ -2374,51 +2390,62 @@ static GameWindow *parseWindow( File *inFile, char *buffer )
 	//
 
 	// window type
-	readUntilSemicolon( inFile, buffer, WIN_BUFFER_LENGTH );	
+	pwLog("readUntilSemicolon WINDOWTYPE");
+	readUntilSemicolon( inFile, buffer, WIN_BUFFER_LENGTH );
 	c = strtok( buffer, seps );
 	assert( strcmp( c, "WINDOWTYPE" ) == 0 );
 	c = strtok( NULL, seps );  // get data to right of = sign
 	strcpy( type, c );
+	{ char tmp[128]; sprintf(tmp,"type='%s'", type); pwLog(tmp); }
 
 	//
 	// based on the window type get a pointer for any specific data
 	// for the gadget controls needed
 	//
+	pwLog("getDataTemplate");
 	data = getDataTemplate( type );
-	
+	pwLog("getDataTemplate done");
+
 	// position
-	readUntilSemicolon( inFile, buffer, WIN_BUFFER_LENGTH );	
+	pwLog("parseScreenRect");
+	readUntilSemicolon( inFile, buffer, WIN_BUFFER_LENGTH );
 	c = strtok( buffer, seps );
 	assert( strcmp( c, "SCREENRECT" ) == 0 );
 	if( parseScreenRect( c, buffer, &x, &y, &width, &height ) == FALSE )
 		goto cleanupAndExit;
+	pwLog("parseScreenRect done");
 
 	// parse all the field definitions
-	while( TRUE ) 
+	while( TRUE )
 	{
 
 		// get token
-		inFile->scanString(asciibuf);
+		{Bool scanOk = inFile->scanString(asciibuf);
+		 char tmp3[128]; sprintf(tmp3,"scanString ok=%d token='%s'", (int)scanOk, asciibuf.str()); pwLog(tmp3);}
 
 		// parse field
-		for( parse = gameWindowFieldList; parse->parse; parse++ ) 
+		for( parse = gameWindowFieldList; parse->parse; parse++ )
 		{
 
 			if (asciibuf.compare(parse->name) == 0)
 			{
-				
+				{ char tmp2[128]; sprintf(tmp2,"field '%s'", asciibuf.str()); pwLog(tmp2); }
 				strcpy( token, asciibuf.str() );
 
 				// eat '='
+				pwLog("  eating '='");
 				inFile->scanString(asciibuf);
 
+				pwLog("  readUntilSemicolon");
 				readUntilSemicolon( inFile, buffer, WIN_BUFFER_LENGTH );
+				pwLog("  readUntilSemicolon done");
 
-				if (parse->parse( token, &instData, buffer, data ) == FALSE ) 
+				if (parse->parse( token, &instData, buffer, data ) == FALSE )
 				{
 					DEBUG_LOG(( "parseGameObject: Error parsing %s\n", parse->name ));
 					goto cleanupAndExit;
 				}
+				pwLog("  parse->parse done");
 
 				break;
 			}
@@ -2446,17 +2473,19 @@ static GameWindow *parseWindow( File *inFile, char *buffer )
 			} 
 			else if (asciibuf.compare("END") == 0)
 			{
+				pwLog("END: getFontFromTemplate...");
 				// Check to see if we have a header template, if so, set the font equal to that.
-				if(TheHeaderTemplateManager->getFontFromTemplate(instData.m_headerTemplateName))
+				if(TheHeaderTemplateManager && TheHeaderTemplateManager->getFontFromTemplate(instData.m_headerTemplateName))
 					instData.m_font = TheHeaderTemplateManager->getFontFromTemplate(instData.m_headerTemplateName);
 
 				// Create a window using the current description
+				pwLog("END: createWindow...");
 				if( window == NULL )
 					window = createWindow( type, instData.m_id, instData.getStatus(), x, y,
-																 width, height, &instData, data, 
+																 width, height, &instData, data,
 																 systemFunc, inputFunc, tooltipFunc, drawFunc );
+				pwLog("END: createWindow done");
 
-				
 				goto cleanupAndExit;
 
 			} 
@@ -2706,6 +2735,18 @@ WindowLayoutInfo::WindowLayoutInfo() :
 GameWindow *GameWindowManager::winCreateFromScript( AsciiString filenameString,
 																										WindowLayoutInfo *info )
 {
+	auto wndLog = [](const char* fmt, ...) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) {
+			va_list args; va_start(args, fmt);
+			fprintf(logf, "    WND: ");
+			vfprintf(logf, fmt, args);
+			fprintf(logf, "\n");
+			va_end(args);
+			fflush(logf); fclose(logf);
+		}
+	};
+	wndLog("winCreateFromScript('%s')", filenameString.str());
 	const char* filename = filenameString.str();
 	static char buffer[ WIN_BUFFER_LENGTH ]; 		// input buffer for reading
 	GameWindow *firstWindow = NULL;
@@ -2735,15 +2776,19 @@ GameWindow *GameWindowManager::winCreateFromScript( AsciiString filenameString,
 		strcpy( filepath, filename );
 
   // Open the input file
+	wndLog("  opening '%s'...", filepath);
 	inFile = TheFileSystem->openFile(filepath, File::READ);
 	if (inFile == NULL)
 	{
+		wndLog("  FAILED to open '%s'", filepath);
 		DEBUG_LOG(( "WinCreateFromScript: Cannot access file '%s'.\n", filename ));
 		return NULL;
 	}
 
   // read into memory
+	wndLog("  convertToRAMFile...");
   inFile=inFile->convertToRAMFile();
+	wndLog("  convertToRAMFile done");
   
 	// read the file version
 	Int version;
@@ -2774,7 +2819,9 @@ GameWindow *GameWindowManager::winCreateFromScript( AsciiString filenameString,
 
 	}  // end else
 
-	while( TRUE ) 
+	wndLog("  parsing...");
+	int parseCount = 0;
+	while( TRUE )
 	{
 
 		if (inFile->scanString(asciibuf) == FALSE) {
@@ -2864,9 +2911,11 @@ GameWindow *GameWindowManager::winCreateFromScript( AsciiString filenameString,
 		}
 		else if (asciibuf.compare("WINDOW") == 0)
 		{
-
+			parseCount++;
+			wndLog("  parseWindow #%d...", parseCount);
       // Parse window descriptions until the last END is read
       window = parseWindow( inFile, buffer );
+			wndLog("  parseWindow #%d done", parseCount);
 
 			// save first window created
 			if( firstWindow == NULL )
@@ -2878,6 +2927,7 @@ GameWindow *GameWindowManager::winCreateFromScript( AsciiString filenameString,
 
 	}  // end while( TRUE )
 
+	wndLog("  parsing done (%d windows)", parseCount);
 	// close the file
 	inFile->close();
 	inFile = NULL;

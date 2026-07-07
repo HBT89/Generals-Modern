@@ -342,7 +342,7 @@ void BoxRenderObjClass::Init(void)
 	** Set up the materials
 	*/
 	WWASSERT(_BoxMaterial == NULL);
-	_BoxMaterial = nullptr; // TODO: Allocate VertexMaterialClass for BGFX if needed
+	_BoxMaterial = NEW_REF(VertexMaterialClass,());
 	_BoxMaterial->Set_Ambient(0,0,0);
 	_BoxMaterial->Set_Diffuse(0,0,0);
 	_BoxMaterial->Set_Specular(0,0,0);
@@ -1283,4 +1283,14 @@ PrototypeClass * BoxLoaderClass::Load_W3D(ChunkLoadClass & cload)
 */
 BoxPrototypeClass::BoxPrototypeClass(W3dBoxStruct box) : PrototypeClass(), Definition(box) {}
 
+const char * BoxPrototypeClass::Get_Name(void) const { return "Box"; }
+int BoxPrototypeClass::Get_Class_ID(void) const { return 0; }
+RenderObjClass * BoxPrototypeClass::Create(void) {
+	if (Definition.Attributes & W3D_BOX_ATTRIBUTE_ORIENTED) {
+		return NEW_REF(OBBoxRenderObjClass, (Definition));
+	} else {
+		return NEW_REF(AABoxRenderObjClass, (Definition));
+	}
+}
 
+BoxLoaderClass _BoxLoader;

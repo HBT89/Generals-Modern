@@ -453,8 +453,14 @@ WindowMsgHandledType GadgetPushButtonSystem( GameWindow *window, UnsignedInt msg
 		// ------------------------------------------------------------------------
 		case GGM_SET_LABEL:
 		{
+			auto gslLog = [](const char* msg) {
+				FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+				if (logf) { fprintf(logf, "  GSL: %s\n", msg); fflush(logf); fclose(logf); }
+			};
+			gslLog("GGM_SET_LABEL: entering winSetText");
 			// set text into the win instance text data field
 			window->winSetText( *(UnicodeString*)mData1 );
+			gslLog("GGM_SET_LABEL: winSetText returned, about to break");
 			break;
 		}
 
@@ -589,12 +595,18 @@ void GadgetButtonEnableCheckLike( GameWindow *g, Bool makeCheckLike, Bool initia
 //=============================================================================
 void GadgetButtonSetText( GameWindow *g, UnicodeString text )
 {
-
+	auto gbtLog = [](const char* msg) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "  GBT: %s\n", msg); fflush(logf); fclose(logf); }
+	};
+	gbtLog("GadgetButtonSetText: enter");
 	// sanity
 	if( g == NULL )
 		return;
 
+	gbtLog("GadgetButtonSetText: calling winSendSystemMsg GGM_SET_LABEL");
 	TheWindowManager->winSendSystemMsg( g, GGM_SET_LABEL, (WindowMsgData)&text, 0 );
+	gbtLog("GadgetButtonSetText: winSendSystemMsg returned - function exiting");
 
 }  // end GadgetButtonSetText
 

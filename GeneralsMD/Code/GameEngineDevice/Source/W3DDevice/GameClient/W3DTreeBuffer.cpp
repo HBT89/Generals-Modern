@@ -1105,7 +1105,13 @@ for the trees. */
 //=============================================================================
 W3DTreeBuffer::W3DTreeBuffer(void)
 {
-	memset(this, sizeof(W3DTreeBuffer), 0);
+	auto tbLog = [](const char* msg) {
+		FILE *f = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (f) { fprintf(f, "    TB: %s\n", msg); fflush(f); fclose(f); }
+	};
+	tbLog("W3DTreeBuffer ctor start");
+	memset(this, 0, sizeof(W3DTreeBuffer));
+	tbLog("memset done");
 	m_initialized = false;
 	Int i;
 	for	(i=0; i<MAX_BUFFERS; i++) {
@@ -1117,13 +1123,17 @@ W3DTreeBuffer::W3DTreeBuffer(void)
 	m_treeTexture = NULL;
 	m_dwTreeVertexShader = 0;
 	m_dwTreePixelShader = 0;
+	tbLog("clearAllTrees...");
 	clearAllTrees();
+	tbLog("clearAllTrees done");
+	tbLog("allocateTreeBuffers...");
 	allocateTreeBuffers();
+	tbLog("allocateTreeBuffers done");
 	m_initialized = true;
 	m_curSwayVersion = -1;
 
 	m_shadow = NULL;
-
+	tbLog("W3DTreeBuffer ctor done");
 }
 
 
@@ -1235,18 +1245,30 @@ void W3DTreeBuffer::unitMoved(Object *unit)
 //=============================================================================
 void W3DTreeBuffer::allocateTreeBuffers(void)
 {
+	auto tbLog = [](const char* msg) {
+		FILE *f = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (f) { fprintf(f, "    ATB: %s\n", msg); fflush(f); fclose(f); }
+	};
 	Int i;
+	tbLog("allocateTreeBuffers loop start");
 	for	(i=0; i<MAX_BUFFERS; i++) {
 	#ifdef USE_STATIC
+		tbLog("NEW_REF DX8VertexBufferClass STATIC...");
 		m_vertexTree[i]=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZNDUV1,MAX_TREE_VERTEX+4,DX8VertexBufferClass::USAGE_DEFAULT));
+		tbLog("NEW_REF DX8IndexBufferClass STATIC...");
 		m_indexTree[i]=NEW_REF(DX8IndexBufferClass,(MAX_TREE_INDEX+4, DX8IndexBufferClass::USAGE_DEFAULT));
 	#else
+		tbLog("NEW_REF DX8VertexBufferClass DYNAMIC...");
 		m_vertexTree[i]=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZNDUV1,MAX_TREE_VERTEX+4,DX8VertexBufferClass::USAGE_DYNAMIC));
+		tbLog("DX8VertexBufferClass done");
+		tbLog("NEW_REF DX8IndexBufferClass DYNAMIC...");
 		m_indexTree[i]=NEW_REF(DX8IndexBufferClass,(MAX_TREE_INDEX+4, DX8IndexBufferClass::USAGE_DYNAMIC));
+		tbLog("DX8IndexBufferClass done");
 	#endif
 		m_curNumTreeVertices[i]=0;
 		m_curNumTreeIndices[i]=0;
 	}
+	tbLog("loop done; shader loading...");
 
 		//shader decleration
 	// DX8_FVF_XYZNDUV1
@@ -1255,19 +1277,24 @@ void W3DTreeBuffer::allocateTreeBuffers(void)
 		D3DVSD_STREAM( 0 ),
 		D3DVSD_REG( 0, D3DVSDT_FLOAT3 ),  // Position
 		D3DVSD_REG( 1, D3DVSDT_FLOAT3 ),  // Normal
-		D3DVSD_REG( 2, D3DVSDT_D3DCOLOR), // Diffuse color	
+		D3DVSD_REG( 2, D3DVSDT_D3DCOLOR), // Diffuse color
 		D3DVSD_REG( 7, D3DVSDT_FLOAT2 ),  // Tex coord
 		D3DVSD_END()
 	};
 
 	HRESULT hr;
+	tbLog("LoadAndCreateD3DShader Trees.vso...");
 	hr = W3DShaderManager::LoadAndCreateD3DShader("shaders\\Trees.vso", &Declaration[0], 0, true, &m_dwTreeVertexShader);
+	tbLog("Trees.vso done");
 	if (FAILED(hr))
 		return;
 
+	tbLog("LoadAndCreateD3DShader Trees.pso...");
 	hr = W3DShaderManager::LoadAndCreateD3DShader("shaders\\Trees.pso", &Declaration[0], 0, false, &m_dwTreePixelShader);
+	tbLog("Trees.pso done");
 	if (FAILED(hr))
 		return;
+	tbLog("allocateTreeBuffers complete");
 }
 
 //=============================================================================

@@ -18,6 +18,10 @@
 
 #include <windows.h>
 #include <cmath>
+#include <cstdlib>
+#include <cstring>
+#include <cstdint>
+#include <bgfx/bgfx.h>
 
 // ============================================================================
 // D3D Result Codes
@@ -747,6 +751,34 @@ typedef struct _D3DDISPLAYMODE {
     D3DFORMAT Format;
 } D3DDISPLAYMODE;
 
+// D3DBACKBUFFER_TYPE
+typedef DWORD D3DBACKBUFFER_TYPE;
+#ifndef D3DBACKBUFFER_TYPE_MONO
+#define D3DBACKBUFFER_TYPE_MONO 0
+#endif
+#define D3DBACKBUFFER_TYPE_LEFT  1
+#define D3DBACKBUFFER_TYPE_RIGHT 2
+
+// D3DRECT - for Clear() viewport rect
+typedef struct _D3DRECT {
+    LONG x1, y1, x2, y2;
+} D3DRECT;
+
+// D3DGAMMARAMP
+typedef struct _D3DGAMMARAMP {
+    WORD red[256];
+    WORD green[256];
+    WORD blue[256];
+} D3DGAMMARAMP;
+
+// D3DDEVICE_CREATION_PARAMETERS
+typedef struct _D3DDEVICE_CREATION_PARAMETERS {
+    UINT   AdapterOrdinal;
+    DWORD  DeviceType;
+    HWND   hFocusWindow;
+    DWORD  BehaviorFlags;
+} D3DDEVICE_CREATION_PARAMETERS;
+
 #define D3DADAPTER_DEFAULT 0
 
 // ============================================================================
@@ -904,6 +936,36 @@ inline D3DXMATRIX* D3DXMatrixIdentity(D3DXMATRIX* out) {
     return out;
 }
 
+inline D3DXMATRIX* D3DXMatrixScaling(D3DXMATRIX* out, float sx, float sy, float sz) {
+    *out = D3DXMATRIX(); out->m[0][0] = sx; out->m[1][1] = sy; out->m[2][2] = sz; return out;
+}
+inline D3DXMATRIX* D3DXMatrixTranslation(D3DXMATRIX* out, float tx, float ty, float tz) {
+    *out = D3DXMATRIX(); out->m[3][0] = tx; out->m[3][1] = ty; out->m[3][2] = tz; return out;
+}
+inline D3DXMATRIX* D3DXMatrixRotationX(D3DXMATRIX* out, float a) {
+    *out = D3DXMATRIX(); out->m[1][1] = cosf(a); out->m[1][2] = sinf(a);
+    out->m[2][1] = -sinf(a); out->m[2][2] = cosf(a); return out;
+}
+inline D3DXMATRIX* D3DXMatrixRotationY(D3DXMATRIX* out, float a) {
+    *out = D3DXMATRIX(); out->m[0][0] = cosf(a); out->m[0][2] = -sinf(a);
+    out->m[2][0] = sinf(a); out->m[2][2] = cosf(a); return out;
+}
+inline D3DXMATRIX* D3DXMatrixRotationZ(D3DXMATRIX* out, float a) {
+    *out = D3DXMATRIX(); out->m[0][0] = cosf(a); out->m[0][1] = sinf(a);
+    out->m[1][0] = -sinf(a); out->m[1][1] = cosf(a); return out;
+}
+
+// D3DXMATRIX multiplication operator for chained transforms
+inline D3DXMATRIX operator*(const D3DXMATRIX& a, const D3DXMATRIX& b) {
+    D3DXMATRIX out;
+    for (int i = 0; i < 4; i++)
+        for (int j = 0; j < 4; j++) {
+            out.m[i][j] = 0.0f;
+            for (int k = 0; k < 4; k++) out.m[i][j] += a.m[i][k] * b.m[k][j];
+        }
+    return out;
+}
+
 // D3DXGetFVFVertexSize - compute vertex size from FVF flags
 inline UINT D3DXGetFVFVertexSize(DWORD fvf) {
     UINT size = 0;
@@ -929,6 +991,7 @@ inline UINT D3DXGetFVFVertexSize(DWORD fvf) {
 // ============================================================================
 
 struct IUnknown_Stub {
+    virtual ~IUnknown_Stub() {}
     virtual ULONG AddRef() { return 1; }
     virtual ULONG Release() { return 0; }
 };
@@ -940,6 +1003,10 @@ struct IDirect3DBaseTexture8 : public IUnknown_Stub {
     virtual UINT GetLevelCount() { return 1; }
     virtual DWORD GetPriority() { return 0; }
     virtual DWORD SetPriority(DWORD Priority) { (void)Priority; return 0; }
+    virtual DWORD SetLOD(DWORD LOD) { (void)LOD; return 0; }
+    virtual DWORD GetLOD() { return 0; }
+    virtual HRESULT SetAutoGenFilterType(DWORD FilterType) { (void)FilterType; return D3D_OK; }
+    virtual DWORD GetAutoGenFilterType() { return 0; }
 };
 
 struct IDirect3DTexture8 : public IDirect3DBaseTexture8 {
@@ -1020,36 +1087,298 @@ struct IDirect3DSwapChain8 : public IUnknown_Stub {
     }
 };
 
+// ============================================================================
+// Helper: bytes per pixel for a D3DFORMAT value
+// Used by concrete BGFX resource implementations below.
+// ============================================================================
+inline UINT D3DFormatBytesPerPixel(D3DFORMAT fmt) {
+    switch (fmt) {
+    case D3DFMT_A8R8G8B8: case D3DFMT_X8R8G8B8: return 4;
+    case D3DFMT_R8G8B8:   return 3;
+    case D3DFMT_R5G6B5:   case D3DFMT_X1R5G5B5: case D3DFMT_A1R5G5B5:
+    case D3DFMT_A4R4G4B4: case D3DFMT_A8R3G3B2: case D3DFMT_X4R4G4B4:
+    case D3DFMT_A8P8:     case D3DFMT_A8L8:     case D3DFMT_V8U8:
+    case D3DFMT_L6V5U5:   case D3DFMT_G16R16:   return 2;
+    case D3DFMT_R3G3B2:   case D3DFMT_A8:       case D3DFMT_P8:
+    case D3DFMT_L8:       case D3DFMT_A4L4:     return 1;
+    default: return 4;
+    }
+}
+
+// ============================================================================
+// Concrete BGFX-backed implementations of the DX8 resource interfaces.
+// These provide real CPU memory so Lock/Unlock actually work.
+// The objects are ref-counted and self-delete in Release().
+// ============================================================================
+
+// BGFXVertexBuffer8 — concrete vertex buffer backed by CPU memory.
+// DX8VertexBufferClass calls Lock(0,0,...) to get a write pointer,
+// writes vertices, then Unlock(). No GPU upload needed for the sorting
+// renderer path; for the DX8 path we keep data in CPU memory for now.
+struct BGFXVertexBuffer8 : public IDirect3DVertexBuffer8 {
+    uint8_t* m_data;
+    UINT     m_size;
+    LONG     m_refs;
+
+    BGFXVertexBuffer8(UINT size)
+        : m_data(size ? static_cast<uint8_t*>(malloc(size)) : nullptr)
+        , m_size(size)
+        , m_refs(1)
+    {
+        if (m_data) memset(m_data, 0, size);
+    }
+    // Note: destructor is called via delete this inside Release(), where this
+    // has static type BGFXVertexBuffer8*, so the right dtor runs without needing
+    // a virtual dtor on the base.
+    ~BGFXVertexBuffer8() { free(m_data); m_data = nullptr; }
+
+    ULONG AddRef()  override { return ++m_refs; }
+    ULONG Release() override { ULONG r = --m_refs; if (!r) delete this; return r; }
+
+    HRESULT Lock(UINT OffsetToLock, UINT SizeToLock, BYTE** ppbData, DWORD Flags) override {
+        (void)SizeToLock; (void)Flags;
+        if (ppbData) *ppbData = m_data ? m_data + OffsetToLock : nullptr;
+        return D3D_OK;
+    }
+    HRESULT Unlock() override { return D3D_OK; }
+};
+
+// BGFXIndexBuffer8 — concrete index buffer backed by CPU memory.
+struct BGFXIndexBuffer8 : public IDirect3DIndexBuffer8 {
+    uint8_t* m_data;
+    UINT     m_size;
+    LONG     m_refs;
+
+    BGFXIndexBuffer8(UINT size)
+        : m_data(size ? static_cast<uint8_t*>(malloc(size)) : nullptr)
+        , m_size(size)
+        , m_refs(1)
+    {
+        if (m_data) memset(m_data, 0, size);
+    }
+    ~BGFXIndexBuffer8() { free(m_data); m_data = nullptr; }
+
+    ULONG AddRef()  override { return ++m_refs; }
+    ULONG Release() override { ULONG r = --m_refs; if (!r) delete this; return r; }
+
+    HRESULT Lock(UINT OffsetToLock, UINT SizeToLock, BYTE** ppbData, DWORD Flags) override {
+        (void)SizeToLock; (void)Flags;
+        if (ppbData) *ppbData = m_data ? m_data + OffsetToLock : nullptr;
+        return D3D_OK;
+    }
+    HRESULT Unlock() override { return D3D_OK; }
+};
+
+// BGFXSurface8 — concrete surface backed by CPU memory.
+// Used for font rendering: FontCharsClass blits GDI chars into a locked
+// surface via LockRect/UnlockRect. The CPU buffer is the ground truth;
+// texture upload happens when the texture is actually drawn.
+struct BGFXSurface8 : public IDirect3DSurface8 {
+    uint8_t*  m_data;
+    UINT      m_width;
+    UINT      m_height;
+    INT       m_pitch;   // bytes per row
+    D3DFORMAT m_format;
+    LONG      m_refs;
+    bool      m_dirty;  // pixel data written since last GPU upload
+
+    BGFXSurface8(UINT w, UINT h, D3DFORMAT fmt)
+        : m_width(w), m_height(h), m_format(fmt), m_refs(1), m_dirty(false)
+    {
+        UINT bpp = D3DFormatBytesPerPixel(fmt);
+        m_pitch  = static_cast<INT>(w * bpp);
+        UINT sz  = static_cast<UINT>(m_pitch) * h;
+        m_data   = sz ? static_cast<uint8_t*>(malloc(sz)) : nullptr;
+        if (m_data) memset(m_data, 0, sz);
+    }
+    ~BGFXSurface8() { free(m_data); m_data = nullptr; }
+
+    ULONG AddRef()  override { return ++m_refs; }
+    ULONG Release() override { ULONG r = --m_refs; if (!r) delete this; return r; }
+
+    HRESULT GetDesc(D3DSURFACE_DESC* pDesc) override {
+        if (pDesc) {
+            memset(pDesc, 0, sizeof(*pDesc));
+            pDesc->Format = m_format;
+            pDesc->Width  = m_width;
+            pDesc->Height = m_height;
+        }
+        return D3D_OK;
+    }
+    HRESULT LockRect(D3DLOCKED_RECT* pLockedRect, const RECT* pRect, DWORD Flags) override {
+        (void)pRect; (void)Flags;
+        if (pLockedRect) {
+            pLockedRect->Pitch = m_pitch;
+            pLockedRect->pBits = m_data;
+        }
+        return D3D_OK;
+    }
+    // Mark dirty so BGFXWrapper uploads pixel data to GPU on next draw.
+    HRESULT UnlockRect() override { m_dirty = true; return D3D_OK; }
+};
+
+// ---------------------------------------------------------------------------
+// Texture handle cache — prevents bgfx handle recycling between subsystems.
+// When a BGFXTexture8 is destroyed, its GPU handle goes here instead of back
+// to bgfx's free pool.  When a new texture of the same size is created, we
+// pull a cached handle and just updateTexture2D with new content.
+// This stops font glyph handles (64x64) from being recycled by terrain.
+// ---------------------------------------------------------------------------
+struct TexHandleCache {
+    struct Entry { unsigned short idx; UINT w; UINT h; };
+    static const int MAX_CACHED = 64;
+    static Entry s_cache[MAX_CACHED];
+    static int   s_count;
+
+    static unsigned short Take(UINT w, UINT h) {
+        for (int i = 0; i < s_count; i++) {
+            if (s_cache[i].w == w && s_cache[i].h == h) {
+                unsigned short idx = s_cache[i].idx;
+                s_cache[i] = s_cache[--s_count]; // swap-remove
+                return idx;
+            }
+        }
+        return 0xFFFF; // nothing cached
+    }
+
+    static void Put(unsigned short idx, UINT w, UINT h) {
+        if (idx == 0xFFFF) return;
+        if (s_count < MAX_CACHED) {
+            s_cache[s_count++] = { idx, w, h };
+        } else {
+            // Cache full — must destroy to avoid leak
+            bgfx::TextureHandle th; th.idx = idx;
+            bgfx::destroy(th);
+        }
+    }
+};
+
+// BGFXTexture8 — concrete texture backed by a BGFXSurface8 level 0.
+// The game writes pixels via LockRect/UnlockRect on the mip level 0.
+// GPU upload is handled by SubmitDraw in BGFXWrapper when m_bgfxDirty is true.
+struct BGFXTexture8 : public IDirect3DTexture8 {
+    BGFXSurface8*  m_surface;   // level 0 CPU pixel data
+    unsigned short m_bgfxIdx;   // bgfx::TextureHandle.idx (0xFFFF = not yet uploaded)
+    bool           m_bgfxDirty; // pixel data written since last GPU upload
+    LONG           m_refs;
+
+    BGFXTexture8(UINT w, UINT h, D3DFORMAT fmt)
+        : m_surface(new BGFXSurface8(w, h, fmt)), m_bgfxIdx(0xFFFF), m_bgfxDirty(false), m_refs(1) {}
+    ~BGFXTexture8() {
+        // Cache the GPU handle instead of destroying it — prevents handle
+        // recycling between font glyphs and terrain textures.
+        if (m_bgfxIdx != 0xFFFF && m_surface) {
+            TexHandleCache::Put(m_bgfxIdx, m_surface->m_width, m_surface->m_height);
+            m_bgfxIdx = 0xFFFF;
+        } else if (m_bgfxIdx != 0xFFFF) {
+            bgfx::TextureHandle th; th.idx = m_bgfxIdx;
+            bgfx::destroy(th);
+            m_bgfxIdx = 0xFFFF;
+        }
+        if (m_surface) { m_surface->Release(); m_surface = nullptr; }
+    }
+
+    ULONG AddRef()  override { return ++m_refs; }
+    ULONG Release() override { ULONG r = --m_refs; if (!r) delete this; return r; }
+
+    UINT GetLevelCount() override { return 1; }
+
+    HRESULT GetSurfaceLevel(UINT Level, IDirect3DSurface8** ppSurface) override {
+        if (ppSurface) {
+            if (Level == 0 && m_surface) {
+                m_surface->AddRef();
+                *ppSurface = m_surface;
+            } else if (Level > 0 && m_surface) {
+                // Allocate a correctly-sized dummy surface for higher mip levels.
+                // The textureloader writes mip data into it; we discard it (only
+                // level 0 is uploaded to GPU). Without this, the loop in
+                // textureloader.cpp crashes dereferencing a null pointer.
+                UINT mipW = m_surface->m_width  >> Level; if (mipW < 1) mipW = 1;
+                UINT mipH = m_surface->m_height >> Level; if (mipH < 1) mipH = 1;
+                *ppSurface = new BGFXSurface8(mipW, mipH, m_surface->m_format);
+            } else {
+                *ppSurface = nullptr;
+            }
+        }
+        return D3D_OK;
+    }
+    HRESULT GetLevelDesc(UINT Level, D3DSURFACE_DESC* pDesc) override {
+        if (Level == 0 && m_surface) return m_surface->GetDesc(pDesc);
+        if (pDesc) memset(pDesc, 0, sizeof(*pDesc));
+        return D3D_OK;
+    }
+    HRESULT LockRect(UINT Level, D3DLOCKED_RECT* pLockedRect, const RECT* pRect, DWORD Flags) override {
+        if (Level == 0 && m_surface) return m_surface->LockRect(pLockedRect, pRect, Flags);
+        if (pLockedRect) { pLockedRect->Pitch = 0; pLockedRect->pBits = nullptr; }
+        return D3D_OK;
+    }
+    HRESULT UnlockRect(UINT Level) override {
+        if (Level == 0 && m_surface) {
+            m_bgfxDirty = true; // signal BGFXWrapper to re-upload pixel data
+            return m_surface->UnlockRect();
+        }
+        return D3D_OK;
+    }
+};
+
 struct IDirect3DDevice8 : public IUnknown_Stub {
     virtual HRESULT TestCooperativeLevel() { return D3D_OK; }
+    virtual HRESULT CreateTexture(UINT Width, UINT Height, UINT Levels, DWORD Usage,
+        D3DFORMAT Format, D3DPOOL Pool, IDirect3DTexture8** ppTexture) {
+        (void)Levels; (void)Usage; (void)Pool;
+        if (ppTexture) *ppTexture = new BGFXTexture8(Width, Height, Format);
+        return D3D_OK;
+    }
+    virtual HRESULT CreateCubeTexture(UINT EdgeLength, UINT Levels, DWORD Usage, D3DFORMAT Format,
+        D3DPOOL Pool, IDirect3DCubeTexture8** ppCubeTexture) {
+        (void)EdgeLength; (void)Levels; (void)Usage; (void)Format; (void)Pool;
+        if (ppCubeTexture) *ppCubeTexture = nullptr;
+        return D3D_OK;
+    }
+    virtual HRESULT CreateVolumeTexture(UINT Width, UINT Height, UINT Depth, UINT Levels,
+        DWORD Usage, D3DFORMAT Format, D3DPOOL Pool, void** ppVolumeTexture) {
+        (void)Width; (void)Height; (void)Depth; (void)Levels; (void)Usage; (void)Format; (void)Pool;
+        if (ppVolumeTexture) *ppVolumeTexture = nullptr;
+        return D3D_OK;
+    }
     virtual HRESULT CreateVertexBuffer(UINT Length, DWORD Usage, DWORD FVF, D3DPOOL Pool,
         IDirect3DVertexBuffer8** ppVertexBuffer) {
-        (void)Length; (void)Usage; (void)FVF; (void)Pool;
-        if (ppVertexBuffer) *ppVertexBuffer = nullptr;
+        (void)Usage; (void)FVF; (void)Pool;
+        if (ppVertexBuffer) *ppVertexBuffer = new BGFXVertexBuffer8(Length);
         return D3D_OK;
     }
     virtual HRESULT CreateIndexBuffer(UINT Length, DWORD Usage, D3DFORMAT Format, D3DPOOL Pool,
         IDirect3DIndexBuffer8** ppIndexBuffer) {
-        (void)Length; (void)Usage; (void)Format; (void)Pool;
-        if (ppIndexBuffer) *ppIndexBuffer = nullptr;
+        (void)Usage; (void)Format; (void)Pool;
+        if (ppIndexBuffer) *ppIndexBuffer = new BGFXIndexBuffer8(Length);
         return D3D_OK;
     }
     virtual UINT GetAvailableTextureMem() { return 256 * 1024 * 1024; }
     virtual HRESULT GetDeviceCaps(D3DCAPS8* pCaps) {
-        (void)pCaps; return D3D_OK;
+        if (pCaps) memset(pCaps, 0, sizeof(*pCaps)); return D3D_OK;
     }
     virtual HRESULT ResourceManagerDiscardBytes(DWORD Bytes) {
         (void)Bytes; return D3D_OK;
     }
     virtual HRESULT CreateImageSurface(UINT Width, UINT Height, D3DFORMAT Format,
         IDirect3DSurface8** ppSurface) {
-        (void)Width; (void)Height; (void)Format;
-        if (ppSurface) *ppSurface = nullptr;
+        if (ppSurface) *ppSurface = new BGFXSurface8(Width, Height, Format);
         return D3D_OK;
     }
     virtual HRESULT CopyRects(IDirect3DSurface8* pSrc, const RECT* pSrcRects, UINT cRects,
         IDirect3DSurface8* pDst, const POINT* pDstPoints) {
-        (void)pSrc; (void)pSrcRects; (void)cRects; (void)pDst; (void)pDstPoints;
+        (void)pSrcRects; (void)cRects; (void)pDstPoints;
+        // Copy CPU pixel data from source surface to destination surface and mark dirty
+        // so BGFXWrapper will upload the pixels to GPU on the next draw call.
+        BGFXSurface8* src = static_cast<BGFXSurface8*>(pSrc);
+        BGFXSurface8* dst = static_cast<BGFXSurface8*>(pDst);
+        if (src && dst && src->m_data && dst->m_data) {
+            uint32_t dstSz = (uint32_t)dst->m_pitch * dst->m_height;
+            uint32_t srcSz = (uint32_t)src->m_pitch * src->m_height;
+            uint32_t copySz = dstSz < srcSz ? dstSz : srcSz;
+            if (copySz > 0) memcpy(dst->m_data, src->m_data, copySz);
+            dst->m_dirty = true;
+        }
         return D3D_OK;
     }
     virtual HRESULT CreateVertexShader(const DWORD* pDeclaration, const DWORD* pFunction,
@@ -1067,14 +1396,129 @@ struct IDirect3DDevice8 : public IUnknown_Stub {
     }
     virtual HRESULT SetPixelShader(DWORD Handle) { (void)Handle; return D3D_OK; }
     virtual HRESULT DeletePixelShader(DWORD Handle) { (void)Handle; return D3D_OK; }
+    // Drawing methods (stubs - actual rendering via BGFX)
+    virtual HRESULT DrawPrimitive(D3DPRIMITIVETYPE, UINT, UINT) { return D3D_OK; }
+    virtual HRESULT DrawIndexedPrimitive(D3DPRIMITIVETYPE, UINT, UINT, UINT, UINT) { return D3D_OK; }
+    virtual HRESULT DrawPrimitiveUP(D3DPRIMITIVETYPE, UINT, const void*, UINT) { return D3D_OK; }
+    virtual HRESULT DrawIndexedPrimitiveUP(D3DPRIMITIVETYPE, UINT, UINT, UINT, const void*, D3DFORMAT, const void*, UINT) { return D3D_OK; }
+    // State query methods (stubs)
+    virtual HRESULT GetRenderState(D3DRENDERSTATETYPE State, DWORD* pValue) { (void)State; if (pValue) *pValue = 0; return D3D_OK; }
+    virtual HRESULT SetRenderState(D3DRENDERSTATETYPE State, DWORD Value) { (void)State; (void)Value; return D3D_OK; }
+    virtual HRESULT GetRenderTarget(IDirect3DSurface8** ppRenderTarget) { if (ppRenderTarget) *ppRenderTarget = nullptr; return D3D_OK; }
+    virtual HRESULT SetRenderTarget(IDirect3DSurface8*, IDirect3DSurface8*) { return D3D_OK; }
+    virtual HRESULT GetTransform(D3DTRANSFORMSTATETYPE State, D3DMATRIX* pMatrix) { (void)State; if (pMatrix) memset(pMatrix, 0, sizeof(*pMatrix)); return D3D_OK; }
+    virtual HRESULT SetTransform(D3DTRANSFORMSTATETYPE State, const D3DMATRIX* pMatrix) { (void)State; (void)pMatrix; return D3D_OK; }
+    virtual HRESULT GetDepthStencilSurface(IDirect3DSurface8** ppZStencilSurface) { if (ppZStencilSurface) *ppZStencilSurface = nullptr; return D3D_OK; }
+    virtual HRESULT SetStreamSource(UINT, IDirect3DVertexBuffer8*, UINT) { return D3D_OK; }
+    virtual HRESULT GetStreamSource(UINT, IDirect3DVertexBuffer8** ppVB, UINT* pStr) { if (ppVB) *ppVB = nullptr; if (pStr) *pStr = 0; return D3D_OK; }
+    virtual HRESULT SetIndices(IDirect3DIndexBuffer8*, UINT) { return D3D_OK; }
+    virtual HRESULT GetIndices(IDirect3DIndexBuffer8** ppIB, UINT* pBaseIdx) { if (ppIB) *ppIB = nullptr; if (pBaseIdx) *pBaseIdx = 0; return D3D_OK; }
+    virtual HRESULT SetTexture(DWORD, IDirect3DBaseTexture8*) { return D3D_OK; }
+    virtual HRESULT GetTexture(DWORD, IDirect3DBaseTexture8** ppTex) { if (ppTex) *ppTex = nullptr; return D3D_OK; }
+    virtual HRESULT SetTextureStageState(DWORD, D3DTEXTURESTAGESTATETYPE, DWORD) { return D3D_OK; }
+    virtual HRESULT GetTextureStageState(DWORD, D3DTEXTURESTAGESTATETYPE, DWORD* pVal) { if (pVal) *pVal = 0; return D3D_OK; }
+    virtual HRESULT SetLight(DWORD, const D3DLIGHT8*) { return D3D_OK; }
+    virtual HRESULT LightEnable(DWORD, BOOL) { return D3D_OK; }
+    virtual HRESULT SetViewport(const D3DVIEWPORT8*) { return D3D_OK; }
+    virtual HRESULT GetViewport(D3DVIEWPORT8* pVP) { if (pVP) memset(pVP, 0, sizeof(*pVP)); return D3D_OK; }
+    virtual HRESULT Clear(DWORD, const D3DRECT*, DWORD, D3DCOLOR, float, DWORD) { return D3D_OK; }
+    virtual HRESULT BeginScene() { return D3D_OK; }
+    virtual HRESULT EndScene() { return D3D_OK; }
+    virtual HRESULT Present(const RECT*, const RECT*, HWND, const RGNDATA*) { return D3D_OK; }
+    virtual HRESULT GetBackBuffer(UINT, D3DBACKBUFFER_TYPE, IDirect3DSurface8** ppSurf) { if (ppSurf) *ppSurf = nullptr; return D3D_OK; }
+    virtual HRESULT Reset(D3DPRESENT_PARAMETERS*) { return D3D_OK; }
+    virtual HRESULT ValidateDevice(DWORD* pPass) { if (pPass) *pPass = 0; return D3D_OK; }
+    virtual HRESULT SetMaterial(const D3DMATERIAL8*) { return D3D_OK; }
+    virtual HRESULT GetMaterial(D3DMATERIAL8* pMat) { if (pMat) memset(pMat, 0, sizeof(*pMat)); return D3D_OK; }
+    virtual HRESULT SetVertexShaderConstant(DWORD, const void*, DWORD) { return D3D_OK; }
+    virtual HRESULT SetPixelShaderConstant(DWORD, const void*, DWORD) { return D3D_OK; }
+    virtual HRESULT GetVertexShader(DWORD* pH) { if (pH) *pH = 0; return D3D_OK; }
+    virtual HRESULT GetPixelShader(DWORD* pH) { if (pH) *pH = 0; return D3D_OK; }
+    virtual HRESULT SetClipPlane(DWORD, const float*) { return D3D_OK; }
+    virtual HRESULT BeginStateBlock() { return D3D_OK; }
+    virtual HRESULT EndStateBlock(DWORD* pH) { if (pH) *pH = 0; return D3D_OK; }
+    virtual HRESULT ApplyStateBlock(DWORD) { return D3D_OK; }
+    virtual HRESULT DeleteStateBlock(DWORD) { return D3D_OK; }
+    virtual void SetGammaRamp(DWORD, const D3DGAMMARAMP*) {}
+    virtual void SetCursorPosition(int, int, DWORD) {}
+    virtual BOOL ShowCursor(BOOL) { return FALSE; }
+    virtual HRESULT SetCursorProperties(UINT, UINT, IDirect3DSurface8*) { return D3D_OK; }
+    virtual HRESULT GetDisplayMode(D3DDISPLAYMODE* pMode) { if (pMode) memset(pMode, 0, sizeof(*pMode)); return D3D_OK; }
+    virtual HRESULT GetCreationParameters(D3DDEVICE_CREATION_PARAMETERS* pP) { if (pP) memset(pP, 0, sizeof(*pP)); return D3D_OK; }
+    virtual HRESULT ProcessVertices(UINT, UINT, UINT, IDirect3DVertexBuffer8*, DWORD) { return D3D_OK; }
+    virtual HRESULT GetFrontBuffer(IDirect3DSurface8*) { return D3D_OK; }
+    virtual HRESULT UpdateTexture(IDirect3DBaseTexture8*, IDirect3DBaseTexture8*) { return D3D_OK; }
 };
 
-struct IDirect3D8 : public IUnknown_Stub {};
+// D3DENUM flags
+#define D3DENUM_NO_WHQL_LEVEL  0x00000002
+
+struct IDirect3D8 : public IUnknown_Stub {
+    virtual HRESULT RegisterSoftwareDevice(void* pInitializeFunction) { (void)pInitializeFunction; return D3D_OK; }
+    virtual UINT GetAdapterCount() { return 1; }
+    virtual HRESULT GetAdapterIdentifier(UINT Adapter, DWORD Flags, D3DADAPTER_IDENTIFIER8* pIdentifier) {
+        (void)Adapter; (void)Flags;
+        if (pIdentifier) memset(pIdentifier, 0, sizeof(D3DADAPTER_IDENTIFIER8));
+        return D3D_OK;
+    }
+    virtual UINT GetAdapterModeCount(UINT Adapter) { (void)Adapter; return 1; }
+    virtual HRESULT EnumAdapterModes(UINT Adapter, UINT Mode, D3DDISPLAYMODE* pMode) {
+        (void)Adapter; (void)Mode;
+        if (pMode) memset(pMode, 0, sizeof(D3DDISPLAYMODE));
+        return D3D_OK;
+    }
+    virtual HRESULT GetAdapterDisplayMode(UINT Adapter, D3DDISPLAYMODE* pMode) {
+        (void)Adapter;
+        if (pMode) { pMode->Width = 1920; pMode->Height = 1080; pMode->RefreshRate = 60; pMode->Format = D3DFMT_X8R8G8B8; }
+        return D3D_OK;
+    }
+    virtual HRESULT CheckDeviceType(UINT, DWORD, D3DFORMAT, D3DFORMAT, BOOL) { return D3D_OK; }
+    virtual HRESULT CheckDeviceFormat(UINT, DWORD, D3DFORMAT, DWORD, DWORD, D3DFORMAT) { return D3D_OK; }
+    virtual HRESULT CheckDeviceMultiSampleType(UINT, DWORD, D3DFORMAT, BOOL, DWORD) { return D3D_OK; }
+    virtual HRESULT CheckDepthStencilMatch(UINT, DWORD, D3DFORMAT, D3DFORMAT, D3DFORMAT) { return D3D_OK; }
+    virtual HRESULT GetDeviceCaps(UINT Adapter, DWORD DeviceType, D3DCAPS8* pCaps) {
+        (void)Adapter; (void)DeviceType;
+        if (pCaps) memset(pCaps, 0, sizeof(D3DCAPS8));
+        return D3D_OK;
+    }
+    virtual HMONITOR GetAdapterMonitor(UINT Adapter) { (void)Adapter; return nullptr; }
+    virtual HRESULT CreateDevice(UINT Adapter, DWORD DeviceType, HWND hFocusWindow, DWORD BehaviorFlags,
+        D3DPRESENT_PARAMETERS* pPresentationParameters, IDirect3DDevice8** ppReturnedDeviceInterface) {
+        (void)Adapter; (void)DeviceType; (void)hFocusWindow; (void)BehaviorFlags; (void)pPresentationParameters;
+        if (ppReturnedDeviceInterface) *ppReturnedDeviceInterface = nullptr;
+        return D3D_OK;
+    }
+};
 
 typedef IDirect3DSurface8* LPDIRECT3DSURFACE8;
 typedef IDirect3DTexture8* LPDIRECT3DTEXTURE8;
 typedef IDirect3DBaseTexture8* LPDIRECT3DBASETEXTURE8;
 typedef IDirect3DDevice8* LPDIRECT3DDEVICE8;
+typedef IDirect3DVertexBuffer8* LPDIRECT3DVERTEXBUFFER8;
+typedef IDirect3DIndexBuffer8* LPDIRECT3DINDEXBUFFER8;
+typedef IDirect3DCubeTexture8* LPDIRECT3DCUBETEXTURE8;
+typedef IDirect3DSwapChain8* LPDIRECT3DSWAPCHAIN8;
+
+// D3D render state flag constants missing from earlier headers
+#define D3DCOLORWRITEENABLE_RED   0x00000001
+#define D3DCOLORWRITEENABLE_GREEN 0x00000002
+#define D3DCOLORWRITEENABLE_BLUE  0x00000004
+#define D3DCOLORWRITEENABLE_ALPHA 0x00000008
+
+#define D3DWRAP_U  0x00000001
+#define D3DWRAP_V  0x00000002
+#define D3DWRAP_W  0x00000004
+
+#define D3DPMISCCAPS_COLORWRITEENABLE 0x00002000
+#define D3DPMISCCAPS_BLENDOP          0x00004000
+
+#define D3DCURSOR_IMMEDIATE_UPDATE 0x00000001
+
+#define D3DSTATUS_CLIPUNIONALL       0x0000FFFF
+#define D3DSTATUS_CLIPINTERSECTALL   0xFFFF0000
+
+// D3D Texture lock flags
+#define D3DLOCK_NO_DIRTY_UPDATE  0x00008000
 
 // D3DX surface/texture operations (stubs)
 #define D3DX_FILTER_NONE            0x00000001
@@ -1095,8 +1539,31 @@ typedef struct _D3DXIMAGE_INFO {
 } D3DXIMAGE_INFO;
 
 // D3DX function stubs
-inline HRESULT D3DXLoadSurfaceFromSurface(IDirect3DSurface8*, void*, void*, IDirect3DSurface8*, void*, void*, DWORD, D3DCOLOR) { return D3D_OK; }
-inline HRESULT D3DXLoadSurfaceFromMemory(IDirect3DSurface8*, void*, void*, const void*, D3DFORMAT, UINT, void*, void*, DWORD, D3DCOLOR) { return D3D_OK; }
+inline HRESULT D3DXLoadSurfaceFromSurface(IDirect3DSurface8* pDst, void*, void*, IDirect3DSurface8* pSrc, void*, void*, DWORD, D3DCOLOR) {
+    // Simple memcpy between BGFXSurface8 objects (same as _Copy_DX8_Rects)
+    if (!pDst || !pSrc) return D3D_OK;
+    BGFXSurface8* src = static_cast<BGFXSurface8*>(pSrc);
+    BGFXSurface8* dst = static_cast<BGFXSurface8*>(pDst);
+    if (!src->m_data || !dst->m_data) return D3D_OK;
+    uint32_t dstSz = (uint32_t)dst->m_pitch * dst->m_height;
+    uint32_t srcSz = (uint32_t)src->m_pitch * src->m_height;
+    uint32_t copySz = dstSz < srcSz ? dstSz : srcSz;
+    if (copySz > 0) memcpy(dst->m_data, src->m_data, copySz);
+    dst->m_dirty = true;
+    return D3D_OK;
+}
+inline HRESULT D3DXLoadSurfaceFromMemory(IDirect3DSurface8* pDst, void*, void*, const void* pSrcMem, D3DFORMAT, UINT SrcPitch, void*, void*, DWORD, D3DCOLOR) {
+    // Copy raw pixel data into BGFXSurface8
+    if (!pDst || !pSrcMem) return D3D_OK;
+    BGFXSurface8* dst = static_cast<BGFXSurface8*>(pDst);
+    if (!dst->m_data) return D3D_OK;
+    uint32_t dstSz = (uint32_t)dst->m_pitch * dst->m_height;
+    uint32_t srcSz = SrcPitch * dst->m_height;
+    uint32_t copySz = dstSz < srcSz ? dstSz : srcSz;
+    if (copySz > 0) memcpy(dst->m_data, pSrcMem, copySz);
+    dst->m_dirty = true;
+    return D3D_OK;
+}
 inline HRESULT D3DXCreateTextureFromFileInMemory(IDirect3DDevice8*, const void*, UINT, IDirect3DTexture8**) { return D3D_OK; }
 inline HRESULT D3DXCreateTextureFromFileInMemoryEx(IDirect3DDevice8*, const void*, UINT, UINT, UINT, UINT, DWORD, D3DFORMAT, D3DPOOL, DWORD, DWORD, D3DCOLOR, D3DXIMAGE_INFO*, void*, IDirect3DTexture8**) { return D3D_OK; }
 inline HRESULT D3DXSaveTextureToFileA(const char*, DWORD, IDirect3DBaseTexture8*, void*) { return D3D_OK; }
@@ -1138,6 +1605,17 @@ struct D3DXMATRIX {
     D3DXMATRIX() { memset(m, 0, sizeof(m)); }
     float& operator()(int r, int c) { return m[r][c]; }
     float operator()(int r, int c) const { return m[r][c]; }
+    D3DXMATRIX& operator*=(const D3DXMATRIX& rhs) {
+        D3DXMATRIX tmp;
+        for (int i = 0; i < 4; i++)
+            for (int j = 0; j < 4; j++) {
+                tmp.m[i][j] = 0.0f;
+                for (int k = 0; k < 4; k++)
+                    tmp.m[i][j] += m[i][k] * rhs.m[k][j];
+            }
+        *this = tmp;
+        return *this;
+    }
 };
 typedef D3DXMATRIX* LPD3DXMATRIX;
 #endif // _D3DX8MATH_H_
@@ -1163,9 +1641,10 @@ typedef D3DXMATRIX* LPD3DXMATRIX;
 #define D3DVSDE_TEXCOORD1   8
 #define D3DVSDE_TEXCOORD2   9
 
-// D3DX shader compilation stubs
-inline HRESULT D3DXAssembleShader(const void*, UINT, DWORD, LPD3DXBUFFER*, LPD3DXBUFFER*, LPD3DXBUFFER*) { return D3D_OK; }
-inline HRESULT D3DXAssembleShaderFromFile(const char*, DWORD, LPD3DXBUFFER*, LPD3DXBUFFER*, LPD3DXBUFFER*) { return D3D_OK; }
+// D3DX shader compilation stubs — return E_NOTIMPL so callers skip the
+// compiled-shader usage path (avoids uninitialized-pointer crashes).
+inline HRESULT D3DXAssembleShader(const void*, UINT, DWORD, LPD3DXBUFFER*, LPD3DXBUFFER*, LPD3DXBUFFER*) { return E_NOTIMPL; }
+inline HRESULT D3DXAssembleShaderFromFile(const char*, DWORD, LPD3DXBUFFER*, LPD3DXBUFFER*, LPD3DXBUFFER*) { return E_NOTIMPL; }
 
 // ============================================================================
 // DirectDraw Compatibility (for DDS file loading)

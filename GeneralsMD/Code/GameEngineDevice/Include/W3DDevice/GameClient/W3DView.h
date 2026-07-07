@@ -281,6 +281,7 @@ private:
 	Region2D m_cameraConstraint;										///< m_pos should be constrained to be within this area
 	Bool m_cameraConstraintValid;										///< if f, recalc cam constraints
 
+	float getWorldScale() const { return 1.0f; }		///< stub: world-to-screen scale factor
 	void setCameraTransform( void );								///< set the transform matrix of m_3DCamera, based on m_pos & m_angle
 	void buildCameraTransform( Matrix3D *transform ) ;			///< calculate (but do not set) the transform matrix of m_3DCamera, based on m_pos & m_angle
 	void calcCameraConstraints() ;			///< recalc m_cameraConstraint

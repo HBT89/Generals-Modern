@@ -254,11 +254,17 @@ void GameEngine::setFramesPerSecondLimit( Int fps )
  * Initialize the game engine by initializing the GameLogic and GameClient.
  */
 void GameEngine::init( void ) {} /// @todo: I changed this to take argc & argv so we can parse those after the GDF is loaded.  We need to rethink this immediately as it is a nasty hack
+static void bgfxLog(const char* msg) {
+	FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+	if (logf) { fprintf(logf, "  init: %s\n", msg); fclose(logf); }
+}
 void GameEngine::init( int argc, char *argv[] )
 {
 	try {
+		bgfxLog("enter try block");
 		//create an INI object to use for loading stuff
 		INI ini;
+		bgfxLog("INI created");
 
 #ifdef DEBUG_LOGGING
 		if (TheVersion)
@@ -308,7 +314,9 @@ void GameEngine::init( int argc, char *argv[] )
 		InitRandom();
 
 		// Create the low-level file system interface
+		bgfxLog("createFileSystem...");
 		TheFileSystem = createFileSystem();
+		bgfxLog("createFileSystem done");
 
 		//Kris: Patch 1.01 - November 17, 2003
 		//I was unable to resolve the RTPatch method of deleting a shipped file. English, Chinese, and Korean
@@ -345,7 +353,9 @@ void GameEngine::init( int argc, char *argv[] )
 		xferCRC.open("lightCRC");
 
 
+		bgfxLog("TheLocalFileSystem...");
 		initSubsystem(TheLocalFileSystem, "TheLocalFileSystem", createLocalFileSystem(), NULL);
+		bgfxLog("TheLocalFileSystem done");
 
 
     	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
@@ -356,7 +366,9 @@ void GameEngine::init( int argc, char *argv[] )
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
 
+		bgfxLog("TheArchiveFileSystem...");
 		initSubsystem(TheArchiveFileSystem, "TheArchiveFileSystem", createArchiveFileSystem(), NULL); // this MUST come after TheLocalFileSystem creation
+		bgfxLog("TheArchiveFileSystem done");
 
     	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
 	GetPrecisionTimer(&endTime64);//////////////////////////////////////////////////////////////////
@@ -366,7 +378,9 @@ void GameEngine::init( int argc, char *argv[] )
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
 
+		bgfxLog("TheWritableGlobalData...");
 		initSubsystem(TheWritableGlobalData, "TheWritableGlobalData", MSGNEW("GameEngineSubsystem") GlobalData(), &xferCRC, "Data\\INI\\Default\\GameData.ini", "Data\\INI\\GameData.ini");
+		bgfxLog("TheWritableGlobalData done");
 
 
 	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
@@ -437,9 +451,12 @@ void GameEngine::init( int argc, char *argv[] )
   startTime64 = endTime64;//Reset the clock ////////////////////////////////////////////////////////
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
+		bgfxLog("TheAudio...");
 		initSubsystem(TheAudio,"TheAudio", createAudioManager(), NULL);
+		bgfxLog("TheAudio created, checking music...");
 		if (!TheAudio->isMusicAlreadyLoaded())
 			setQuitting(TRUE);
+		bgfxLog("TheAudio done");
 
 	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
 	GetPrecisionTimer(&endTime64);//////////////////////////////////////////////////////////////////
@@ -449,14 +466,23 @@ void GameEngine::init( int argc, char *argv[] )
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
 
 
+		bgfxLog("TheFunctionLexicon...");
 		initSubsystem(TheFunctionLexicon,"TheFunctionLexicon", createFunctionLexicon(), NULL);
+		bgfxLog("TheModuleFactory...");
 		initSubsystem(TheModuleFactory,"TheModuleFactory", createModuleFactory(), NULL);
+		bgfxLog("TheMessageStream...");
 		initSubsystem(TheMessageStream,"TheMessageStream", createMessageStream(), NULL);
+		bgfxLog("TheSidesList...");
 		initSubsystem(TheSidesList,"TheSidesList", MSGNEW("GameEngineSubsystem") SidesList(), NULL);
+		bgfxLog("TheCaveSystem...");
 		initSubsystem(TheCaveSystem,"TheCaveSystem", MSGNEW("GameEngineSubsystem") CaveSystem(), NULL);
+		bgfxLog("TheRankInfoStore...");
 		initSubsystem(TheRankInfoStore,"TheRankInfoStore", MSGNEW("GameEngineSubsystem") RankInfoStore(), &xferCRC, NULL, "Data\\INI\\Rank.ini");
+		bgfxLog("ThePlayerTemplateStore...");
 		initSubsystem(ThePlayerTemplateStore,"ThePlayerTemplateStore", MSGNEW("GameEngineSubsystem") PlayerTemplateStore(), &xferCRC, "Data\\INI\\Default\\PlayerTemplate.ini", "Data\\INI\\PlayerTemplate.ini");
+		bgfxLog("TheParticleSystemManager...");
 		initSubsystem(TheParticleSystemManager,"TheParticleSystemManager", createParticleSystemManager(), NULL);
+		bgfxLog("TheParticleSystemManager done");
 
 	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
 	GetPrecisionTimer(&endTime64);//////////////////////////////////////////////////////////////////
@@ -466,14 +492,23 @@ void GameEngine::init( int argc, char *argv[] )
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////
     
     
+		bgfxLog("TheFXListStore...");
 		initSubsystem(TheFXListStore,"TheFXListStore", MSGNEW("GameEngineSubsystem") FXListStore(), &xferCRC, "Data\\INI\\Default\\FXList.ini", "Data\\INI\\FXList.ini");
+		bgfxLog("TheWeaponStore...");
 		initSubsystem(TheWeaponStore,"TheWeaponStore", MSGNEW("GameEngineSubsystem") WeaponStore(), &xferCRC, NULL, "Data\\INI\\Weapon.ini");
+		bgfxLog("TheObjectCreationListStore...");
 		initSubsystem(TheObjectCreationListStore,"TheObjectCreationListStore", MSGNEW("GameEngineSubsystem") ObjectCreationListStore(), &xferCRC, "Data\\INI\\Default\\ObjectCreationList.ini", "Data\\INI\\ObjectCreationList.ini");
+		bgfxLog("TheLocomotorStore...");
 		initSubsystem(TheLocomotorStore,"TheLocomotorStore", MSGNEW("GameEngineSubsystem") LocomotorStore(), &xferCRC, NULL, "Data\\INI\\Locomotor.ini");
+		bgfxLog("TheSpecialPowerStore...");
 		initSubsystem(TheSpecialPowerStore,"TheSpecialPowerStore", MSGNEW("GameEngineSubsystem") SpecialPowerStore(), &xferCRC, "Data\\INI\\Default\\SpecialPower.ini", "Data\\INI\\SpecialPower.ini");
+		bgfxLog("TheDamageFXStore...");
 		initSubsystem(TheDamageFXStore,"TheDamageFXStore", MSGNEW("GameEngineSubsystem") DamageFXStore(), &xferCRC, NULL, "Data\\INI\\DamageFX.ini");
+		bgfxLog("TheArmorStore...");
 		initSubsystem(TheArmorStore,"TheArmorStore", MSGNEW("GameEngineSubsystem") ArmorStore(), &xferCRC, NULL, "Data\\INI\\Armor.ini");
+		bgfxLog("TheBuildAssistant...");
 		initSubsystem(TheBuildAssistant,"TheBuildAssistant", MSGNEW("GameEngineSubsystem") BuildAssistant, NULL);
+		bgfxLog("TheBuildAssistant done");
 
 
 	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
@@ -485,7 +520,9 @@ void GameEngine::init( int argc, char *argv[] )
 
 
 
+		bgfxLog("TheThingFactory (Object.ini)...");
 		initSubsystem(TheThingFactory,"TheThingFactory", createThingFactory(), &xferCRC, "Data\\INI\\Default\\Object.ini", NULL, "Data\\INI\\Object");
+		bgfxLog("TheThingFactory done");
 
 	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
 	GetPrecisionTimer(&endTime64);//////////////////////////////////////////////////////////////////
@@ -496,7 +533,9 @@ void GameEngine::init( int argc, char *argv[] )
     
     
 		initSubsystem(TheUpgradeCenter,"TheUpgradeCenter", MSGNEW("GameEngineSubsystem") UpgradeCenter, &xferCRC, "Data\\INI\\Default\\Upgrade.ini", "Data\\INI\\Upgrade.ini");
+		bgfxLog("TheGameClient...");
 		initSubsystem(TheGameClient,"TheGameClient", createGameClient(), NULL);
+		bgfxLog("TheGameClient done");
 
 
 	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
@@ -508,7 +547,9 @@ void GameEngine::init( int argc, char *argv[] )
 
 	
 		initSubsystem(TheAI,"TheAI", MSGNEW("GameEngineSubsystem") AI(), &xferCRC,  "Data\\INI\\Default\\AIData.ini", "Data\\INI\\AIData.ini");
+		bgfxLog("TheGameLogic...");
 		initSubsystem(TheGameLogic,"TheGameLogic", createGameLogic(), NULL);
+		bgfxLog("TheGameLogic done");
 		initSubsystem(TheTeamFactory,"TheTeamFactory", MSGNEW("GameEngineSubsystem") TeamFactory(), NULL);
 		initSubsystem(TheCrateSystem,"TheCrateSystem", MSGNEW("GameEngineSubsystem") CrateSystem(), &xferCRC, "Data\\INI\\Default\\Crate.ini", "Data\\INI\\Crate.ini");
 		initSubsystem(ThePlayerList,"ThePlayerList", MSGNEW("GameEngineSubsystem") PlayerList(), NULL);
@@ -584,7 +625,7 @@ void GameEngine::init( int argc, char *argv[] )
 		// for fingerprinting, we need to ensure the presence of these files
 
 
-#if !defined(_INTERNAL) && !defined(_DEBUG)
+#if 0  // Fingerprint check disabled for open-source BGFX port build
 		AsciiString dirName;
     dirName = TheArchiveFileSystem->getArchiveFilenameForFile("generalsbzh.sec");
 
@@ -593,7 +634,7 @@ void GameEngine::init( int argc, char *argv[] )
 			DEBUG_LOG(("generalsbzh.sec was not found in genseczh.big - it was in '%s'\n", dirName.str()));
 			m_quitting = TRUE;
 		}
-		
+
 		dirName = TheArchiveFileSystem->getArchiveFilenameForFile("generalsazh.sec");
 		const char *noPath = dirName.reverseFind('\\');
 		if (noPath) {
@@ -755,30 +796,44 @@ void GameEngine::update( void )
 	{
 
 		{
-			
+
 			// VERIFY CRC needs to be in this code block.  Please to not pull TheGameLogic->update() inside this block.
 			VERIFY_CRC
 
-			TheRadar->UPDATE();
+			try { TheRadar->UPDATE(); } catch (...) {
+				static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[UPDATE-CRASH] TheRadar->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
+			}
 
 			/// @todo Move audio init, update, etc, into GameClient update
-			
-			TheAudio->UPDATE();
-			TheGameClient->UPDATE();
-			TheMessageStream->propagateMessages();
+
+			try { TheAudio->UPDATE(); } catch (...) {
+				static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[UPDATE-CRASH] TheAudio->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
+			}
+			try { TheGameClient->UPDATE(); } catch (...) {
+				static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[UPDATE-CRASH] TheGameClient->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
+			}
+			try { TheMessageStream->propagateMessages(); } catch (...) {
+				static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[UPDATE-CRASH] propagateMessages() #%d\n",c);fflush(lf);fclose(lf);}}
+			}
 
 			if (TheNetwork != NULL)
 			{
-				TheNetwork->UPDATE();
+				try { TheNetwork->UPDATE(); } catch (...) {
+					static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[UPDATE-CRASH] TheNetwork->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
+				}
 			}
-			 
-			TheCDManager->UPDATE();
+
+			try { TheCDManager->UPDATE(); } catch (...) {
+				static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[UPDATE-CRASH] TheCDManager->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
+			}
 		}
 
 
 		if ((TheNetwork == NULL && !TheGameLogic->isGamePaused()) || (TheNetwork && TheNetwork->isFrameDataReady()))
 		{
-			TheGameLogic->UPDATE();
+			try { TheGameLogic->UPDATE(); } catch (...) {
+				static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[UPDATE-CRASH] TheGameLogic->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
+			}
 		}
 
 	}	// end perfGather
@@ -843,16 +898,18 @@ void GameEngine::execute( void )
 				}
 				catch (INIException e)
 				{
-					// Release CRASH doesn't return, so don't worry about executing additional code.
-					if (e.mFailureMessage)
-						RELEASE_CRASH((e.mFailureMessage));
-					else
-						RELEASE_CRASH(("Uncaught Exception in GameEngine::update"));
+					FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+					if (lf) { fprintf(lf, "[ENGINE-EXCEPTION] INIException in GameEngine::update: %s\n", e.mFailureMessage ? e.mFailureMessage : "(null)"); fflush(lf); fclose(lf); }
+					// Continue instead of crashing during development
 				}
 				catch (...)
 				{
+					static int updateCrashCount = 0;
+					updateCrashCount++;
+					FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+					if (lf) { fprintf(lf, "[ENGINE-EXCEPTION] Uncaught exception #%d in GameEngine::update (continuing)\n", updateCrashCount); fflush(lf); fclose(lf); }
 					// try to save info off
-					try 
+					try
 					{
 						if (TheRecorder && TheRecorder->getMode() == RECORDERMODETYPE_RECORD && TheRecorder->isMultiplayer())
 							TheRecorder->cleanUpReplayFile();
@@ -860,7 +917,7 @@ void GameEngine::execute( void )
 					catch (...)
 					{
 					}
-					RELEASE_CRASH(("Uncaught Exception in GameEngine::update"));
+					// Continue instead of RELEASE_CRASH during development
 				}	// catch
 			}	// perf
 

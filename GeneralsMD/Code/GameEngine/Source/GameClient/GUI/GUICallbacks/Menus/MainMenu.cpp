@@ -184,7 +184,7 @@ static GameWindow *dropDownWindows[DROPDOWN_COUNT];
 static Bool buttonPushed = FALSE;
 static Bool isShuttingDown = FALSE;
 static Bool startGame = FALSE;
-static Int	initialGadgetDelay = 210;
+static Int	initialGadgetDelay = 60;
 
 enum
 {
@@ -688,6 +688,7 @@ void MainMenuShutdown( WindowLayout *layout, void *userData )
 
 	// if we are shutting down for an immediate pop, skip the animations
 	Bool popImmediate = *(Bool *)userData;
+	{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a"); if(lf){ fprintf(lf,"[MENU] MainMenuShutdown popImmediate=%d startGame=%d\n",(int)popImmediate,(int)startGame); fflush(lf); fclose(lf); } }
 	
 //	if(winVidManager)
 	//		delete winVidManager;
@@ -907,20 +908,19 @@ void MainMenuUpdate( WindowLayout *layout, void *userData )
 //		TheTransitionHandler->reverse("FadeWholeScreen");
 //	}
 ////
-//	if (notShown)
-//	{
-//		if(initialGadgetDelay == 1)
-//		{
-//			dropDownWindows[DROPDOWN_MAIN]->winHide(FALSE);
-//			TheTransitionHandler->setGroup("MainMenuFade", TRUE);
-//			TheTransitionHandler->setGroup("MainMenuDefaultMenu");
-//			TheMouse->setVisibility(TRUE);
-//			initialGadgetDelay = 2;
-//			notShown = FALSE;
-//		}
-//		else
-//			initialGadgetDelay--;
-//	}
+	if (notShown)
+	{
+		if(initialGadgetDelay == 1)
+		{
+			dropDownWindows[DROPDOWN_MAIN]->winHide(FALSE);
+			TheTransitionHandler->setGroup("MainMenuDefaultMenuLogoFade");
+			TheMouse->setVisibility(TRUE);
+			initialGadgetDelay = 2;
+			notShown = FALSE;
+		}
+		else
+			initialGadgetDelay--;
+	}
 
 	if (raiseMessageBoxes)
 	{
@@ -1007,14 +1007,13 @@ WindowMsgHandledType MainMenuInput( GameWindow *window, UnsignedInt msg,
 				{
 					initialGadgetDelay = 1;
 					dropDownWindows[DROPDOWN_MAIN]->winHide(FALSE);
-					TheTransitionHandler->setGroup("MainMenuFade", TRUE);
-					TheTransitionHandler->setGroup("MainMenuDefaultMenu");
+					TheTransitionHandler->setGroup("MainMenuDefaultMenuLogoFade");
 					TheMouse->setVisibility(TRUE);
 					notShown = FALSE;
 					return MSG_HANDLED;
 				}
 			}
-			
+
 		}  // end char
 		break;
 		case GWM_CHAR:
@@ -1023,8 +1022,7 @@ WindowMsgHandledType MainMenuInput( GameWindow *window, UnsignedInt msg,
 			{
 				initialGadgetDelay = 1;
 				dropDownWindows[DROPDOWN_MAIN]->winHide(FALSE);
-				TheTransitionHandler->setGroup("MainMenuFade", TRUE);
-				TheTransitionHandler->setGroup("MainMenuDefaultMenu");
+				TheTransitionHandler->setGroup("MainMenuDefaultMenuLogoFade");
 				TheMouse->setVisibility(TRUE);
 				notShown = FALSE;
 				return MSG_HANDLED;

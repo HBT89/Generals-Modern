@@ -233,35 +233,56 @@ W3DTerrainVisual::~W3DTerrainVisual()
 //-------------------------------------------------------------------------------------------------
 void W3DTerrainVisual::init( void )
 {
+	auto tvLog = [](const char* msg) {
+		FILE *f = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (f) { fprintf(f, "  TV: %s\n", msg); fflush(f); fclose(f); }
+	};
 
+	tvLog("extend TerrainVisual::init...");
 	// extend
 	TerrainVisual::init();
+	tvLog("TerrainVisual::init done");
+
+	tvLog("NEW_REF HeightMapRenderObjClass...");
 	// create a new render object for W3D
 	m_terrainRenderObject = NEW_REF( HeightMapRenderObjClass, () );
+	tvLog("HeightMapRenderObjClass done");
 	m_terrainRenderObject->Set_Collision_Type( PICK_TYPE_TERRAIN );
 	TheTerrainRenderObject = m_terrainRenderObject;
 
+	tvLog("NEW TerrainTracksRenderObjClassSystem...");
 	// initialize track drawing system
 	TheTerrainTracksRenderObjClassSystem = NEW TerrainTracksRenderObjClassSystem;
+	tvLog("TerrainTracksRenderObjClassSystem created");
 	TheTerrainTracksRenderObjClassSystem->init(W3DDisplay::m_3DScene);
+	tvLog("TerrainTracksRenderObjClassSystem init done");
 
 #ifdef	INCLUDE_GRANNY_IN_BUILD
 	// initialize Granny model drawing system
 	TheGrannyRenderObjSystem = NEW GrannyRenderObjSystem;
 #endif
 
+	tvLog("NEW W3DShadowManager...");
 	// initialize object shadow drawing system
 	TheW3DShadowManager = NEW W3DShadowManager;
+	tvLog("W3DShadowManager::init...");
  	TheW3DShadowManager->init();
-	
+	tvLog("W3DShadowManager::init done");
+
+	tvLog("NEW_REF WaterRenderObjClass...");
 	// create a water plane render object
 	TheWaterRenderObj=m_waterRenderObject = NEW_REF( WaterRenderObjClass, () );
+	tvLog("WaterRenderObjClass::init...");
 	m_waterRenderObject->init(TheGlobalData->m_waterPositionZ, TheGlobalData->m_waterExtentX, TheGlobalData->m_waterExtentY, W3DDisplay::m_3DScene, (WaterRenderObjClass::WaterType)TheGlobalData->m_waterType);	//create a water plane that's 128x128 units
+	tvLog("WaterRenderObjClass::init done");
 	m_waterRenderObject->Set_Position(Vector3(TheGlobalData->m_waterPositionX,TheGlobalData->m_waterPositionY,TheGlobalData->m_waterPositionZ));	//place water in world
 
+	tvLog("NEW W3DSmudgeManager...");
 	// create smudge rendering system.
 	TheSmudgeManager = NEW(W3DSmudgeManager);
+	tvLog("W3DSmudgeManager::init...");
 	TheSmudgeManager->init();
+	tvLog("W3DSmudgeManager::init done");
 
 #ifdef DO_UNIT_TIMINGS
 #pragma MESSAGE("********************* WARNING- Doing UNIT TIMINGS. ")
@@ -549,11 +570,16 @@ void W3DTerrainVisual::updateSeismicSimulations( void )
 //-------------------------------------------------------------------------------------------------
 Bool W3DTerrainVisual::load( AsciiString filename )
 {
-	
-#if 0	
+	auto tvLoadLog = [](const char* fmt, ...) {
+		FILE *f = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+		if (f) { va_list ap; va_start(ap, fmt); fprintf(f, "[TV-LOAD] "); vfprintf(f, fmt, ap); fprintf(f, "\n"); va_end(ap); fflush(f); fclose(f); }
+	};
+	tvLoadLog("W3DTerrainVisual::load('%s') ENTER", filename.str());
+
+#if 0
 	// (gth) Testing exclusion list asset releasing
 	DynamicVectorClass<StringClass> exclusion_list(8000);
-	
+
 	WW3DAssetManager::Get_Instance()->Create_Asset_List(exclusion_list);
 
 	exclusion_list.Add(StringClass("avcomanche"));
@@ -572,27 +598,38 @@ Bool W3DTerrainVisual::load( AsciiString filename )
 
 	// enhancing functionality specific for W3D terrain
 	if( TerrainVisual::load( filename ) == FALSE )
+	{
+		tvLoadLog("TerrainVisual::load FAILED (filename empty?)");
 		return FALSE;  // failed
+	}
+	tvLoadLog("TerrainVisual::load OK");
 
 	// open the terrain file
 	CachedFileInputStream fileStrm;
 	if( !fileStrm.open(filename) )
 	{
-
+		tvLoadLog("CachedFileInputStream::open FAILED for '%s'", filename.str());
 		REF_PTR_RELEASE( m_terrainRenderObject );
 		return FALSE;
 
 	}  // end if
+	tvLoadLog("File opened OK");
 
 	if( m_terrainRenderObject == NULL )
+	{
+		tvLoadLog("m_terrainRenderObject is NULL - FAIL");
 		return FALSE;
+	}
+	tvLoadLog("m_terrainRenderObject=%p", (void*)m_terrainRenderObject);
 
 
   ChunkInputStream *pStrm = &fileStrm;
 
   // allocate new height map data to read from file
+  tvLoadLog("Creating WorldHeightMap from stream...");
   REF_PTR_RELEASE( m_logicHeightMap );
 	m_logicHeightMap = NEW WorldHeightMap(pStrm);
+	tvLoadLog("WorldHeightMap created: %p drawW=%d drawH=%d", (void*)m_logicHeightMap, m_logicHeightMap ? m_logicHeightMap->getDrawWidth() : -1, m_logicHeightMap ? m_logicHeightMap->getDrawHeight() : -1);
 
 
 
@@ -648,28 +685,32 @@ Bool W3DTerrainVisual::load( AsciiString filename )
 	}
 
 
+	tvLoadLog("Creating lights iterator...");
 	RefRenderObjListIterator *it = W3DDisplay::m_3DScene->createLightsIterator();
 	// apply the heightmap to the terrain render object
 
+	tvLoadLog("Calling initHeightData w=%d h=%d", m_logicHeightMap->getDrawWidth(), m_logicHeightMap->getDrawHeight());
 #ifdef DO_SEISMIC_SIMULATIONS
-	m_terrainRenderObject->initHeightData( m_clientHeightMap->getDrawWidth(), 
+	m_terrainRenderObject->initHeightData( m_clientHeightMap->getDrawWidth(),
 																				 m_clientHeightMap->getDrawHeight(),
 																				 m_clientHeightMap,
 																				 it);
 #else
-	m_terrainRenderObject->initHeightData( m_logicHeightMap->getDrawWidth(), 
+	m_terrainRenderObject->initHeightData( m_logicHeightMap->getDrawWidth(),
 																				 m_logicHeightMap->getDrawHeight(),
 																				 m_logicHeightMap,
 																				 it);
 #endif
-
+	tvLoadLog("initHeightData done");
 
 	if (it) {
 	 W3DDisplay::m_3DScene->destroyLightsIterator(it);
 	 it = NULL;
 	}
 	// add our terrain render object to the scene
+	tvLoadLog("Adding terrain to scene: m_3DScene=%p  m_terrainRenderObject=%p", (void*)W3DDisplay::m_3DScene, (void*)m_terrainRenderObject);
 	W3DDisplay::m_3DScene->Add_Render_Object( m_terrainRenderObject );
+	tvLoadLog("Terrain added to scene OK");
 
 #if defined _DEBUG || defined _INTERNAL
 	// Icon drawing utility object for pathfinding.

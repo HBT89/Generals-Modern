@@ -375,9 +375,9 @@ static void Log_Textures(bool inited,unsigned& total_count, unsigned& total_mem)
 
 		WWDEBUG_SAY(("%32s	%4d * %4d (%15s), init %d, size: %14s bytes, refs: %d\n",
 			tex->Get_Texture_Name(),
-			desc.Width,
-			desc.Height,
-			tex_format,
+			(unsigned)0,
+			(unsigned)0,
+			"BGFX",
 			tex->Is_Initialized(),
 			number,
 			tex->Num_Refs()));

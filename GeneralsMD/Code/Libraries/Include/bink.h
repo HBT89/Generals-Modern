@@ -14,7 +14,9 @@
 // ---------------------------------------------------------------------------
 // Bink handle and structures
 // ---------------------------------------------------------------------------
-typedef void* HBINK;
+// Forward-declare BINK before typedef so HBINK can be BINK*
+struct BINK;
+typedef BINK* HBINK;
 
 typedef struct BINKIO
 {
@@ -125,6 +127,14 @@ inline int BinkPause(HBINK bink, int pause)
 #define BINKSURFACE32A   8
 #define BINKSURFACE32RA  9
 #define BINKSURFACEYUY2  10
+
+// Bink integer types
+typedef unsigned int u32;
+typedef unsigned short u16;
+typedef unsigned char u8;
+
+// Bink DirectSound integration (stub)
+inline int BinkSoundUseDirectSound(void* ds) { (void)ds; return 1; }
 
 // Bink open flags
 #define BINKFILEHANDLE   0x00800000

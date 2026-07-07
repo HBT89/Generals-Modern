@@ -292,6 +292,7 @@ void Shell::push( AsciiString filename, Bool shutdownImmediate )
 	// set a push as pending with the layout name passed in
 	m_pendingPush = TRUE;
 	m_pendingPushName = filename;
+	{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a"); if(lf){ fprintf(lf,"[SHELL] push(%s) top=%s\n",filename.str(),(top()?top()->getFilename().str():"NULL")); fflush(lf); fclose(lf); } }
 
 	// get the top of the current stack
 	WindowLayout *currentTop = top();
@@ -523,6 +524,7 @@ void Shell::hideShell( void )
 	m_clearBackground = TRUE;
 
 	DEBUG_LOG(("Shell:hideShell() - %s\n", (top())?top()->getFilename().str():"no top screen"));
+	{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a"); if(lf){ fprintf(lf,"[SHELL] hideShell() called, top=%s\n",(top()?top()->getFilename().str():"NULL")); fflush(lf); fclose(lf); } }
 
 	WindowLayout *layout = top();
 

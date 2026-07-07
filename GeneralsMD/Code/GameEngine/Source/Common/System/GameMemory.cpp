@@ -3233,13 +3233,8 @@ void MemoryPoolFactory::debugMemoryReport(Int flags, Int startCheckpoint, Int en
 	these definitions of new/delete) ahead of all others. (We do debug checking
 	to ensure that's the case)
 */
-#if defined(_DEBUG)
-	#pragma comment(lib, "GameEngineDebug")
-#elif defined(_INTERNAL)
-	#pragma comment(lib, "GameEngineInternal")
-#else
-	#pragma comment(lib, "GameEngine")
-#endif
+// BGFX port: always use GameEngine.lib regardless of build type
+#pragma comment(lib, "GameEngine")
 
 #ifdef MEMORYPOOL_OVERRIDE_MALLOC
 	#pragma comment(linker, "/force:multiple")

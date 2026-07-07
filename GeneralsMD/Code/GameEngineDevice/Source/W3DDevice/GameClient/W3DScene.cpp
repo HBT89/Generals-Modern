@@ -1116,9 +1116,21 @@ void RTS3DScene::Customized_Render( RenderInfoClass &rinfo )
 		}
 	}
 
+	// Verbose scene render logging
+	{
+		static int s_sceneRenderLog = 0;
+		s_sceneRenderLog++;
+		if (s_sceneRenderLog <= 20 || (s_sceneRenderLog % 300 == 0)) {
+			FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_draw.log", "a");
+			if (lf) { fprintf(lf, "[SCENE] Customized_Render #%d  terrainObject=%p  passMode=%d  drawTerrainOnly=%d\n",
+				s_sceneRenderLog, (void*)terrainObject, (int)m_customPassMode, (int)m_drawTerrainOnly);
+				fflush(lf); fclose(lf); }
+		}
+	}
+
 	//terrain needs to be rendered first
 	if (terrainObject)	// Don't check visibility - terrain is always visible. jba.
-	{		
+	{
 		robj=terrainObject;
 		rinfo.light_environment = NULL;		// Terrain is self lit.
 		rinfo.Camera.Set_User_Data(this);	//pass the scene to terrain via user data.

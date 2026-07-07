@@ -60,17 +60,25 @@ void Win32BIGFileSystem::init() {
 
 	loadBigFilesFromDirectory("", "*.big");
 
-    // load original Generals assets
-    AsciiString installPath;
-    GetStringFromGeneralsRegistry("", "InstallPath", installPath );
-    //@todo this will need to be ramped up to a crash for release
-#ifndef _INTERNAL
-    // had to make this non-internal only, otherwise we can't autobuild
-    // GeneralsZH...
-    DEBUG_ASSERTCRASH(installPath != "", ("Be 1337! Go install Generals!"));
-#endif
-    if (installPath!="")
-      loadBigFilesFromDirectory(installPath, "*.big");
+    // Load original Generals assets from ZH_Generals subdirectory.
+    // ZH .bigs loaded above take priority; base game fills gaps.
+    {
+        char cwd[MAX_PATH]; GetCurrentDirectoryA(MAX_PATH, cwd);
+        { FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+          if (lf) { fprintf(lf, "[BIG] CWD='%s'\n", cwd); fflush(lf); fclose(lf); } }
+
+        WIN32_FIND_DATAA fd;
+        HANDLE hFind = FindFirstFileA("ZH_Generals\\INI.big", &fd);
+        if (hFind != INVALID_HANDLE_VALUE) {
+            FindClose(hFind);
+            { FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+              if (lf) { fprintf(lf, "[BIG] Loading base Generals assets from: ZH_Generals\\\n"); fflush(lf); fclose(lf); } }
+            loadBigFilesFromDirectory(AsciiString("ZH_Generals\\"), "*.big");
+        } else {
+            { FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+              if (lf) { fprintf(lf, "[BIG] FAILED to find ZH_Generals\\INI.big! Base game assets NOT loaded.\n"); fflush(lf); fclose(lf); } }
+        }
+    }
 }
 
 void Win32BIGFileSystem::reset() {

@@ -1390,6 +1390,11 @@ void GameWindowManager::dumpWindow( GameWindow *window )
 //-------------------------------------------------------------------------------------------------
 /** Create a new window by setting up its parameters and callbacks. */
 //-------------------------------------------------------------------------------------------------
+static void gwmLog(const char* msg) {
+	FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+	if (logf) { fprintf(logf, "  GWM: %s\n", msg); fflush(logf); fclose(logf); }
+}
+
 GameWindow *GameWindowManager::winCreate( GameWindow *parent, 
 																				  UnsignedInt status, 
 																				  Int x, Int y,
@@ -1400,7 +1405,9 @@ GameWindow *GameWindowManager::winCreate( GameWindow *parent,
 	GameWindow *window;
 
 	// allocate new window
+	gwmLog("winCreate: allocateNewWindow...");
 	window = allocateNewWindow();
+	gwmLog("winCreate: allocateNewWindow done");
 	if( window == NULL )
 	{
 
@@ -1436,14 +1443,19 @@ GameWindow *GameWindowManager::winCreate( GameWindow *parent,
 	window->normalizeWindowRegion();
 
 	// set the system function and send a create message to window
+	gwmLog("winCreate: winSetSystemFunc + GWM_CREATE...");
 	window->winSetSystemFunc( system );
 	winSendSystemMsg( window, GWM_CREATE, 0, 0 );
+	gwmLog("winCreate: GWM_CREATE done");
 
 	// copy over instance data if present
+	gwmLog("winCreate: winSetInstanceData...");
 	if( instData )
 		window->winSetInstanceData( instData );
+	gwmLog("winCreate: winSetInstanceData done");
 
 	// set default font
+	gwmLog("winCreate: setting font...");
 	if (TheGlobalLanguageData && TheGlobalLanguageData->m_defaultWindowFont.name.isNotEmpty())
 	{		window->winSetFont( winFindFont(
 			TheGlobalLanguageData->m_defaultWindowFont.name,
@@ -1453,6 +1465,7 @@ GameWindow *GameWindowManager::winCreate( GameWindow *parent,
 	else
 		window->winSetFont( winFindFont( AsciiString("Times New Roman"), 14, FALSE ) );
 
+	gwmLog("winCreate: done");
 	return window;
 
 }  // end WinCreate
@@ -1847,6 +1860,7 @@ GameWindow *GameWindowManager::gogoGadgetPushButton( GameWindow *parent,
 																										 Bool defaultVisual )
 {
 	GameWindow *button;
+	gwmLog("gogoGadgetPushButton: enter");
 
 	// we MUST have a push button style window to do this
 	if( BitTest( instData->getStyle(), GWS_PUSH_BUTTON ) == FALSE )
@@ -1879,10 +1893,12 @@ GameWindow *GameWindowManager::gogoGadgetPushButton( GameWindow *parent,
 	// assign draw function, the draw functions must actually be implemented
 	// on the device level of the engine
 	//
+	gwmLog("gogoGadgetPushButton: assigning draw func...");
 	if( BitTest( button->winGetStatus(), WIN_STATUS_IMAGE ) )
 		button->winSetDrawFunc( getPushButtonImageDrawFunc() );
 	else
 		button->winSetDrawFunc( getPushButtonDrawFunc() );
+	gwmLog("gogoGadgetPushButton: draw func assigned");
 
 	// set the owner to the parent, or if no parent it will be itself
 	button->winSetOwner( parent );
@@ -1891,13 +1907,22 @@ GameWindow *GameWindowManager::gogoGadgetPushButton( GameWindow *parent,
 	button->winSetUserData(NULL);
 
 	// assign the default images/colors
+	gwmLog("gogoGadgetPushButton: assignDefaultGadgetLook...");
 	assignDefaultGadgetLook( button, defaultFont, defaultVisual );
+	gwmLog("gogoGadgetPushButton: assignDefaultGadgetLook done");
 
 	// assign text from label
+	gwmLog("gogoGadgetPushButton: winTextLabelToText...");
 	UnicodeString text = winTextLabelToText( instData->m_textLabelString );
+	gwmLog("gogoGadgetPushButton: winTextLabelToText done");
 	if( text.getLength() )
+	{
+		gwmLog("gogoGadgetPushButton: GadgetButtonSetText...");
 		GadgetButtonSetText( button, text );
-	
+		gwmLog("gogoGadgetPushButton: GadgetButtonSetText done");
+	}
+	gwmLog("gogoGadgetPushButton: return");
+
 	return button;
 
 }  // end gogoGadgetPushButton

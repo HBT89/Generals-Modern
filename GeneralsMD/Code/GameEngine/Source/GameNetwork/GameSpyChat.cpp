@@ -35,7 +35,7 @@
 #include "GameNetwork/GameSpyChat.h"
 #include "Common/QuotedPrintable.h"
 
-typedef set<AsciiString>::const_iterator AsciiSetIter;
+typedef std::set<AsciiString>::const_iterator AsciiSetIter;
 
 /**
 	* handleSlashCommands looks for slash ccommands and handles them,

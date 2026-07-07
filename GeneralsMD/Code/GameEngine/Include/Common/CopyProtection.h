@@ -33,7 +33,7 @@
 #define COPYPROTECTION_H
 
 // Comment out the following line to disable copy protection checks
-#define DO_COPY_PROTECTION
+// #define DO_COPY_PROTECTION  // Disabled for open-source BGFX port build
 
 #ifdef DO_COPY_PROTECTION
 

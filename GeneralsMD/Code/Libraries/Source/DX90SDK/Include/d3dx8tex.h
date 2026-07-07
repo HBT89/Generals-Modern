@@ -169,10 +169,8 @@ inline HRESULT D3DXCreateTexture(
     UINT MipLevels, DWORD Usage, D3DFORMAT Format, D3DPOOL Pool,
     LPDIRECT3DTEXTURE8* ppTexture)
 {
-    (void)pDevice; (void)Width; (void)Height;
-    (void)MipLevels; (void)Usage; (void)Format; (void)Pool;
-    (void)ppTexture;
-    return E_NOTIMPL;
+    if (!pDevice || !ppTexture) return E_INVALIDARG;
+    return pDevice->CreateTexture(Width, Height, MipLevels, Usage, Format, Pool, ppTexture);
 }
 
 inline HRESULT D3DXFilterTexture(

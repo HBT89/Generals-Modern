@@ -37,8 +37,20 @@
 void GameMain( int argc, char *argv[] )
 {
 	// initialize the game engine using factory function
+	{
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "CreateGameEngine...\n"); fclose(logf); }
+	}
 	TheGameEngine = CreateGameEngine();
+	{
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "CreateGameEngine done. Calling init...\n"); fclose(logf); }
+	}
 	TheGameEngine->init(argc, argv);
+	{
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "init done. Calling execute...\n"); fclose(logf); }
+	}
 
 	// run it
 	TheGameEngine->execute();

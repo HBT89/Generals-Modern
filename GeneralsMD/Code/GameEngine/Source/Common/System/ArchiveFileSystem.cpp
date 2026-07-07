@@ -163,8 +163,15 @@ void ArchiveFileSystem::loadIntoDirectoryTree(const ArchiveFile *archiveFile, co
 			AsciiString path2;
 			path2 = debugpath;
 			path2.concat(token);
-//			DEBUG_LOG(("ArchiveFileSystem::loadIntoDirectoryTree - adding file %s, archived in %s\n", path2.str(), archiveFilename.str()));
+			// Log base game INI additions
+			{ static int addLog=0; if(addLog<200 && strstr(archiveFilename.str(),"ZH_Generals")!=NULL && strstr(path2.str(),"ini\\object")!=NULL){addLog++;
+			  FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[BIG-ADD] %s from %s\n",path2.str(),archiveFilename.str());fflush(lf);fclose(lf);}}}
 			dirInfo->m_files[token] = archiveFilename;
+		} else {
+			// Log skipped (already exists)
+			AsciiString path2; path2=debugpath; path2.concat(token);
+			{ static int skipLog=0; if(skipLog<50 && strstr(archiveFilename.str(),"ZH_Generals")!=NULL && strstr(path2.str(),"ini\\object")!=NULL){skipLog++;
+			  FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[BIG-SKIP] %s (already in ZH) from %s\n",path2.str(),archiveFilename.str());fflush(lf);fclose(lf);}}}
 		}
 
 		it++;

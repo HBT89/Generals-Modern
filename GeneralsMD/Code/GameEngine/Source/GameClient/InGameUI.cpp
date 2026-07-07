@@ -1099,8 +1099,15 @@ InGameUI::~InGameUI()
 //-------------------------------------------------------------------------------------------------
 void InGameUI::init( void )
 {
+	auto uiLog = [](const char* msg) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "    IGUI: %s\n", msg); fflush(logf); fclose(logf); }
+	};
+	uiLog("enter");
 	INI ini;
+	uiLog("loading InGameUI.ini...");
 	ini.load( AsciiString( "Data\\INI\\InGameUI.ini" ), INI_LOAD_OVERWRITE, NULL );
+	uiLog("InGameUI.ini loaded");
 
 	//override INI values with language localized values:
 	if (TheGlobalLanguageData)
@@ -1159,35 +1166,48 @@ void InGameUI::init( void )
 	been moved to where all the other translators are attached in game client */
 
 	// create the tactical view
+	uiLog("createView...");
 	if (TheDisplay)
 	{
 		TheTacticalView = createView();
+		uiLog("createView done, TheTacticalView->init()...");
 		TheTacticalView->init();
+		uiLog("TheTacticalView->init() done, attachView...");
 		TheDisplay->attachView( TheTacticalView );
 
 		// make the tactical display the full screen width for now
 		TheTacticalView->setWidth( TheDisplay->getWidth());
 		// make the tactical display 0.76 of full screen so no drawing under GUI.
 		TheTacticalView->setHeight( TheDisplay->getHeight() * 0.77f);
+		uiLog("view sized");
 	}
-	TheTacticalView->setDefaultView(0.0f, 0.0f, 1.0f);
+	uiLog("setDefaultView...");
+	if (TheTacticalView)
+		TheTacticalView->setDefaultView(0.0f, 0.0f, 1.0f);
+	uiLog("setDefaultView done");
 
 	/** @todo this may be the wrong place to create the sidebar, but for now
 	this is where it lives */
+	uiLog("createControlBar...");
 	createControlBar();
+	uiLog("createControlBar done");
 
 	/** @todo This may be the wrong place to create the replay menu, but for now
 	this is where it lives */
+	uiLog("createReplayControl...");
 	createReplayControl();
+	uiLog("createReplayControl done");
 
 	// create the command bar
+	uiLog("ControlBar...");
 	TheControlBar = NEW ControlBar;
 	TheControlBar->init();
+	uiLog("ControlBar done");
 
 	m_windowLayouts.clear();
 
 	m_soloNexusSelectedDrawableID = INVALID_DRAWABLE_ID;
-
+	uiLog("init complete");
 
 }  // end init
 
@@ -3863,9 +3883,17 @@ void InGameUI::expireHint( HintType type, UnsignedInt hintIndex )
 //-------------------------------------------------------------------------------------------------
 void InGameUI::createControlBar( void )
 {
-
+	auto cbLog = [](const char* msg) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "    CB: %s\n", msg); fflush(logf); fclose(logf); }
+	};
+	cbLog("enter createControlBar");
+	if (!TheWindowManager) { cbLog("TheWindowManager is NULL! skipping"); return; }
+	cbLog("calling winCreateFromScript(ControlBar.wnd)...");
 	TheWindowManager->winCreateFromScript( AsciiString("ControlBar.wnd") );
+	cbLog("winCreateFromScript done");
 	HideControlBar();
+	cbLog("HideControlBar done");
 /*	
 	// hide all windows created from this layout
 	GameWindow *window = TheWindowManager->winGetWindowList();

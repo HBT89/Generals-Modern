@@ -337,6 +337,7 @@ void GameLogic::prepareNewGame( Int gameMode, GameDifficulty diff, Int rankPoint
 	DEBUG_LOG(("GameLogic::prepareNewGame() - m_rankPointsToAddAtGameStart = %d\n", m_rankPointsToAddAtGameStart));
 
 	// If we're about to start a game, hide the shell.
+	{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a"); if(lf){ fprintf(lf,"[LOGIC] prepareNewGame gameMode=%d isShellGame=%d\n",(int)m_gameMode,(int)TheGameLogic->isInShellGame()); fflush(lf); fclose(lf); } }
 	if(!TheGameLogic->isInShellGame())
 		TheShell->hideShell();
 

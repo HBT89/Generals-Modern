@@ -138,6 +138,7 @@ protected:
 class DynamicVBAccessClass
 {
 	friend DX8Wrapper;
+	friend class BGFXWrapper;
 	friend SortingRendererClass;
 
 	const FVFInfoClass& FVFInfo;
@@ -247,6 +248,7 @@ class SortingVertexBufferClass : public VertexBufferClass
 	W3DMPO_GLUE(SortingVertexBufferClass)
 
 	friend DX8Wrapper;
+	friend class BGFXWrapper;
 	friend SortingRendererClass;
 	friend VertexBufferClass::WriteLockClass;
 	friend VertexBufferClass::AppendLockClass;

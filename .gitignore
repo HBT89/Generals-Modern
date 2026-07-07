@@ -5,6 +5,7 @@
 /.obsidian
 /.vscode
 /.git
+/GeneralsMD/code/build/Release/Data
 # Generated shader headers
 *.vsh_code.h
 *.psh_code.h
@@ -13,3 +14,25 @@
 *.ncb
 *.opt
 *.plg
+
+# Game Assets
+*.big
+*.bik
+
+# Build output (CMake/MSBuild) — generated, never commit
+/build/
+/Testing/
+
+# Runtime debug/trace logs
+/bgfx_*.log
+/bgfx_*.log.*.bak
+
+# Local capture screenshots (verification harness output)
+/tools/shots/
+
+# Local Claude Code settings
+.claude/settings.local.json
+
+# Scratch build-log dumps and file backups
+/build_*.txt
+w3dview_original.cpp

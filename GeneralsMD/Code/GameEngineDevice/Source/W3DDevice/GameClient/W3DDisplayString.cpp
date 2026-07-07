@@ -290,6 +290,10 @@ Int W3DDisplayString::getWidth( Int charPos )
 //=============================================================================
 void W3DDisplayString::setFont( GameFont *font )
 {
+	auto sfLog = [](const char* msg) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "  DSF: %s\n", msg); fflush(logf); fclose(logf); }
+	};
 
 	// sanity
 	if( font == NULL )
@@ -300,14 +304,27 @@ void W3DDisplayString::setFont( GameFont *font )
 		return;
 
 	// extending functionality
+	sfLog("DisplayString::setFont...");
 	DisplayString::setFont( font );
+	sfLog("m_textRenderer.Set_Font...");
 
 	// set the font in our renderer
 	m_textRenderer.Set_Font( static_cast<FontCharsClass *>(m_font->fontData) );
-	
-	m_textRendererHotKey.Set_Font( static_cast<FontCharsClass *>(TheFontLibrary->getFont(font->nameString,font->pointSize, TRUE)->fontData) );
+	sfLog("m_textRenderer.Set_Font done");
+
+	sfLog("getFont bold...");
+	GameFont* boldFont = TheFontLibrary->getFont(font->nameString, font->pointSize, TRUE);
+	sfLog("getFont bold done");
+	if (boldFont)
+	{
+		sfLog("m_textRendererHotKey.Set_Font...");
+		m_textRendererHotKey.Set_Font( static_cast<FontCharsClass *>(boldFont->fontData) );
+		sfLog("m_textRendererHotKey.Set_Font done");
+	}
 	// recompute extents for text with new font
+	sfLog("computeExtents...");
 	computeExtents();
+	sfLog("computeExtents done");
 
 	// set flag telling us the font has changed since last render
 	m_fontChanged = TRUE;

@@ -545,10 +545,12 @@ Int W3DGameWindow::winSetText( UnicodeString newText )
 	// extending functionality
 	GameWindow::winSetText( newText );
 
-	// rebuild the sentence in our text renderer
-	m_textRenderer.Build_Sentence( m_instData.getText().str(),NULL, NULL );
+	// BGFX PORT: Deferred Build_Sentence — do not call Build_Sentence here
+	// because DX8Wrapper::_Create_DX8_Surface crashes when called before the
+	// renderer is initialized (during TheInGameUI::init). Build_Sentence is
+	// now called lazily inside drawText when m_needPolyDraw is set.
 
-	// this is a visual change
+	// this is a visual change (triggers Build_Sentence in drawText)
 	m_needPolyDraw = TRUE;
 
 	return WIN_ERR_OK;
@@ -643,8 +645,11 @@ void W3DGameWindow::drawText( Color color )
 	// draw the quads if needed
 	if( needDraw || m_needPolyDraw )
 	{
+		// BGFX PORT: Build sentence here (deferred from winSetText)
+		m_textRenderer.Build_Sentence( m_instData.getText().str(), NULL, NULL );
+
 		UnsignedInt outline = TheWindowManager->winMakeColor( 0, 0, 0, 255 );
-	
+
 		m_textRenderer.Reset_Polys();
 		m_textRenderer.Set_Location( Vector2( m_textPos.x + 1, m_textPos.y + 1 ) );
 		m_textRenderer.Draw_Sentence( outline );

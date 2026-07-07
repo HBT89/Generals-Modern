@@ -842,9 +842,16 @@ void WaterRenderObjClass::ReleaseResources(void)
 //-------------------------------------------------------------------------------------------------
 void WaterRenderObjClass::ReAcquireResources(void)
 {
+	auto wLog = [](const char* msg) {
+		FILE *f = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (f) { fprintf(f, "    WAR: %s\n", msg); fclose(f); }
+	};
+
 	HRESULT hr;
 
+	wLog("DX8IndexBufferClass...");
 	m_indexBuffer=NEW_REF(DX8IndexBufferClass,(6));
+	wLog("DX8IndexBufferClass done; WriteLockClass...");
 	// Fill up the IB
 	{
 		DX8IndexBufferClass::WriteLockClass lockIdxBuffer(m_indexBuffer);
@@ -862,27 +869,35 @@ void WaterRenderObjClass::ReAcquireResources(void)
 		ib[4]=0;
 		ib[5]=1;
 	}
+	wLog("WriteLockClass done; get m_pDev...");
 
 	m_pDev=DX8Wrapper::_Get_D3D_Device8();
+	wLog("m_pDev ok; check m_meshData...");
 
 	//We're using the same grid for either 3D Water Mesh or Pixel/Vertex shader.  Just
 	//allocate the right size depending on usage
 	if (m_meshData)
 	{
+		wLog("m_meshData path: generateIndexBuffer...");
 		//Create new grid data
 		if (FAILED(generateIndexBuffer(m_gridCellsX+1,m_gridCellsY+1)))
 			return;
+		wLog("generateIndexBuffer ok; generateVertexBuffer...");
 		if (FAILED(generateVertexBuffer(m_gridCellsX+1,m_gridCellsY+1,sizeof(MaterMeshVertexFormat),false)))
 			return;
+		wLog("generateVertexBuffer ok");
 	}
 	else
 	if (m_waterType == WATER_TYPE_2_PVSHADER)
 	{	//pixel/vertex shader based water assets.
+		wLog("PVSHADER path: generateIndexBuffer...");
 		if (FAILED(hr=generateIndexBuffer(PATCH_SIZE,PATCH_SIZE)))
 			return;
+		wLog("generateIndexBuffer ok; generateVertexBuffer...");
 
 		if (FAILED(hr=generateVertexBuffer(PATCH_SIZE,PATCH_SIZE,sizeof(SEA_PATCH_VERTEX),true)))
 			return;
+		wLog("generateVertexBuffer ok; LoadAndCreateD3DShader wave.pso...");
 
 		//shader decleration
 		DWORD Declaration[]=
@@ -890,29 +905,42 @@ void WaterRenderObjClass::ReAcquireResources(void)
 			(D3DVSD_STREAM(0)),
 			(D3DVSD_REG(0, D3DVSDT_FLOAT3)), // Position
 			(D3DVSD_REG(1, D3DVSDT_D3DCOLOR)), // Diffuse
-			(D3DVSD_REG(2, D3DVSDT_FLOAT2)), // Bump map texture	
+			(D3DVSD_REG(2, D3DVSDT_FLOAT2)), // Bump map texture
 			(D3DVSD_END())
 		};
 
 		hr = W3DShaderManager::LoadAndCreateD3DShader("shaders\\wave.pso", &Declaration[0], 0, false, &m_dwWavePixelShader);
-		if (FAILED(hr))
+		if (FAILED(hr)) {
+			wLog("wave.pso FAILED - returning early");
 			return;
+		}
+		wLog("wave.pso ok; wave.vso...");
 
 		hr = W3DShaderManager::LoadAndCreateD3DShader("shaders\\wave.vso", &Declaration[0], 0, true, &m_dwWaveVertexShader);
-		if (FAILED(hr))
+		if (FAILED(hr)) {
+			wLog("wave.vso FAILED - returning early");
 			return;
+		}
+		wLog("wave.vso ok; Create_Render_Target...");
 
 		// Create reflection texture
 		m_pReflectionTexture = DX8Wrapper::Create_Render_Target (SEA_REFLECTION_SIZE, SEA_REFLECTION_SIZE);
+		wLog("Create_Render_Target done");
+	}
+	else
+	{
+		wLog("non-PVSHADER, non-meshData path");
 	}
 
 	if (m_waterTrackSystem)
 		m_waterTrackSystem->ReAcquireResources();
 
+	wLog("getChipset check...");
 	if (W3DShaderManager::getChipset() >= DC_GENERIC_PIXEL_SHADER_1_1)
 	{
+		wLog("PS 1.1+ path: D3DXAssembleShader river...");
 		ID3DXBuffer *compiledShader;
-		char *shader = 
+		char *shader =
 			"ps.1.1\n \
 			tex t0 \n\
 			tex t1	\n\
@@ -925,10 +953,12 @@ void WaterRenderObjClass::ReAcquireResources(void)
 			add r0.rgb, r0, r1\n";
 		hr = D3DXAssembleShader( shader, strlen(shader), 0, NULL, &compiledShader, NULL);
 		if (hr==0) {
+			wLog("river shader assembled; CreatePixelShader...");
 			hr = 	DX8Wrapper::_Get_D3D_Device8()->CreatePixelShader((DWORD*)compiledShader->GetBufferPointer(), &m_riverWaterPixelShader);
 			compiledShader->Release();
 		}
-		shader = 
+		wLog("water shader assemble...");
+		shader =
 			"ps.1.1\n \
 			tex t0 \n\
 			tex t1	\n\
@@ -938,10 +968,12 @@ void WaterRenderObjClass::ReAcquireResources(void)
 			add r0.rgb, r0, r1";
 		hr = D3DXAssembleShader( shader, strlen(shader), 0, NULL, &compiledShader, NULL);
 		if (hr==0) {
+			wLog("water shader assembled; CreatePixelShader...");
 			hr = 	DX8Wrapper::_Get_D3D_Device8()->CreatePixelShader((DWORD*)compiledShader->GetBufferPointer(), &m_waterPixelShader);
 			compiledShader->Release();
 		}
-		shader = 
+		wLog("trapezoid shader assemble...");
+		shader =
 			"ps.1.1\n \
 			tex t0 ;get water texture\n\
 			tex t1 ;get white highlights on black background\n\
@@ -953,13 +985,16 @@ void WaterRenderObjClass::ReAcquireResources(void)
 			;\n";
 		hr = D3DXAssembleShader( shader, strlen(shader), 0, NULL, &compiledShader, NULL);
 		if (hr==0) {
+			wLog("trapezoid shader assembled; CreatePixelShader...");
 			hr = 	DX8Wrapper::_Get_D3D_Device8()->CreatePixelShader((DWORD*)compiledShader->GetBufferPointer(), &m_trapezoidWaterPixelShader);
 			compiledShader->Release();
 		}
+		wLog("shader section done");
 	}
 
 	//W3D Invalidate textures after losing the device and since we peek at the textures directly, it won't
 	//know to reinit them for us.  Do it here manually:
+	wLog("texture reinit checks...");
 	if (m_riverTexture && !m_riverTexture->Is_Initialized())
 		m_riverTexture->Init();
 	if (m_waterNoiseTexture && !m_waterNoiseTexture->Is_Initialized())
@@ -969,11 +1004,13 @@ void WaterRenderObjClass::ReAcquireResources(void)
 	if (m_waterSparklesTexture && !m_waterSparklesTexture->Is_Initialized())
 		m_waterSparklesTexture->Init();
 	if (m_whiteTexture && !m_whiteTexture->Is_Initialized())
-	{	m_whiteTexture->Init();
+	{	wLog("whiteTexture reinit...");
+		m_whiteTexture->Init();
 		SurfaceClass *surface=m_whiteTexture->Get_Surface_Level();
 		surface->DrawPixel(0,0,0xffffffff);
 		REF_PTR_RELEASE(surface);
 	}
+	wLog("ReAcquireResources done");
 }
 
 void WaterRenderObjClass::load(void)
@@ -990,7 +1027,12 @@ void WaterRenderObjClass::load(void)
 //-------------------------------------------------------------------------------------------------
 Int WaterRenderObjClass::init(Real waterLevel, Real dx, Real dy, SceneClass *parentScene, WaterType type)
 {
+	auto iLog = [](const char* msg) {
+		FILE *f = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (f) { fprintf(f, "    WI: %s\n", msg); fclose(f); }
+	};
 
+	iLog("init start");
 	m_iBumpFrame=0;
 	m_fBumpScale=SEA_BUMP_SCALE;
 
@@ -1014,7 +1056,8 @@ Int WaterRenderObjClass::init(Real waterLevel, Real dx, Real dy, SceneClass *par
 	m_planeNormal=Vector3(0,0,1);		//water plane normal
 	m_planeDistance=m_level;	//water plane distance(always at zero for now)
 
-	m_meshLight=NEW_REF(LightClass,(LightClass::DIRECTIONAL));	
+	iLog("NEW_REF LightClass...");
+	m_meshLight=NEW_REF(LightClass,(LightClass::DIRECTIONAL));
 	m_meshLight->Set_Ambient(Vector3(0.1f,0.1f,0.1f));
 	m_meshLight->Set_Diffuse(Vector3(1.0f,1.0f,1.0f));
 	m_meshLight->Set_Specular(Vector3(1.0f,1.0f,1.0f));
@@ -1023,6 +1066,7 @@ Int WaterRenderObjClass::init(Real waterLevel, Real dx, Real dy, SceneClass *par
 	m_meshLight->Set_Spot_Direction(Vector3(-0.57f,-0.57f,-0.57f));
 
 	//Setup material for 3D Mesh water.
+	iLog("NEW_REF VertexMaterialClass...");
 	m_meshVertexMaterialClass=NEW_REF(VertexMaterialClass,());
 	m_meshVertexMaterialClass->Set_Shininess(20.0);
 	m_meshVertexMaterialClass->Set_Ambient(1.0f,1.0f,1.0f);
@@ -1035,15 +1079,19 @@ Int WaterRenderObjClass::init(Real waterLevel, Real dx, Real dy, SceneClass *par
 	// assign the data from the WaterSettings[] global to the data for this
 	// render object (we at present only have one water plane)
 	//
+	iLog("loadSetting...");
 	loadSetting( &m_settings[ TIME_OF_DAY_MORNING ], TIME_OF_DAY_MORNING );
 	loadSetting( &m_settings[ TIME_OF_DAY_AFTERNOON ], TIME_OF_DAY_AFTERNOON );
 	loadSetting( &m_settings[ TIME_OF_DAY_EVENING ], TIME_OF_DAY_EVENING );
 	loadSetting( &m_settings[ TIME_OF_DAY_NIGHT ], TIME_OF_DAY_NIGHT );
+	iLog("loadSetting done");
 
 	Set_Sort_Level(2);	//force water to be drawn after all other non translucent objects in scene.
 	Set_Force_Visible(TRUE);	//water is always visible since it's a composite object made of multiple planes all over the map.
 
+	iLog("ReAcquireResources...");
 	ReAcquireResources();
+	iLog("ReAcquireResources done");
 #if 0	//MD does not support the old bump-mapped water at all so no point loading textures. -MW 8-11-03
 	if (type == WATER_TYPE_2_PVSHADER || (W3DShaderManager::getChipset() >= DC_GENERIC_PIXEL_SHADER_1_1))
 	{	//geforce3 specific water requires some extra D3D assets
@@ -1078,21 +1126,26 @@ Int WaterRenderObjClass::init(Real waterLevel, Real dx, Real dy, SceneClass *par
 #endif
 
 	//Setup material for regular water
+	iLog("Get_Preset PRELIT_DIFFUSE...");
 	m_vertexMaterialClass=VertexMaterialClass::Get_Preset(VertexMaterialClass::PRELIT_DIFFUSE);
-	
+	iLog("Get_Preset done; zFillAlphaShader...");
 
 
 	m_shaderClass = zFillAlphaShader;//ShaderClass::_PresetAlphaShader;ShaderClass::_PresetOpaqueShader;//detailOpaqueShader;
 	m_shaderClass.Set_Cull_Mode(ShaderClass::CULL_MODE_DISABLE);	//water should be visible from both sides
 
 	//Assets used for all types of water
+	iLog("Get_Texture SKYBODY...");
 	m_alphaClippingTexture=WW3DAssetManager::Get_Instance()->Get_Texture(SKYBODY_TEXTURE);
+	iLog("Get_Texture SKYBODY done");
 
 #ifdef CLIP_GEOMETRY_TO_PLANE
 	m_alphaClippingTexture=WW3DAssetManager::Get_Instance()->Get_Texture("alphaclip.tga");
 #endif
 
+	iLog("Create_Render_Obj new_skybox...");
 	m_skyBox = ((W3DAssetManager*)W3DAssetManager::Get_Instance())->Create_Render_Obj( "new_skybox", TheGlobalData->m_skyBoxScale, 0);
+	iLog("Create_Render_Obj done");
 
 	//Enable clamping on all textures used by the skybox (to reduce corner seams).
 	if (m_skyBox && m_skyBox->Class_ID() == RenderObjClass::CLASSID_MESH)
@@ -1112,17 +1165,24 @@ Int WaterRenderObjClass::init(Real waterLevel, Real dx, Real dy, SceneClass *par
 		REF_PTR_RELEASE(material);
 	}
 
-	m_riverTexture=WW3DAssetManager::Get_Instance()->Get_Texture(TheWaterTransparency->m_standingWaterTexture.str()); 
+	iLog("Get_Texture riverTexture...");
+	m_riverTexture=WW3DAssetManager::Get_Instance()->Get_Texture(TheWaterTransparency->m_standingWaterTexture.str());
+	iLog("Get_Texture riverTexture done; whiteTexture...");
 
 	//For some reason setting a NULL texture does not result in 0xffffffff for pixel shaders so using explicit "white" texture.
 	m_whiteTexture=MSGNEW("TextureClass") TextureClass(1,1,WW3D_FORMAT_A4R4G4B4,MIP_LEVELS_1);
+	iLog("whiteTexture created; Get_Surface_Level...");
 	SurfaceClass *surface=m_whiteTexture->Get_Surface_Level();
+	iLog("Get_Surface_Level done; DrawPixel...");
 	surface->DrawPixel(0,0,0xffffffff);
+	iLog("DrawPixel done; REF_PTR_RELEASE...");
 	REF_PTR_RELEASE(surface);
+	iLog("whiteTexture done");
 
 	m_waterNoiseTexture=WW3DAssetManager::Get_Instance()->Get_Texture("Noise0000.tga");
 	m_riverAlphaEdge=WW3DAssetManager::Get_Instance()->Get_Texture("TWAlphaEdge.tga");
 	m_waterSparklesTexture=WW3DAssetManager::Get_Instance()->Get_Texture("WaterSurfaceBubbles.tga");
+	iLog("init complete, returning 0");
 #ifdef DRAW_WATER_WAKES
 	m_waterTrackSystem = NEW WaterTracksRenderSystem;
 	m_waterTrackSystem->init();

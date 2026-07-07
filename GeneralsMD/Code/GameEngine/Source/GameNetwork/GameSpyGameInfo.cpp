@@ -45,9 +45,7 @@
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/VictoryConditions.h"
 
-// Singleton ------------------------------------------
-
-GameSpyGameInfo *TheGameSpyGame = NULL;
+// Singleton defined in PeerDefs.cpp as GameSpyStagingRoom *TheGameSpyGame
 
 // Helper Functions ----------------------------------------
 
@@ -555,7 +553,7 @@ void GameSpyLaunchGame( void )
 		// shutdown the top, but do not pop it off the stack
 //		TheShell->hideShell();
 		// setup the Global Data with the Map and Seed
-		TheGlobalData->m_pendingFile = TheGameSpyGame->getMap();
+		TheWritableGlobalData->m_pendingFile = TheGameSpyGame->getMap();
 
 		if (TheGameLogic->isInGame()) {
 			TheGameLogic->clearGameData();
@@ -564,7 +562,7 @@ void GameSpyLaunchGame( void )
 		GameMessage *msg = TheMessageStream->appendMessage( GameMessage::MSG_NEW_GAME );
 		msg->appendIntegerArgument(GAME_INTERNET);
 
-		TheGlobalData->m_useFpsLimit = false;
+		TheWritableGlobalData->m_useFpsLimit = false;
 
 		// Set the random seed
 		InitGameLogicRandom( TheGameSpyGame->getSeed() );

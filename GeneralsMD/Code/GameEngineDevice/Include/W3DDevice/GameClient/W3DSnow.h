@@ -22,6 +22,7 @@
 #define _W3DSNOW_H_
 
 #include "GameClient/Snow.h"
+#include "dx8wrapper.h"  // for IDirect3DVertexBuffer8 via RenderTypes.h
 
 class DX8IndexBufferClass;
 class RenderInfoClass;

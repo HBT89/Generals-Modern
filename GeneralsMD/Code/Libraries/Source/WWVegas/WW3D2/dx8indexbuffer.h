@@ -116,6 +116,7 @@ class DynamicIBAccessClass : public W3DMPO
 	W3DMPO_GLUE(DynamicIBAccessClass)
 
 	friend DX8Wrapper;
+	friend class BGFXWrapper;
 	friend SortingRendererClass;
 
 	unsigned Type;
@@ -192,6 +193,7 @@ class SortingIndexBufferClass : public IndexBufferClass
 	W3DMPO_GLUE(SortingIndexBufferClass)
 
 	friend DX8Wrapper;
+	friend class BGFXWrapper;
 	friend SortingRendererClass;
 	friend IndexBufferClass::WriteLockClass;
 	friend IndexBufferClass::AppendLockClass;

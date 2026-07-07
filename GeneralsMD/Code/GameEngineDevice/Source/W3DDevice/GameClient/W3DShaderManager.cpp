@@ -1600,6 +1600,13 @@ void TerrainShader2Stage::reset(void)
 
 	DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
 	DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU|1);
+
+	// Restore render states that set() modified — prevents corruption of subsequent 2D UI draws.
+	// In original DX8, these were implicitly managed by the fixed-function pipeline state machine.
+	// With BGFX, render states persist in the RenderStates[] array and affect all subsequent draws.
+	DX8Wrapper::Set_DX8_Render_State(D3DRS_ALPHABLENDENABLE, FALSE);
+	DX8Wrapper::Set_DX8_Render_State(D3DRS_SRCBLEND, D3DBLEND_ONE);
+	DX8Wrapper::Set_DX8_Render_State(D3DRS_DESTBLEND, D3DBLEND_ZERO);
 }
 
 void TerrainShader2Stage::updateNoise1(D3DXMATRIX *destMatrix,D3DXMATRIX *curViewInverse, Bool doUpdate)
@@ -1633,7 +1640,7 @@ void TerrainShader2Stage::updateNoise1(D3DXMATRIX *destMatrix,D3DXMATRIX *curVie
 	while (m_yOffset < -1) m_yOffset += 1;
 
 	D3DXMatrixTranslation(&offset, m_xOffset, m_yOffset,0);
-	*destMatrix *= offset;
+	*destMatrix = *destMatrix * offset;
 }
 
 void TerrainShader2Stage::updateNoise2(D3DXMATRIX *destMatrix,D3DXMATRIX *curViewInverse, Bool doUpdate)
@@ -1672,7 +1679,7 @@ Int TerrainShader2Stage::set(Int pass)
 	switch (pass)
 	{
 		case 0:
-			DX8Wrapper::_Get_D3D_Device8()->SetTexture(0, W3DShaderManager::getShaderTexture(0)->Peek_D3D_Texture());
+			DX8Wrapper::Set_Texture(0, W3DShaderManager::getShaderTexture(0));
 			DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP);
 			DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP);
 
@@ -1687,7 +1694,7 @@ Int TerrainShader2Stage::set(Int pass)
 			DX8Wrapper::Set_DX8_Render_State(D3DRS_ALPHABLENDENABLE,false);
 			break;
 		case 1:
-			DX8Wrapper::_Get_D3D_Device8()->SetTexture(0, W3DShaderManager::getShaderTexture(1)->Peek_D3D_Texture());
+			DX8Wrapper::Set_Texture(0, W3DShaderManager::getShaderTexture(1));
 			DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_ADDRESSU, D3DTADDRESS_CLAMP);
 			DX8Wrapper::Set_DX8_Texture_Stage_State( 0, D3DTSS_ADDRESSV, D3DTADDRESS_CLAMP);
 
@@ -2548,6 +2555,11 @@ void RoadShader2Stage::reset(void)
 
 	DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
 	DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU|1);
+
+	// Restore blend states — BGFX render states persist across draws unlike DX8 fixed-function.
+	DX8Wrapper::Set_DX8_Render_State(D3DRS_ALPHABLENDENABLE, FALSE);
+	DX8Wrapper::Set_DX8_Render_State(D3DRS_SRCBLEND, D3DBLEND_ONE);
+	DX8Wrapper::Set_DX8_Render_State(D3DRS_DESTBLEND, D3DBLEND_ZERO);
 }
 
 /** List of all custom shader lists - each list in this list contains variations of the same
@@ -2609,7 +2621,42 @@ W3DShaderManager::W3DShaderManager(void)
 //=============================================================================
 void W3DShaderManager::init(void)
 {
+	// BGFX Port: skip DX8 device-dependent chipset detection and render target
+	// creation, but still initialize the 2-stage shaders which only set pass counts
+	// and don't access the D3D device. This is needed so terrain/road/shroud/cloud
+	// rendering gets non-zero pass counts.
 	int i,j;
+
+	// Walk the MasterShaderList — for each category, try inits in order.
+	// Pixel shader / 8-stage inits will fail (they call getChipset() which
+	// returns DC_UNKNOWN without a real D3D device), and the 2-stage fallbacks
+	// will succeed since they don't need device access.
+	for (i=0; MasterShaderList[i] != NULL; i++)
+	{
+		W3DShaderInterface **shaders = MasterShaderList[i];
+		for (j=0; shaders[j] != NULL; j++)
+		{
+			if (shaders[j]->init())
+				break;  // found a working shader
+		}
+	}
+
+	// Also init filters (the ones that don't need DX8 will work)
+	W3DFilterInterface **filters;
+	for (i=0; MasterFilterList[i] != NULL; i++)
+	{
+		filters = MasterFilterList[i];
+		for (j=0; filters[j] != NULL; j++)
+		{
+			if (filters[j]->init())
+				break;
+		}
+	}
+
+	return;  // Skip DX8 device-dependent code below
+
+	// --- Original DX8 code below (kept for reference) ---
+	// int i,j;  // already declared above
 
 	D3DSURFACE_DESC desc;
 	// For now, check & see if we are gf3 or higher on the food chain.
@@ -2655,7 +2702,7 @@ void W3DShaderManager::init(void)
 	W3DShaderInterface **shaders;
 
 	for (i=0; MasterShaderList[i] != NULL; i++)
-	{	
+	{
 		shaders=MasterShaderList[i];
 		for (j=0; shaders[j] != NULL; j++)
 		{
@@ -2663,10 +2710,10 @@ void W3DShaderManager::init(void)
 				break;	//found a working shader
 		}
 	}
-	W3DFilterInterface **filters;
+	// W3DFilterInterface **filters;  // already declared above
 
 	for (i=0; MasterFilterList[i] != NULL; i++)
-	{	
+	{
 		filters=MasterFilterList[i];
 		for (j=0; filters[j] != NULL; j++)
 		{
@@ -2675,7 +2722,7 @@ void W3DShaderManager::init(void)
 		}
 	}
 
-	DEBUG_LOG(("ShaderManager ChipsetID %d\n", res));
+	DEBUG_LOG(("ShaderManager ChipsetID %d\n", 0));
 }
 
 // W3DShaderManager::shutdown =======================================================
@@ -2718,6 +2765,17 @@ void W3DShaderManager::shutdown(void)
 //=============================================================================
 Int W3DShaderManager::getShaderPasses(ShaderTypes shader)
 {
+	// Verbose logging for terrain shader passes
+	{
+		static int s_passLog = 0;
+		s_passLog++;
+		if (s_passLog <= 30) {
+			FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_draw.log", "a");
+			if (lf) { fprintf(lf, "[SHADER] getShaderPasses(shader=%d) = %d  shaderPtr=%p\n",
+				(int)shader, W3DShadersPassCount[shader], (void*)W3DShaders[shader]);
+				fflush(lf); fclose(lf); }
+		}
+	}
 	return W3DShadersPassCount[shader];
 }
 
@@ -2728,13 +2786,77 @@ Int W3DShaderManager::getShaderPasses(ShaderTypes shader)
 //=============================================================================
 Int W3DShaderManager::setShader(ShaderTypes shader, Int pass)
 {
+	// ------------------------------------------------------------------
+	// BGFX: Mirror m_Textures[] into BGFXWrapper::Textures[] BEFORE the
+	// early-return check.  Terrain tiles call setShaderTexture() between
+	// draws while keeping the same shader+pass — we must re-push every
+	// call so SubmitDraw sees the correct per-tile texture.
+	// Use Peek_D3D_Base_Texture() + Set_DX8_Texture() directly to bypass
+	// WW3D::Is_Texturing_Enabled() inside Apply(), which would NULL the
+	// slot when texturing is globally disabled.
+	// Fall back to Set_Texture() only when D3DTexture is NULL (uninitialized)
+	// so the lazy-init path in Apply() is still reachable.
+	// ------------------------------------------------------------------
+	for (int i = 0; i < 8; i++) {
+		if (!m_Textures[i]) continue;
+		IDirect3DBaseTexture8* d3dTex = m_Textures[i]->Peek_D3D_Base_Texture();
+		if (d3dTex)
+			DX8Wrapper::Set_DX8_Texture(i, d3dTex);   // direct: skips Is_Texturing_Enabled guard
+		else
+			DX8Wrapper::Set_Texture(i, m_Textures[i]); // fallback: triggers lazy Init/Upload
+	}
+
 	if (shader == m_currentShader && pass == m_currentShaderPass)
 		return TRUE;	//shader is already set
 	m_currentShader=shader;
 	m_currentShaderPass = pass;
+
+	// ------------------------------------------------------------------
+	// BGFX: Select the appropriate shader program based on shader type.
+	// Terrain types use the dedicated terrain program (k_vsTerrain/k_fsTerrain).
+	// All other types fall back to the generic mesh program.
+	// Phase B: road, shroud, water, unit-lit etc. will each get their own slot.
+	// ------------------------------------------------------------------
+	switch (shader) {
+		case ST_TERRAIN_BASE:
+		case ST_TERRAIN_BASE_NOISE1:
+		case ST_TERRAIN_BASE_NOISE2:
+		case ST_TERRAIN_BASE_NOISE12:
+		case ST_FLAT_TERRAIN_BASE:
+		case ST_FLAT_TERRAIN_BASE_NOISE1:
+		case ST_FLAT_TERRAIN_BASE_NOISE2:
+		case ST_FLAT_TERRAIN_BASE_NOISE12:
+			DX8Wrapper::Set_Active_Shader_Type(BGFXWrapper::SP_TERRAIN_BASE);
+			break;
+		case ST_SHROUD_TEXTURE:
+		case ST_FLAT_SHROUD_TEXTURE:
+			DX8Wrapper::Set_Active_Shader_Type(BGFXWrapper::SP_SHROUD);
+			break;
+		case ST_ROAD_BASE:
+		case ST_ROAD_BASE_NOISE1:
+		case ST_ROAD_BASE_NOISE2:
+		case ST_ROAD_BASE_NOISE12:
+			DX8Wrapper::Set_Active_Shader_Type(BGFXWrapper::SP_ROAD);
+			break;
+		default:
+			DX8Wrapper::Set_Active_Shader_Type(BGFXWrapper::SP_MESH_DEFAULT);
+			break;
+	}
+
 	if (W3DShaders[shader])
-		return W3DShaders[shader]->set(pass);
-	return FALSE;
+		W3DShaders[shader]->set(pass);
+
+	// BGFX: Re-assert textures after set() — some set() impls call Set_Texture(stage, NULL)
+	// which routes to Set_DX8_Texture(stage, nullptr) and wipes the slot set in the loop above.
+	for (int i = 0; i < 8; i++) {
+		if (m_Textures[i]) {
+			IDirect3DBaseTexture8* d3dTex = m_Textures[i]->Peek_D3D_Base_Texture();
+			if (d3dTex)
+				DX8Wrapper::Set_DX8_Texture(i, d3dTex);
+		}
+	}
+
+	return TRUE;
 }
 
 // W3DShaderManager::resetShader =======================================================
@@ -2744,12 +2866,15 @@ Int W3DShaderManager::setShader(ShaderTypes shader, Int pass)
  */
 //=============================================================================
 void W3DShaderManager::resetShader(ShaderTypes shader)
-{	
+{
 	if (m_currentShader == ST_INVALID)
 		return;	//last shader is already reset.
 	if (W3DShaders[shader])
 		W3DShaders[shader]->reset();
 	m_currentShader = ST_INVALID;
+
+	// BGFX: Reset to default program so subsequent non-terrain draws use the mesh shader.
+	DX8Wrapper::Set_Active_Shader_Type(BGFXWrapper::SP_MESH_DEFAULT);
 }
 // W3DShaderManager::filterPreRender =======================================================
 /** Call to view filter shaders before rendering starts.
@@ -3273,6 +3398,11 @@ void FlatTerrainShader2Stage::reset(void)
 
 	DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_TEXTURETRANSFORMFLAGS, D3DTTFF_DISABLE);
 	DX8Wrapper::Set_DX8_Texture_Stage_State( 1, D3DTSS_TEXCOORDINDEX, D3DTSS_TCI_PASSTHRU|1);
+
+	// Restore blend states — BGFX render states persist across draws unlike DX8 fixed-function.
+	DX8Wrapper::Set_DX8_Render_State(D3DRS_ALPHABLENDENABLE, FALSE);
+	DX8Wrapper::Set_DX8_Render_State(D3DRS_SRCBLEND, D3DBLEND_ONE);
+	DX8Wrapper::Set_DX8_Render_State(D3DRS_DESTBLEND, D3DBLEND_ZERO);
 }
 
 

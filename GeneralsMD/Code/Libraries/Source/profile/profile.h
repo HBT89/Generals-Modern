@@ -22,7 +22,7 @@
 // $Revision: #4 $
 // $DateTime: 2003/08/14 13:43:29 $
 //
-// ©2003 Electronic Arts
+// ï¿½2003 Electronic Arts
 //
 // Profiling module
 //////////////////////////////////////////////////////////////////////////////
@@ -32,20 +32,14 @@
 #ifndef PROFILE_H // Include guard
 #define PROFILE_H
 
-#if defined(_DEBUG) && defined(_INTERNAL)
-	#error "Only either _DEBUG or _INTERNAL should ever be defined"
-#endif
+// BGFX port: allow both _DEBUG and _INTERNAL to coexist
+// #if defined(_DEBUG) && defined(_INTERNAL)
+// 	#error "Only either _DEBUG or _INTERNAL should ever be defined"
+// #endif
 
-// Define which libraries to use. 
-#if defined(_INTERNAL)
-#  pragma comment (lib,"profileinternal.lib")
-#elif defined(_DEBUG)
-#  pragma comment (lib,"profiledebug.lib")
-#elif defined(_PROFILE)
-#  pragma comment (lib,"profileprofile.lib")
-#else
-#  pragma comment (lib,"profile.lib")
-#endif
+// Define which libraries to use.
+// BGFX port: always use release profile.lib regardless of _INTERNAL/_DEBUG
+#pragma comment (lib,"profile.lib")
 
 // include all our public header files (use double quotes here)
 #include "profile_doc.h"

@@ -466,11 +466,8 @@ static MessageBoxReturnType cancelStartBecauseOfNoCD( void *userData )
 
 Bool IsFirstCDPresent(void)
 {
-#if !defined(_INTERNAL) && !defined(_DEBUG)
-	return TheFileSystem->areMusicFilesOnCD();
-#else
+	// CD check removed — game is GPL open source, no physical media required.
 	return TRUE;
-#endif
 }
 
 static MessageBoxReturnType checkCDCallback( void *userData )

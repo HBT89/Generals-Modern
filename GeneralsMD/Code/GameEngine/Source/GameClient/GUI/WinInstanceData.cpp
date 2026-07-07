@@ -184,14 +184,25 @@ void WinInstanceData::setTooltipText( UnicodeString tip )
 //=============================================================================
 void WinInstanceData::setText( UnicodeString text )
 {
+	auto stLog = [](const char* msg) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "  WIDS: %s\n", msg); fflush(logf); fclose(logf); }
+	};
+	stLog("setText enter");
 
 	// allocate a text instance if needed
 	if( m_text == NULL )
+	{
+		stLog("calling newDisplayString...");
 		m_text = TheDisplayStringManager->newDisplayString();
+		stLog("newDisplayString done");
+	}
 	DEBUG_ASSERTCRASH( m_text, ("no text") );
 
 	// set the text
+	stLog("m_text->setText...");
 	m_text->setText( text );
+	stLog("m_text->setText done");
 
 }  // end set text
 

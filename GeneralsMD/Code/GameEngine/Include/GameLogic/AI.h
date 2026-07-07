@@ -311,8 +311,27 @@ class Waypoint;
 class Team;
 class Weapon;
 
-// Note - written out in save/load xfer and .map files, don't change these numbers.  
+// Note - written out in save/load xfer and .map files, don't change these numbers.
+// Use push/pop macro to protect against any Windows SDK macros that might expand our identifiers
+#pragma push_macro("AI_SLEEP")
+#pragma push_macro("AI_PASSIVE")
+#pragma push_macro("AI_NORMAL")
+#pragma push_macro("AI_ALERT")
+#pragma push_macro("AI_AGGRESSIVE")
+#pragma push_macro("AI_INVALID")
+#undef AI_SLEEP
+#undef AI_PASSIVE
+#undef AI_NORMAL
+#undef AI_ALERT
+#undef AI_AGGRESSIVE
+#undef AI_INVALID
 enum AttitudeType { AI_SLEEP = -2, AI_PASSIVE=-1, AI_NORMAL=0, AI_ALERT=1, AI_AGGRESSIVE=2, AI_INVALID=3 };		///< AI "attitude" behavior modifiers
+#pragma pop_macro("AI_INVALID")
+#pragma pop_macro("AI_AGGRESSIVE")
+#pragma pop_macro("AI_ALERT")
+#pragma pop_macro("AI_NORMAL")
+#pragma pop_macro("AI_PASSIVE")
+#pragma pop_macro("AI_SLEEP")
 
 enum CommandSourceType;
 

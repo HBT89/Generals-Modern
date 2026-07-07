@@ -127,10 +127,16 @@ BinkVideoPlayer::~BinkVideoPlayer()
 
 void	BinkVideoPlayer::init( void )
 {
+	auto bLog = [](const char* msg) {
+		FILE *f = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (f) { fprintf(f, "    BVP: %s\n", msg); fclose(f); }
+	};
+	bLog("VideoPlayer::init()...");
 	// Need to load the stuff from the ini file.
 	VideoPlayer::init();
-
+	bLog("initializeBinkWithMiles...");
 	initializeBinkWithMiles();
+	bLog("init done");
 }
 
 //============================================================================
@@ -282,17 +288,9 @@ void BinkVideoPlayer::notifyVideoPlayerOfNewProvider( Bool nowHasValid )
 //============================================================================
 void BinkVideoPlayer::initializeBinkWithMiles()
 {
-	Int retVal = 0;
-	void *driver = TheAudio->getHandleForBink();	
-	
-	if ( driver )
-	{
-		retVal = BinkSoundUseDirectSound(driver);
-	}
-	if( !driver || retVal == 0)
-	{
-		BinkSetSoundTrack ( 0,0 );
-	}
+	// Audio-to-Bink hookup via Miles Sound System is skipped until the audio
+	// subsystem is ported. Tell Bink to play video with no audio track.
+	BinkSetSoundTrack( 0, 0 );
 }
 
 //============================================================================

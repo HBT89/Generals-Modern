@@ -1686,8 +1686,9 @@ void DX8Wrapper::Begin_Scene(void)
 #if ENABLE_EMBEDDED_BROWSER
 	DX8WebBrowser::Update();
 #endif
-	
+
 	DX8CALL(BeginScene());
+	BGFXWrapper::Begin_Scene();
 
 	DX8WebBrowser::Update();
 }
@@ -1696,6 +1697,7 @@ void DX8Wrapper::End_Scene(bool flip_frames)
 {
 	DX8_THREAD_ASSERT();
 	DX8CALL(EndScene());
+	BGFXWrapper::End_Scene(flip_frames);
 
 	DX8WebBrowser::Render(0);
 

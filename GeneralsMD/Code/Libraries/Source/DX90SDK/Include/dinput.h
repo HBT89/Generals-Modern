@@ -44,6 +44,41 @@ extern "C" {
 #define DIERR_ACQUIRED              MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x01FF)
 #define DIERR_READONLY              E_ACCESSDENIED
 #define DIERR_HANDLEEXISTS          E_ACCESSDENIED
+
+// Additional DIERR codes not mapped to standard HRESULTs
+#define DIERR_ALREADYINITIALIZED    MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0057)
+#define DIERR_BADDRIVERVER          MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x00C1)
+#define DIERR_BETADIRECTINPUTVERSION MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0154)
+#define DIERR_DEVICEFULL            MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0027)
+#define DIERR_EFFECTPLAYING         MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0200)
+#define DIERR_HASEFFECTS            MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0201)
+#define DIERR_INCOMPLETEEFFECT      MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0202)
+#define DIERR_MAPFILEFAIL           MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0203)
+#define DIERR_MOREDATA              MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x00EA)
+#define DIERR_NOAGGREGATION         CLASS_E_NOAGGREGATION
+#define DIERR_NOTBUFFERED           MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0204)
+#define DIERR_NOTDOWNLOADED         MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0205)
+#define DIERR_NOTEXCLUSIVEACQUIRED  MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x01FD)
+#define DIERR_OLDDIRECTINPUTVERSION MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0153)
+#define DIERR_REPORTFULL            MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0206)
+#define DIERR_UNPLUGGED             MAKE_HRESULT(SEVERITY_ERROR, FACILITY_WIN32, 0x0207)
+
+// Device capabilities flags
+#define DIDC_ATTACHED       0x00000001
+#define DIDC_POLLEDDEVICE   0x00000002
+#define DIDC_EMULATED       0x00000004
+#define DIDC_POLLEDDATAFORMAT 0x00000008
+#define DIDC_FORCEFEEDBACK  0x00000100
+#define DIDC_FFATTACK       0x00000200
+#define DIDC_FFFADE         0x00000400
+#define DIDC_SATURATION     0x00000800
+#define DIDC_POSNEGCOEFFICIENTS 0x00001000
+#define DIDC_POSNEGSATURATION   0x00002000
+#define DIDC_DEADBAND       0x00004000
+#define DIDC_STARTDELAY     0x00008000
+#define DIDC_ALIAS          0x00010000
+#define DIDC_PHANTOM        0x00020000
+#define DIDC_HIDDEN         0x00040000
 #endif
 
 /* ------------------------------------------------------------------ */
@@ -541,8 +576,8 @@ struct IDirectInputEffect : public IUnknown {
 struct IDirectInputDevice8A : public IUnknown {
     virtual HRESULT __stdcall GetCapabilities(LPDIDEVCAPS lpDIDevCaps) = 0;
     virtual HRESULT __stdcall EnumObjects(LPDIENUMDEVICEOBJECTSCALLBACKA lpCallback, LPVOID pvRef, DWORD dwFlags) = 0;
-    virtual HRESULT __stdcall GetProperty(REFGUID rguidProp, LPDIPROPHEADER pdiph) = 0;
-    virtual HRESULT __stdcall SetProperty(REFGUID rguidProp, LPCDIPROPHEADER pdiph) = 0;
+    virtual HRESULT __stdcall GetProperty(const GUID* rguidProp, LPDIPROPHEADER pdiph) = 0;
+    virtual HRESULT __stdcall SetProperty(const GUID* rguidProp, LPCDIPROPHEADER pdiph) = 0;
     virtual HRESULT __stdcall Acquire() = 0;
     virtual HRESULT __stdcall Unacquire() = 0;
     virtual HRESULT __stdcall GetDeviceState(DWORD cbData, LPVOID lpvData) = 0;
@@ -577,8 +612,8 @@ struct IDirectInputDevice8A : public IUnknown {
 struct IDirectInputDevice8W : public IUnknown {
     virtual HRESULT __stdcall GetCapabilities(LPDIDEVCAPS lpDIDevCaps) = 0;
     virtual HRESULT __stdcall EnumObjects(LPDIENUMDEVICEOBJECTSCALLBACKW lpCallback, LPVOID pvRef, DWORD dwFlags) = 0;
-    virtual HRESULT __stdcall GetProperty(REFGUID rguidProp, LPDIPROPHEADER pdiph) = 0;
-    virtual HRESULT __stdcall SetProperty(REFGUID rguidProp, LPCDIPROPHEADER pdiph) = 0;
+    virtual HRESULT __stdcall GetProperty(const GUID* rguidProp, LPDIPROPHEADER pdiph) = 0;
+    virtual HRESULT __stdcall SetProperty(const GUID* rguidProp, LPCDIPROPHEADER pdiph) = 0;
     virtual HRESULT __stdcall Acquire() = 0;
     virtual HRESULT __stdcall Unacquire() = 0;
     virtual HRESULT __stdcall GetDeviceState(DWORD cbData, LPVOID lpvData) = 0;

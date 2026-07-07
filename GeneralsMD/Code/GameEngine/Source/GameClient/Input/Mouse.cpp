@@ -485,7 +485,7 @@ Mouse::Mouse( void )
 		m_currentRedrawMode = RM_WINDOWS;
 	else
 		m_currentRedrawMode = RM_W3D;//RM_WINDOWS;
-	m_visible = FALSE;
+	m_visible = TRUE;
 	m_tooltipFontName = "Times New Roman";
 	m_tooltipFontSize = 12;
 	m_tooltipFontIsBold = FALSE;

@@ -657,10 +657,40 @@ void DynamicScreenMeshClass::Set_Position(const Vector3 &v)
 	DynamicMeshClass::Set_Position(Vector3(v.X * 2, -(v.Y * 2 * Aspect), 0)); 
 }
 
-void DynamicScreenMeshClass::Reset( void )		
-{	
-	Reset_Flags();	
-	Reset_Mesh_Counters();	
+void DynamicScreenMeshClass::Reset( void )
+{
+	Reset_Flags();
+	Reset_Mesh_Counters();
+}
+
+// ---------------------------------------------------------------------------
+// Missing implementations (declared in dynamesh.h but not previously defined)
+// ---------------------------------------------------------------------------
+
+// Returns a non-const pointer to the polygon array in the underlying geometry.
+TriIndex * DynamicMeshModel::Get_Non_Const_Polygon_Array(void)
+{
+	return get_polys();
+}
+
+// Sets the world-space position of this dynamic mesh by forwarding to RenderObjClass.
+void DynamicMeshClass::Set_Position(const Vector3 &v)
+{
+	RenderObjClass::Set_Position(v);
+}
+
+// Resets per-vertex flags (multi-texture, multi-material, multi-color) to their defaults.
+void DynamicMeshClass::Reset_Flags(void)
+{
+	for (int pass = 0; pass < MeshMatDescClass::MAX_PASSES; ++pass) {
+		MultiTexture[pass] = false;
+		TextureIdx[pass] = 0;
+		MultiVertexMaterial[pass] = false;
+		VertexMaterialIdx[pass] = 0;
+	}
+	for (int i = 0; i < MeshMatDescClass::MAX_COLOR_ARRAYS; ++i) {
+		MultiVertexColor[i] = false;
+	}
 }
 
 

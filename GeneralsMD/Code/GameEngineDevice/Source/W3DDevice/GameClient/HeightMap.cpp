@@ -1915,7 +1915,19 @@ void HeightMapRenderObjClass::updateCenter(CameraClass *camera , RefRenderObjLis
 void HeightMapRenderObjClass::Render(RenderInfoClass & rinfo)
 {
 	//USE_PERF_TIMER(Terrain_Render)
-	
+
+	// Verbose terrain render logging
+	{
+		static int s_terrainRenderCount = 0;
+		s_terrainRenderCount++;
+		if (s_terrainRenderCount <= 30 || (s_terrainRenderCount % 300 == 0)) {
+			FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_draw.log", "a");
+			if (lf) { fprintf(lf, "[TERRAIN] Render() called #%d  hidden=%d  numTilesX=%d numTilesY=%d  numVBTiles=%d  indexBuf=%p\n",
+				s_terrainRenderCount, (int)Is_Hidden(), m_numVBTilesX, m_numVBTilesY, m_numVertexBufferTiles, (void*)m_indexBuffer);
+				fflush(lf); fclose(lf); }
+		}
+	}
+
 	Int i,j,devicePasses;
 	W3DShaderManager::ShaderTypes st;
 	Bool doCloud = TheGlobalData->m_useCloudMap;
@@ -2081,13 +2093,11 @@ void HeightMapRenderObjClass::Render(RenderInfoClass & rinfo)
 				DX8Wrapper::Set_Vertex_Buffer(m_vertexBufferTiles[j*m_numVBTilesX+i]);
 #ifdef PRE_TRANSFORM_VERTEX
 				if (m_xformedVertexBuffer && pass==0) {
-					// Note - m_xformedVertexBuffer should only be used for non T&L hardware.  jba.
 					DX8Wrapper::Apply_Render_State_Changes();
-					int code = DX8Wrapper::_Get_D3D_Device8()->ProcessVertices(0, 0, numVertex, m_xformedVertexBuffer[j*m_numVBTilesX+i], 0); 
+					int code = DX8Wrapper::_Get_D3D_Device8()->ProcessVertices(0, 0, numVertex, m_xformedVertexBuffer[j*m_numVBTilesX+i], 0);
 					::OutputDebugString("did process vertex\n");
 				}
 				if (m_xformedVertexBuffer) {
-					// Note - m_xformedVertexBuffer should only be used for non T&L hardware.  jba.
 					DX8Wrapper::Apply_Render_State_Changes();
 					DX8Wrapper::_Get_D3D_Device8()->SetStreamSource(
 						0,
@@ -2095,7 +2105,18 @@ void HeightMapRenderObjClass::Render(RenderInfoClass & rinfo)
 						D3DXGetFVFVertexSize(D3DFVF_XYZRHW |D3DFVF_DIFFUSE|D3DFVF_TEX2));
 					DX8Wrapper::_Get_D3D_Device8()->SetVertexShader(D3DFVF_XYZRHW |D3DFVF_DIFFUSE|D3DFVF_TEX2);
 				}
-#endif				
+#endif
+				// Verbose logging for terrain tile draws
+				{
+					static int s_tileDrawLog = 0;
+					s_tileDrawLog++;
+					if (s_tileDrawLog <= 20) {
+						FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_draw.log", "a");
+						if (lf) { fprintf(lf, "[TERRAIN-TILE] pass=%d tile(%d,%d) polys=%d verts=%d hidden=%d vb=%p\n",
+							pass, i, j, numPolys, numVertex, (int)Is_Hidden(), (void*)m_vertexBufferTiles[j*m_numVBTilesX+i]);
+							fflush(lf); fclose(lf); }
+					}
+				}
 				if (Is_Hidden() == 0) {
 					DX8Wrapper::Draw_Triangles(	0,numPolys, 0,	numVertex);
 				}

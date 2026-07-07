@@ -698,23 +698,13 @@ void ReleaseCrash(const char *reason)
 			ShowWindow(ApplicationHWnd, SW_HIDE);
 		}
 	}
-#if defined(_DEBUG) || defined(_INTERNAL)
-	/* static */ char buff[8192]; // not so static so we can be threadsafe
+	// Always show the reason so we can diagnose crashes in Release builds
+	/* static */ char buff[8192];
 	_snprintf(buff, 8192, "Sorry, a serious error occurred. (%s)", reason);
 	buff[8191] = 0;
+	// Also log to file for diagnostics
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[CRASH] %s\n", buff); fflush(lf); fclose(lf); } }
 	::MessageBox(NULL, buff, "Technical Difficulties...", MB_OK|MB_SYSTEMMODAL|MB_ICONERROR);
-#else
-// crash error messaged changed 3/6/03 BGC
-//	::MessageBox(NULL, "Sorry, a serious error occurred.", "Technical Difficulties...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
-//	::MessageBox(NULL, "You have encountered a serious error.  Serious errors can be caused by many things including viruses, overheated hardware and hardware that does not meet the minimum specifications for the game. Please visit the forums at www.generals.ea.com for suggested courses of action or consult your manual for Technical Support contact information.", "Technical Difficulties...", MB_OK|MB_TASKMODAL|MB_ICONERROR);
-
-// crash error message changed again 8/22/03 M Lorenzen... made this message box modal to the system so it will appear on top of any task-modal windows, splash-screen, etc.
-  ::MessageBox(NULL, "You have encountered a serious error.  Serious errors can be caused by many things including viruses, overheated hardware and hardware that does not meet the minimum specifications for the game. Please visit the forums at www.generals.ea.com for suggested courses of action or consult your manual for Technical Support contact information.", 
-   "Technical Difficulties...", 
-   MB_OK|MB_SYSTEMMODAL|MB_ICONERROR);
-
-
-#endif
 
 	_exit(1);
 }  

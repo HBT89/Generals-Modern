@@ -41,6 +41,89 @@ NOTE: As modern versions of MSVC enforce newer revisions of the C++ standard, yo
 When the workspace has finished building, the compiled binaries will be copied to the folder called `/Run/` found in the root of each games directory. 
 
 
+## Game Load Chain
+
+The engine loads a game through a deep call chain. Understanding this is critical for debugging crashes during map/skirmish loading.
+
+### 1. Main Loop (`GameEngine::execute`)
+`GameEngine::execute()` in `GameEngine/Source/Common/GameEngine.cpp` runs the main `while(!m_quitting)` loop. Each iteration calls `GameEngine::update()`.
+
+### 2. Frame Update (`GameEngine::update`)
+Calls each subsystem in order:
+1. `TheRadar->UPDATE()`
+2. `TheAudio->UPDATE()`
+3. `TheGameClient->UPDATE()` - renders the frame, updates UI/display
+4. `TheMessageStream->propagateMessages()`
+5. `TheNetwork->UPDATE()` (if multiplayer)
+6. `TheCDManager->UPDATE()`
+7. `TheGameLogic->UPDATE()` - advances game simulation one frame
+
+### 3. Game Logic Update (`GameLogic::update`)
+Located in `GameEngine/Source/GameLogic/System/GameLogic.cpp`. On the first frame, calls `startNewGame()`. On subsequent frames:
+1. `TheScriptEngine->UPDATE()` - map scripts, win/lose conditions
+2. `TheTerrainLogic->UPDATE()` - bridge states, terrain changes
+3. CRC calculation (multiplayer sync checks)
+4. `TheRecorder->UPDATE()` - replay system
+5. `processCommandList()` - player commands
+6. Sleepy update loop - per-object update modules (AI, movement, production)
+7. `TheAI->UPDATE()` - global AI system
+8. `TheBuildAssistant->UPDATE()` - production queues
+9. `ThePartitionManager->UPDATE()` - spatial queries, visibility
+10. `processDestroyList()` - clean up dead objects
+
+### 4. New Game Setup (`GameLogic::startNewGame`)
+Called once when a map loads. This is the most crash-prone phase:
+1. INI parsing - loads all object definitions from `.ini` files inside `.big` archives
+2. `TheTerrainLogic->newMap()` - loads heightmap and terrain data
+3. `preloadAssets()` - pre-caches textures, models, animations
+4. **Map object loop** - iterates all `MapObject` entries in the `.map` file:
+   - Trees, rocks, civilian buildings, tech structures, waypoints, etc.
+   - Each calls `TheThingFactory->newObject()` or `newDrawable()`
+   - ~2200 objects on a typical skirmish map
+5. **Player building placement** (`placeNetworkBuildingsForPlayer`):
+   - For each player slot, places the starting Command Center and units
+   - Finds the `Player_N_Start` waypoint for position
+   - Calls `placeObjectAtPosition()` which creates the Object + Drawable
+
+### 5. Object Creation Chain
+Every game object follows this creation path:
+```
+ThingFactory::newObject(template, team)
+  -> GameLogic::friend_createObject(template, statusBits, team)
+       -> Object constructor
+            -> GameClient::friend_createDrawable(template)
+                 -> Drawable constructor
+                      -> W3D Draw Module init
+                           -> W3DModelDraw / W3DScriptedModelDraw
+                                -> RenderObjClass creation
+                                     -> DX8 Wrapper (BGFXWrapper) calls
+                                          -> Texture loading, vertex/index buffers
+```
+
+### 6. Asset Loading (`.big` Archives)
+Game data lives in `.big` archive files. Load order matters:
+- **ZH .bigs** (from exe directory) load first and take priority
+- **Base Generals .bigs** (from `ZH_Generals\` subdirectory) load second as fallback
+- ZH assets override base game assets by name
+- INI files define all object templates (`Data\INI\Object\*.ini`)
+- W3D models (`.w3d`), textures (`.tga`, `.dds`), animations (`.w3d`) are loaded on demand
+
+### 7. INI Object Definition System
+- `ThingFactory` stores all `ThingTemplate` objects in a hashmap
+- Templates are parsed from INI blocks: `Object TemplateName ... End`
+- `ObjectReskin` copies an existing template and applies visual overrides
+- `findTemplate()` does case-sensitive name lookup
+- Missing templates log warnings but don't crash (graceful fallback)
+
+### 8. Rendering Pipeline (BGFX Migration)
+The original engine uses Direct3D 8 via `DX8Wrapper`. The modern port replaces this with BGFX (D3D11 backend):
+- `BGFXWrapper.cpp` (~2000+ lines) translates DX8 API calls to BGFX
+- W3D render objects create vertex/index buffers through the wrapper
+- Textures are loaded from `.tga`/`.dds` and uploaded as BGFX textures
+- Shaders are currently stubbed (solid color rectangles instead of textured geometry)
+- The 2D UI system (windows, buttons, text) renders through the same pipeline
+
+
 ## Known Issues
 
 Windows has a policy where executables that contain words “version”, “update” or “install” in their filename will require UAC Elevation to run. This will affect “versionUpdate” and “buildVersionUpdate” projects from running as post-build events. Renaming the output binary name for these projects to not include these words should resolve the issue for you.

@@ -17,9 +17,9 @@
 */
 
 ////////////////////////////////////////////////////////////////////////////////
-//																																						//
-//  (c) 2001-2003 Electronic Arts Inc.																				//
-//																																						//
+//																			  //
+//  (c) 2001-2003 Electronic Arts Inc.										  //
+//																			  //
 ////////////////////////////////////////////////////////////////////////////////
 
 // FILE: W3DDisplay.cpp ///////////////////////////////////////////////////////
@@ -654,11 +654,17 @@ void W3DDisplay::init2DScene( void )
 //=============================================================================
 void W3DDisplay::init( void )
 {
+	// BGFX Port: granular logging
+	auto w3dLog = [](const char* msg) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "    W3DDisp: %s\n", msg); fflush(logf); fclose(logf); }
+	};
 
 	//
 	// call our base class init, this method should be able to handle re-entry
 	// with its own logic
 	//
+	w3dLog("Display::init()...");
 	Display::init();
 
 	// handle re-entry for ourselves
@@ -670,20 +676,25 @@ void W3DDisplay::init( void )
 
 	}  // end if
 	// Override the W3D File system
+	w3dLog("W3DFileSystem...");
 	TheW3DFileSystem = NEW W3DFileSystem;
 
 	// init the Westwood math library
+	w3dLog("WWMath::Init()...");
 	WWMath::Init();
 
 	// create our 3D interface scene
+	w3dLog("RTS3DInterfaceScene...");
 	m_3DInterfaceScene = NEW_REF( RTS3DInterfaceScene, () );
 	m_3DInterfaceScene->Set_Ambient_Light( Vector3( 1, 1, 1 ) );
 
 	// create our 2D scene
+	w3dLog("RTS2DScene...");
 	m_2DScene = NEW_REF( RTS2DScene, () );
 	m_2DScene->Set_Ambient_Light( Vector3( 1, 1, 1 ) );
 
 	// create our 3D scene
+	w3dLog("RTS3DScene...");
 	m_3DScene =NEW_REF( RTS3DScene, () );
 #if defined(_DEBUG) || defined(_INTERNAL)
 	if( TheGlobalData->m_wireframe )
@@ -692,14 +703,15 @@ void W3DDisplay::init( void )
 //============================================================================
 	// m_myLight = NEW_REF
 //============================================================================
+	w3dLog("Lights...");
 	Int lindex;
-	for (lindex=0; lindex<TheGlobalData->m_numGlobalLights; lindex++) 
+	for (lindex=0; lindex<TheGlobalData->m_numGlobalLights; lindex++)
 	{	m_myLight[lindex] = NEW_REF( LightClass, (LightClass::DIRECTIONAL) );
 	}
 
 	setTimeOfDay( TheGlobalData->m_timeOfDay );	//set each light to correct values for given time
 
-	for (lindex=0; lindex<TheGlobalData->m_numGlobalLights; lindex++) 
+	for (lindex=0; lindex<TheGlobalData->m_numGlobalLights; lindex++)
 	{	m_3DScene->setGlobalLight( m_myLight[lindex], lindex );
 	}
 
@@ -715,12 +727,13 @@ void W3DDisplay::init( void )
 	theDynamicLight->Set_Diffuse( Vector3( red, green, blue) );
 	theDynamicLight->Set_Position(Vector3(0, 0, 4));
 	theDynamicLight->Set_Far_Attenuation_Range(1, 8);
-	// Note: Don't Add_Render_Object dynamic lights. 
+	// Note: Don't Add_Render_Object dynamic lights.
 	m_3DScene->addDynamicLight( theDynamicLight );
 #endif
 
 	// create a new asset manager
-	m_assetManager = NEW W3DAssetManager;	
+	w3dLog("W3DAssetManager...");
+	m_assetManager = NEW W3DAssetManager;
 	m_assetManager->Register_Prototype_Loader(&_ParticleEmitterLoader );
 	m_assetManager->Register_Prototype_Loader(&_AggregateLoader);
 	m_assetManager->Set_WW3D_Load_On_Demand( true );
@@ -730,8 +743,10 @@ void W3DDisplay::init( void )
 	{
 		SortingRendererClass::SetMinVertexBufferSize(1);
 	}
+	w3dLog("WW3D::Init()...");
 	if (WW3D::Init( ApplicationHWnd ) != WW3D_ERROR_OK)
 		throw ERROR_INVALID_D3D;	//failed to initialize.  User probably doesn't have DX 8.1
+	w3dLog("WW3D::Init() OK");
 
 	WW3D::Set_Prelit_Mode( WW3D::PRELIT_MODE_LIGHTMAP_MULTI_PASS );
 	WW3D::Set_Collision_Box_Display_Mask(0x00);	///<set to 0xff to make collision boxes visible
@@ -739,10 +754,11 @@ void W3DDisplay::init( void )
 	WW3D::Set_Thumbnail_Enabled(false);
 	WW3D::Set_Screen_UV_Bias( TRUE );  ///< this makes text look good :)
 	WW3D::Set_Texture_Bitdepth(32);
-			
+
 	setWindowed( TheGlobalData->m_windowed );
 
 	// create a 2D renderer helper
+	w3dLog("Render2DClass...");
 	m_2DRender = NEW Render2DClass;
 	DEBUG_ASSERTCRASH( m_2DRender, ("Cannot create Render2DClass") );
 
@@ -752,22 +768,23 @@ void W3DDisplay::init( void )
 	setHeight( TheGlobalData->m_yResolution );
 	setBitDepth( W3D_DISPLAY_DEFAULT_BIT_DEPTH );
 
-	if( WW3D::Set_Render_Device( 0, 
-															 getWidth(), 
-															 getHeight(), 
-															 getBitDepth(), 
-															 getWindowed(), 
-															 true ) != WW3D_ERROR_OK ) 
+	w3dLog("Set_Render_Device...");
+	if( WW3D::Set_Render_Device( 0,
+															 getWidth(),
+															 getHeight(),
+															 getBitDepth(),
+															 getWindowed(),
+															 true ) != WW3D_ERROR_OK )
 	{
 		// Getting the device at the default bit depth (32) didn't work, so try
 		// getting a 16 bit display.  (Voodoo 1-3 only supported 16 bit.) jba.
 		setBitDepth( 16 );
-		if( WW3D::Set_Render_Device( 0, 
-																 getWidth(), 
-																 getHeight(), 
-																 getBitDepth(), 
-																 getWindowed(), 
-																 true ) != WW3D_ERROR_OK ) 
+		if( WW3D::Set_Render_Device( 0,
+																 getWidth(),
+																 getHeight(),
+																 getBitDepth(),
+																 getWindowed(),
+																 true ) != WW3D_ERROR_OK )
 		{
 
 			WW3D::Shutdown();
@@ -778,8 +795,26 @@ void W3DDisplay::init( void )
 		}
 
 	}  // end if
+	w3dLog("Set_Render_Device OK");
+
+	// Read back actual resolution from the render device (may differ from requested if
+	// BGFXWrapper overrode it to match monitor resolution for borderless fullscreen).
+	{
+		int actualW = 0, actualH = 0, actualBits = 0;
+		bool actualWindowed = true;
+		WW3D::Get_Device_Resolution(actualW, actualH, actualBits, actualWindowed);
+		if (actualW > 0 && actualH > 0 && ((UnsignedInt)actualW != getWidth() || (UnsignedInt)actualH != getHeight())) {
+			Display::setWidth(actualW);
+			Display::setHeight(actualH);
+			m_2DRender->Set_Coordinate_Range(RectClass(0, 0, actualW, actualH));
+			Render2DClass::Set_Screen_Resolution(RectClass(0, 0, actualW, actualH));
+			TheWritableGlobalData->m_xResolution = actualW;
+			TheWritableGlobalData->m_yResolution = actualH;
+		}
+	}
 
 	//Check if level was never set and default to setting most suitable for system.
+	w3dLog("GameLOD...");
 	if (TheGameLODManager->getStaticLODLevel() == STATIC_GAME_LOD_UNKNOWN)
 		TheGameLODManager->setStaticLODLevel(TheGameLODManager->findStaticLODLevel());
 	else
@@ -796,12 +831,18 @@ void W3DDisplay::init( void )
 	if (TheGlobalData->m_displayGamma != 1.0f)
 		setGamma(TheGlobalData->m_displayGamma,0.0f,1.0f,FALSE);
 
+	w3dLog("initAssets...");
 	initAssets();
+	w3dLog("init2DScene...");
 	init2DScene();
+	w3dLog("init3DScene...");
 	init3DScene();
+	w3dLog("W3DShaderManager::init()...");
 	W3DShaderManager::init();
+	w3dLog("W3DShaderManager::init() done");
 
 	// Create and initialize the debug display
+	w3dLog("W3DDebugDisplay...");
 	m_nativeDebugDisplay = NEW W3DDebugDisplay();
 	m_debugDisplay = m_nativeDebugDisplay;
 	if ( m_nativeDebugDisplay )
@@ -824,6 +865,7 @@ void W3DDisplay::init( void )
 		m_nativeDebugDisplay->setFontWidth( 9 );
 	}
 
+	w3dLog("DX8WebBrowser::Initialize()...");
 	DX8WebBrowser::Initialize();
 
 	// we're now online
@@ -1461,7 +1503,7 @@ void W3DDisplay::gatherDebugStats( void )
 
 			unibuffer.concat( L"\nModelStates: " );
 			ModelConditionFlags mcFlags = draw->getModelConditionFlags();
-			const numEntriesPerLine = 4;
+			const int numEntriesPerLine = 4;
 			int lineCount = 0;
 
 			for( int i = 0; i < MODELCONDITION_COUNT; i++ )
@@ -1557,7 +1599,7 @@ void W3DDisplay::drawCurrentDebugDisplay( void )
 		if ( m_debugDisplay && m_debugDisplayCallback )
 		{
 			m_debugDisplay->reset();
-			m_debugDisplayCallback( m_debugDisplay, m_debugDisplayUserData );
+			m_debugDisplayCallback( m_debugDisplay, m_debugDisplayUserData, NULL );
 		}
 	}
 }  // end drawCurrentDebugDisplay
@@ -1578,13 +1620,14 @@ void W3DDisplay::calculateTerrainLOD( void )
 	TerrainLOD goodLOD = TERRAIN_LOD_MIN;
 	TerrainLOD curLOD = TERRAIN_LOD_AUTOMATIC;
 	Int count = 0;
-#ifdef _DEBUG
-	// just go to TERRAIN_LOD_NO_WATER, mirror off.
+	// Skip the DX8-era LOD benchmark entirely in the BGFX port.
+	// The benchmark renders multiple terrain-only test frames (drawTerrainOnly=true)
+	// to time DX8 fill-rate — irrelevant to BGFX and risky if the profiling
+	// frames crash before the drawTerrainOnly(false) reset at the end.
 	TheWritableGlobalData->m_terrainLOD = TERRAIN_LOD_NO_WATER;
 	m_3DScene->drawTerrainOnly(false);
 	TheTerrainRenderObject->adjustTerrainLOD(0);
 	return;
-#endif
 	do {
 		Int i;
 		float timeForFrame=0;
@@ -2180,16 +2223,15 @@ void W3DDisplay::setTimeOfDay( TimeOfDay tod )
 // W3DDisplay::drawLine =======================================================
 /** draw a line on the display in pixel coordinates with the specified color */
 //=============================================================================
-void W3DDisplay::drawLine( Int startX, Int startY, 
-													 Int endX, Int endY, 
+void W3DDisplay::drawLine( Int startX, Int startY,
+													 Int endX, Int endY,
 													 Real lineWidth,
 													 UnsignedInt lineColor )
 {
-	
 	/// @todo we need to consider the efficiency of the 2D renderer
 	m_2DRender->Reset();
 	m_2DRender->Enable_Texturing( FALSE );
-	m_2DRender->Add_Line( Vector2( startX, startY ), Vector2( endX, endY ), 
+	m_2DRender->Add_Line( Vector2( startX, startY ), Vector2( endX, endY ),
 												lineWidth, lineColor );
 	m_2DRender->Render();
 
@@ -2198,12 +2240,11 @@ void W3DDisplay::drawLine( Int startX, Int startY,
 // W3DDisplay::drawLine =======================================================
 /** draw a line on the display in pixel coordinates with the specified color */
 //=============================================================================
-void W3DDisplay::drawLine( Int startX, Int startY, 
-													 Int endX, Int endY, 
+void W3DDisplay::drawLine( Int startX, Int startY,
+													 Int endX, Int endY,
 													 Real lineWidth,
 													 UnsignedInt lineColor1,UnsignedInt lineColor2 )
 {
-	
 	/// @todo we need to consider the efficiency of the 2D renderer
 	m_2DRender->Reset();
 	m_2DRender->Enable_Texturing( FALSE );
@@ -2219,7 +2260,6 @@ void W3DDisplay::drawLine( Int startX, Int startY,
 void W3DDisplay::drawOpenRect( Int startX, Int startY, Int width, Int height,
 															 Real lineWidth, UnsignedInt lineColor )
 {
-	
 	if (m_isClippedEnabled)
 	{
 		ICoord2D start, end, returnStart, returnEnd;
@@ -2271,9 +2311,8 @@ void W3DDisplay::drawOpenRect( Int startX, Int startY, Int width, Int height,
 void W3DDisplay::drawFillRect( Int startX, Int startY, Int width, Int height,
 															 UnsignedInt color )
 {
-
 	/// @todo we need to consider the efficiency of the 2D renderer
-	m_2DRender->Reset();		
+	m_2DRender->Reset();
 	m_2DRender->Enable_Texturing( FALSE );
 	m_2DRender->Add_Rect( RectClass( startX, startY, 
 																	 startX + width, startY + height ), 

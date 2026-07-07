@@ -806,8 +806,14 @@ void GameWindow::winGetDrawOffset( Int *x, Int *y )
 //=============================================================================
 Int GameWindow::winSetText( UnicodeString newText )
 {
+	auto wstLog = [](const char* msg) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "  WST: %s\n", msg); fflush(logf); fclose(logf); }
+	};
+	wstLog("winSetText: enter, calling setText");
 	// copy text over
 	m_instData.setText( newText );
+	wstLog("winSetText: setText done, returning");
 
 	return WIN_ERR_OK;
 

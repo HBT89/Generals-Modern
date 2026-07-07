@@ -274,6 +274,15 @@ ThingTemplate *ThingFactory::findTemplateInternal( const AsciiString& name, Bool
 		return tIt->second;
 	}
 
+	// Debug: log when CommandCenter templates can't be found
+	if (strstr(name.str(), "CommandCenter")) {
+		static int ccMiss = 0;
+		if (++ccMiss <= 20) {
+			FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+			if (lf) { fprintf(lf, "[FIND-MISS] '%s' not in hashmap (size=%d, check=%d)\n", name.str(), (int)m_templateHashMap.size(), (int)check); fflush(lf); fclose(lf); }
+		}
+	}
+
 #ifdef LOAD_TEST_ASSETS
 	if (!strncmp(name.str(), TEST_STRING, strlen(TEST_STRING))) 
 	{
@@ -322,22 +331,26 @@ Object *ThingFactory::newObject( const ThingTemplate *tmplate, Team *team, Objec
 	// (this will throw an exception on failure.)
 	//Added ability to pass in optional statusBits. This is needed to be set prior to
 	//the onCreate() calls... in the case of constructing.
+	bool isCC = (strstr(tmplate->getName().str(),"CommandCenter") != NULL);
+	if(isCC){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[CC] '%s' step1=friend_createObject\n",tmplate->getName().str());fflush(lf);fclose(lf);}}
 	Object *obj = TheGameLogic->friend_createObject( tmplate, statusBits, team );
 
 	// run the create function for the thing
+	if(isCC){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[CC] '%s' step2=onCreate modules\n",tmplate->getName().str());fflush(lf);fclose(lf);}}
 	for (BehaviorModule** m = obj->getBehaviorModules(); *m; ++m)
 	{
 		CreateModuleInterface* create = (*m)->getCreate();
 		if (!create)
 			continue;
-	
+
 		create->onCreate();
 	}
 
 	//
-	// all objects are part of the partition manager system, add it to that 
+	// all objects are part of the partition manager system, add it to that
 	// system now
 	//
+	if(isCC){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[CC] '%s' step3=registerObject+initObject\n",tmplate->getName().str());fflush(lf);fclose(lf);}}
 	ThePartitionManager->registerObject( obj );
 
 	obj->initObject();
@@ -376,11 +389,20 @@ AsciiString TheThingTemplateBeingParsedName;
 #endif
 
 	// find existing item if present
+	Bool createdNewTemplate = FALSE;
 	ThingTemplate *thingTemplate = TheThingFactory->findTemplateInternal( name, FALSE );
 	if( !thingTemplate )
 	{
 		// no item is present, create a new one
 		thingTemplate = TheThingFactory->newTemplate( name );
+		createdNewTemplate = TRUE;
+		// Log first 200 objects and any key ones for debugging
+		{ static int objCount = 0; objCount++;
+		  if (objCount <= 200 || strstr(name.str(), "GLAHole") || strstr(name.str(), "Bush01") || strstr(name.str(), "GenericOptTree") || strstr(name.str(), "CommandCenter")) {
+		    FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+		    if (lf) { fprintf(lf, "[NEWOBJ] #%d '%s' from '%s' reskin='%s'\n", objCount, name.str(), ini->getFilename().str(), reskinFrom.str()); fflush(lf); fclose(lf); }
+		  }
+		}
 		if ( ini->getLoadType() == INI_LOAD_CREATE_OVERRIDES )
 		{
 			// This ThingTemplate is actually an override, so we will mark it as such so that it properly
@@ -405,6 +427,18 @@ AsciiString TheThingTemplateBeingParsedName;
 	if (reskinFrom.isNotEmpty())
 	{
 		const ThingTemplate* reskinTmpl = TheThingFactory->findTemplate(reskinFrom);
+		if (!reskinTmpl) {
+			// Debug: was it ever added? Check internal lookup with no assert
+			ThingTemplate* directCheck = TheThingFactory->findTemplateInternal(reskinFrom, FALSE);
+			static int reskinDbgCount = 0;
+			if (reskinDbgCount < 5) {
+				reskinDbgCount++;
+				FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+				if (lf) { fprintf(lf, "[RESKIN-DBG] '%s' not found for '%s', directCheck=%p, hashSize=%d, file='%s'\n",
+					reskinFrom.str(), name.str(), (void*)directCheck, (int)TheThingFactory->m_templateHashMap.size(),
+					ini->getFilename().str()); fflush(lf); fclose(lf); }
+			}
+		}
 		if (reskinTmpl)
 		{
 			thingTemplate->copyFrom(reskinTmpl);
@@ -414,13 +448,52 @@ AsciiString TheThingTemplateBeingParsedName;
 		}
 		else
 		{
-			DEBUG_CRASH(("ObjectReskin must come after the original Object (%s, %s).\n",reskinFrom.str(),name.str()));
-			throw INI_INVALID_DATA;
+			// Source template not found — skip the block instead of crashing.
+			// This happens when .big load order causes reskin to appear before
+			// the original object definition.
+			{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+			  if (lf) { fprintf(lf, "[RESKIN] Source '%s' not found for ObjectReskin '%s' — skipping block\n", reskinFrom.str(), name.str()); fflush(lf); fclose(lf); } }
+			ini->initFromINI( thingTemplate, thingTemplate->getReskinFieldParse() );
 		}
 	}
 	else
 	{
-		ini->initFromINI( thingTemplate, thingTemplate->getFieldParse() );
+		// Defensive: if a brand-new template fails to parse partway through, it must NOT
+		// remain registered in the factory. A half-initialized template would later be
+		// returned (non-NULL) by findTemplate(), defeating the "if (template)" null-guards
+		// in the script spawn actions and crashing inside newObject() / on first update
+		// (observed as the "TheScriptEngine::UPDATE" exception when a mission script spawns
+		// e.g. ChinaJetCargoPlane). Removing it makes findTemplate() return NULL so the
+		// existing guards skip the missing object gracefully.
+		auto removeCorruptTemplate = [&]() {
+			if (!createdNewTemplate)
+				return;
+			TheThingFactory->m_templateHashMap.erase( thingTemplate->getName() );
+			if ( TheThingFactory->m_firstTemplate == thingTemplate ) {
+				TheThingFactory->m_firstTemplate = thingTemplate->friend_getNextTemplate();
+			} else {
+				for ( ThingTemplate *t = TheThingFactory->m_firstTemplate; t; t = t->friend_getNextTemplate() ) {
+					if ( t->friend_getNextTemplate() == thingTemplate ) {
+						t->friend_setNextTemplate( thingTemplate->friend_getNextTemplate() );
+						break;
+					}
+				}
+			}
+			thingTemplate->deleteInstance();
+		};
+		try {
+			ini->initFromINI( thingTemplate, thingTemplate->getFieldParse() );
+		} catch (int e) {
+			{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+			  if (lf) { fprintf(lf, "[OBJECT] Exception %d parsing Object '%s' in '%s' line %d (removing corrupt template)\n", e, name.str(), ini->getFilename().str(), ini->getLineNum()); fflush(lf); fclose(lf); } }
+			removeCorruptTemplate();
+			throw;  // Re-throw so INI.cpp catch handler can skip the block
+		} catch (...) {
+			{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+			  if (lf) { fprintf(lf, "[OBJECT] Unknown exception parsing Object '%s' in '%s' line %d (removing corrupt template)\n", name.str(), ini->getFilename().str(), ini->getLineNum()); fflush(lf); fclose(lf); } }
+			removeCorruptTemplate();
+			throw;  // Re-throw so INI.cpp catch handler can skip the block
+		}
 	}
 
 	thingTemplate->validate();

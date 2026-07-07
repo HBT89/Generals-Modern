@@ -22,9 +22,10 @@
 #include "lightenvironment.h"
 #include "shader.h"
 #include "cpudetect.h"
-// Forward-declare to break circular include: texture.h -> texturefilter.h -> dx8wrapper.h -> BGFXWrapper.h
+// Forward-declare TextureBaseClass to break circular include: texture.h -> texturefilter.h -> dx8wrapper.h -> BGFXWrapper.h
 class TextureBaseClass;
-class VertexMaterialClass;
+// Include vertmaterial.h for full VertexMaterialClass definition (needed by callers)
+#include "vertmaterial.h"
 
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
@@ -178,6 +179,8 @@ class BGFXWrapper
     };
 
     static void Draw_Sorting_IB_VB(unsigned primitive_type, unsigned short start_index,
+        unsigned short polygon_count, unsigned short min_vertex_index, unsigned short vertex_count);
+    static void Draw_DX8_IB_VB(unsigned primitive_type, unsigned short start_index,
         unsigned short polygon_count, unsigned short min_vertex_index, unsigned short vertex_count);
     static void Draw(unsigned primitive_type, unsigned short start_index,
         unsigned short polygon_count, unsigned short min_vertex_index = 0, unsigned short vertex_count = 0);
@@ -400,6 +403,29 @@ public:
     static void Set_Texture_Transform_Flags(int stage, int flags);
     static void Upload_Texture_Uniforms();
 
+    // ---- BGFX Shader Program Registry ----
+    // Maps logical shader roles to compiled bgfx::ProgramHandle objects.
+    // Set_Active_Shader_Type() is called by W3DShaderManager::setShader() so that
+    // SubmitDraw() dispatches to the correct program instead of the generic mesh program.
+    enum ShaderProgramType {
+        SP_MESH_DEFAULT = 0,   // generic textured mesh — current s_meshProgram
+        SP_TERRAIN_BASE,       // terrain: base texture + directional light
+        SP_TERRAIN_NOISE1,     // terrain + 1 cloud/noise layer  (Phase B)
+        SP_TERRAIN_NOISE2,     // terrain + 2nd noise layer       (Phase B)
+        SP_TERRAIN_NOISE12,    // terrain + both noise layers     (Phase B)
+        SP_SHROUD,             // shroud projection               (Phase B)
+        SP_ROAD,               // road surface                    (Phase B)
+        SP_UNIT_LIT,           // generic lit unit                (Phase B)
+        SP_UNIT_BUMP,          // bump-mapped unit                (Phase B)
+        SP_WATER,              // water surface                   (Phase C)
+        SP_PARTICLE,           // particles / VFX                 (Phase C)
+        SP_UI,                 // 2D UI elements                  (Phase C)
+        SP_COUNT
+    };
+
+    static void Set_Active_Shader_Type(int type);
+    static int  Get_Active_Shader_Type();
+
 protected:
     // Device selection (accessed via WW3D friend class)
     static bool Set_Any_Render_Device(void);
@@ -508,6 +534,12 @@ protected:
     static bgfx::UniformHandle s_uTexTransform[4];
     static bgfx::UniformHandle s_uTexCoordSource;
     static bgfx::UniformHandle s_uTexTransformFlags;
+
+    // Phase A lighting uniforms (uploaded per-frame when terrain program active)
+    // Phase B: these will drive the full 8-light GPU loop
+    static bgfx::UniformHandle s_uLightDir;
+    static bgfx::UniformHandle s_uLightColor;
+    static bgfx::UniformHandle s_uAmbientColor;
 
     friend void DX8_Assert();
     friend class WW3D;

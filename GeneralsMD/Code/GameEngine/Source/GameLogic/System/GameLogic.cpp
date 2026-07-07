@@ -499,16 +499,22 @@ void GameLogic::reset( void )
 static Object * placeObjectAtPosition(Int slotNum, AsciiString objectTemplateName, Coord3D& pos, Player *pPlayer,
 																	const PlayerTemplate *pTemplate)
 {
+	{FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[POA] step1 findTemplate('%s')\n",objectTemplateName.str());fflush(lf);fclose(lf);}}
 	const ThingTemplate* btt = TheThingFactory->findTemplate(objectTemplateName);
 
+	{FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[POA] step2 btt=%p team=%p\n",(void*)btt,(void*)(pPlayer?pPlayer->getDefaultTeam():NULL));fflush(lf);fclose(lf);}}
 	DEBUG_ASSERTCRASH(btt, ("TheThingFactory didn't find a template in placeObjectAtPosition()") );
+	if (!btt) return NULL;
 
+	{FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[POA] step3 newObject\n");fflush(lf);fclose(lf);}}
 	Object *obj = TheThingFactory->newObject( btt, pPlayer->getDefaultTeam() );
+	{FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[POA] step4 obj=%p\n",(void*)obj);fflush(lf);fclose(lf);}}
 	DEBUG_ASSERTCRASH(obj, ("TheThingFactory didn't give me a valid Object for player %d's (%ls) starting building\n",
 		slotNum, pTemplate->getDisplayName().str()));
 	if (obj)
 	{
-		obj->setOrientation(obj->getTemplate()->getPlacementViewAngle());	
+		{FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[POA] step5 setOrientation+setPosition\n");fflush(lf);fclose(lf);}}
+		obj->setOrientation(obj->getTemplate()->getPlacementViewAngle());
 		obj->setPosition( &pos );
 
 		//DEBUG_LOG(("Placed a starting building for %s at waypoint %s\n", playerName.str(), waypointName.str()));
@@ -561,7 +567,10 @@ static void placeNetworkBuildingsForPlayer(Int slotNum, const GameSlot *pSlot, P
 		return;
 
 	Coord3D pos = *waypoint->getLocation();
-	pos.z = TheTerrainLogic->getGroundHeight( pos.x, pos.y );
+	{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[PLACE] waypoint pos=(%g,%g) calling getGroundHeight\n",pos.x,pos.y);fflush(lf);fclose(lf);} }
+	try { pos.z = TheTerrainLogic->getGroundHeight( pos.x, pos.y ); } catch(...) {
+		FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[PLACE-CRASH] getGroundHeight crashed!\n");fflush(lf);fclose(lf);} pos.z=0;
+	}
 
 	AsciiString buildingTemplateName = pTemplate->getStartingBuilding();
 
@@ -570,8 +579,11 @@ static void placeNetworkBuildingsForPlayer(Int slotNum, const GameSlot *pSlot, P
 	if (buildingTemplateName.isEmpty())
 		return;
 
-	DEBUG_LOG(("Placing starting building at waypoint %s\n", waypointName.str()));
-	Object *conYard = placeObjectAtPosition(slotNum, buildingTemplateName, pos, pPlayer, pTemplate);
+	{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[PLACE] creating building '%s' at (%g,%g,%g)\n",buildingTemplateName.str(),pos.x,pos.y,pos.z);fflush(lf);fclose(lf);} }
+	Object *conYard = NULL;
+	try { conYard = placeObjectAtPosition(slotNum, buildingTemplateName, pos, pPlayer, pTemplate); } catch(...) {
+		FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[PLACE-CRASH] placeObjectAtPosition('%s') crashed!\n",buildingTemplateName.str());fflush(lf);fclose(lf);}
+	}
 
 	if (!conYard)
 		return;
@@ -1257,6 +1269,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	//****************************//
 
 	// Get the m_loadScreen for this kind of game
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] startNewGame BEGIN loadingSaveGame=%d\n", (int)loadingSaveGame); fflush(lf); fclose(lf); } }
 	if(!m_loadScreen)
 	{
 		m_loadScreen = getLoadScreen( loadingSaveGame );
@@ -1265,7 +1278,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 			TheMouse->setVisibility(FALSE);
 			m_loadScreen->init(game);
 
-			// 
+			//
 			updateLoadProgress( LOAD_PROGRESS_START );
 		}
 	}
@@ -1280,22 +1293,25 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 		TheCampaignManager->SetVictorious(FALSE);
 	m_startNewGame = FALSE;
 
-	// update the loadscreen 
+	// update the loadscreen
 	if(m_loadScreen)
 		updateLoadProgress(LOAD_PROGRESS_POST_PARTICLE_INI_LOAD);
 
 	// reset the frame counter
 	m_frame = 0;
 
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] About to loadMapINI: %s\n", TheGlobalData->m_mapName.str()); fflush(lf); fclose(lf); } }
 	// before loading the map, load the map.ini file in the same directory.
 	loadMapINI( TheGlobalData->m_mapName );
 
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] About to loadMap\n"); fflush(lf); fclose(lf); } }
 	// load a map
 	TheTerrainLogic->loadMap( TheGlobalData->m_mapName, false );
 	// anytime the world's size changes, must reset the partition mgr
 	//ThePartitionManager->init();
 
-	// update the loadscreen 
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] loadMap done\n"); fflush(lf); fclose(lf); } }
+	// update the loadscreen
 	updateLoadProgress(LOAD_PROGRESS_POST_LOAD_MAP);
 
 	#ifdef DUMP_PERF_STATS
@@ -1649,10 +1665,12 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	// update the loadscreen 
 	updateLoadProgress(LOAD_PROGRESS_POST_GHOST_OBJECT_MANAGER_RESET);
 
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] About to TerrainLogic->newMap\n"); fflush(lf); fclose(lf); } }
 	// update the terrain logic now that all is loaded
 	TheTerrainLogic->newMap( loadingSaveGame );
 
-	// update the loadscreen 
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] TerrainLogic->newMap done\n"); fflush(lf); fclose(lf); } }
+	// update the loadscreen
 	updateLoadProgress(LOAD_PROGRESS_POST_TERRAIN_LOGIC_NEW_MAP);
 
 	#ifdef DUMP_PERF_STATS
@@ -1711,12 +1729,14 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 
 	}	// for, loading bridge map objects
 
-	// update the loadscreen 
+	// update the loadscreen
 	updateLoadProgress(LOAD_PROGRESS_POST_BRIDGE_LOAD);
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] bridge objects done\n"); fflush(lf); fclose(lf); } }
 
 	// refresh the radar to reflect loaded bridges
 	TheRadar->refreshTerrain( TheTerrainLogic );
 
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] radar done, pathfinder next\n"); fflush(lf); fclose(lf); } }
 	// tell the AI about it
 	// Note that it is important that the pathfinder be called before the map objects are loaded.
 	TheAI->pathfinder()->newMap( );
@@ -1777,6 +1797,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 		forceFluffToProp = TRUE; // Always do client side fluff - faster, and syncs properly. jba.
 	}
 
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] about to load all map objects\n"); fflush(lf); fclose(lf); } }
 	progressCount = LOAD_PROGRESS_LOOP_ALL_THE_FREAKN_OBJECTS;
 	Int timer = timeGetTime();
 	if( loadingSaveGame ) {
@@ -1809,9 +1830,14 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	else 
 	{
 
-		for (pMapObj = MapObject::getFirstMapObject(); pMapObj; pMapObj = pMapObj->getNext()) 
+			for (pMapObj = MapObject::getFirstMapObject(); pMapObj; pMapObj = pMapObj->getNext())
 		{
-		
+		  { static int mapObjCount = 0; mapObjCount++;
+			  FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+			  if (lf) { fprintf(lf, "[MAPOBJ] #%d name='%s'\n", mapObjCount, pMapObj->getName().str()); fflush(lf); fclose(lf); }
+			}
+		  try {
+
 			if (pMapObj->getFlag(FLAG_BRIDGE_FLAGS) || pMapObj->getFlag(FLAG_ROAD_FLAGS)) {
 				continue;	// roads & bridges are special cased in the terrain side.
 			}
@@ -1922,7 +1948,12 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 				timer = timeGetTime();
 			}
 
+		  } catch (...) {
+			FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+			if (lf) { fprintf(lf, "[MAPOBJ-CRASH] Exception on object '%s'\n", pMapObj ? pMapObj->getName().str() : "NULL"); fflush(lf); fclose(lf); }
+		  }
 		}	// for, loading map objects
+	{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOAD] map objects loop done\n");fflush(lf);fclose(lf);} }
 
 	}  // end if, not loading save game
 
@@ -1993,14 +2024,20 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 
 
 
-				placeNetworkBuildingsForPlayer(i, slot, player, pt);
+				{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOAD] placeNetworkBuildings slot=%d template='%s'\n",i,pt?pt->getName().str():"NULL");fflush(lf);fclose(lf);} }
+				try {
+					placeNetworkBuildingsForPlayer(i, slot, player, pt);
+				} catch (...) {
+					FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOAD-CRASH] placeNetworkBuildingsForPlayer slot=%d CRASHED\n",i);fflush(lf);fclose(lf);}
+				}
 			}
 
 			updateLoadProgress(progressCount++);
 
 		}
 	}
-	// update the loadscreen 
+	// update the loadscreen
+	{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOAD] network buildings done\n");fflush(lf);fclose(lf);} }
 	updateLoadProgress(LOAD_PROGRESS_POST_INITIAL_NETWORK_BUILDINGS);
 
 	//
@@ -2024,7 +2061,8 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	//put this here somewhat randomly.
 	TheControlBar->hideCommunicator( FALSE );
 
-	// update the loadscreen 
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] preloadAssets done\n"); fflush(lf); fclose(lf); } }
+	// update the loadscreen
 	updateLoadProgress(LOAD_PROGRESS_POST_PRELOAD_ASSETS);
 
 	TheTacticalView->setAngleAndPitchToDefault();
@@ -2178,7 +2216,10 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	}
 
 	// if we're in a load game, don't fade yet
-	if( loadingSaveGame == FALSE )
+	// For shell map loading, skip the fade-to-black entirely — it reverses the
+	// MainMenuDefaultMenu transition which hides each button via ScaleUpTransition::update().
+	// Without the fade, buttons stay visible the whole time the terrain loads.
+	if( loadingSaveGame == FALSE && m_gameMode != GAME_SHELL )
 	{
 		TheTransitionHandler->setGroup("FadeWholeScreen");
 		while(!TheTransitionHandler->isFinished())
@@ -2190,10 +2231,11 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 				setFPMode();
 				Sleep(33);
 			}
-			
+
 		}
 	}
 
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] About to delete load screen\n"); fflush(lf); fclose(lf); } }
 	if(m_loadScreen)
 	{
 		TheMouse->setVisibility(TRUE);
@@ -2209,6 +2251,7 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 			deleteLoadScreen();
 
 	}
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] startNewGame COMPLETE\n"); fflush(lf); fclose(lf); } }
 	
 	#ifdef DUMP_PERF_STATS
 	GetPrecisionTimer(&endTime64);
@@ -2224,6 +2267,9 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 		{
 			TheShell->top()->hide(FALSE);
 			TheShell->top()->bringForward();
+			// Clear any active transition so no stale state covers the menu
+			if(TheTransitionHandler)
+				TheTransitionHandler->setGroup( AsciiString::TheEmptyString, TRUE );
 		}
 		HideControlBar();
 	}
@@ -2426,17 +2472,23 @@ void GameLogic::loadMapINI( AsciiString mapName )
 
 
 	sprintf(fullFledgeFilename, "%s\\map.ini", filename);
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] loadMapINI: checking %s\n", fullFledgeFilename); fflush(lf); fclose(lf); } }
 	if (TheFileSystem->doesFileExist(fullFledgeFilename)) {
+		{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] loadMapINI: loading map.ini\n"); fflush(lf); fclose(lf); } }
 		DEBUG_LOG(("Loading map.ini\n"));
 		INI ini;
 		ini.load( AsciiString(fullFledgeFilename), INI_LOAD_CREATE_OVERRIDES, NULL );
+		{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] loadMapINI: map.ini done\n"); fflush(lf); fclose(lf); } }
 	}
 
 	sprintf(fullFledgeFilename, "%s\\solo.ini", filename);
+	{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] loadMapINI: checking %s\n", fullFledgeFilename); fflush(lf); fclose(lf); } }
 	if (TheFileSystem->doesFileExist(fullFledgeFilename)) {
+		{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] loadMapINI: loading solo.ini\n"); fflush(lf); fclose(lf); } }
 		DEBUG_LOG(("Loading solo.ini\n"));
 		INI ini;
 		ini.load( AsciiString(fullFledgeFilename), INI_LOAD_CREATE_OVERRIDES, NULL );
+		{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[LOAD] loadMapINI: solo.ini done\n"); fflush(lf); fclose(lf); } }
 	}
 	
 	// No error here. There could've just *not* been a map.ini file.
@@ -3593,7 +3645,9 @@ void GameLogic::update( void )
 #ifdef _PROFILE
     Profile::StartRange("map_load");
 #endif
-		startNewGame( FALSE );
+		try { startNewGame( FALSE ); } catch (...) {
+			FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] startNewGame() exception!\n");fflush(lf);fclose(lf);}
+		}
 #ifdef _PROFILE
     Profile::StopRange("map_load");
 #endif
@@ -3620,8 +3674,10 @@ void GameLogic::update( void )
 	TheGameClient->setFrame(now);
 
 	// update (execute) scripts
-	{
+	try {
 		TheScriptEngine->UPDATE();
+	} catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] TheScriptEngine->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
 	}
 
 	Bool freezeTime = TheTacticalView->isTimeFrozen() && !TheTacticalView->isCameraMovementFinished();
@@ -3642,8 +3698,10 @@ void GameLogic::update( void )
 
 	// Note - TerrainLogic update needs to happen after ScriptEngine update, but before object updates.  jba.
 	// This way changes in bridges are noted in the script engine before being cleared in TerrainLogic->update
-	{
+	try {
 		TheTerrainLogic->UPDATE();
+	} catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] TheTerrainLogic->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
 	}
 
 	// force CRC calculation, so we can keep a cache of the last N CRCs.  We do this right where the recorder
@@ -3684,13 +3742,17 @@ void GameLogic::update( void )
 	}
 
 	// Update the Recorder
-	{
+	try {
 		TheRecorder->UPDATE();
+	} catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] TheRecorder->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
 	}
 
 	// process client commands
-	{
+	try {
 		processCommandList( TheCommandList );
+	} catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] processCommandList() #%d\n",c);fflush(lf);fclose(lf);}}
 	}
 
 #ifdef ALLOW_NONSLEEPY_UPDATES
@@ -3718,7 +3780,7 @@ void GameLogic::update( void )
 	}
 #endif
 
-	{
+	try {
 		while (!m_sleepyUpdates.empty())
 		{
 			UpdateModulePtr u = peekSleepyUpdate();
@@ -3729,7 +3791,7 @@ void GameLogic::update( void )
 				continue;
 			}
 
-			// we're done, everyone else is sleeping. 
+			// we're done, everyone else is sleeping.
 			// break from the loop BEFORE we pop this item off.
 			if (u->friend_getNextCallFrame() > now)
 			{
@@ -3743,12 +3805,11 @@ void GameLogic::update( void )
 			{
 				USE_PERF_TIMER(GameLogic_update_sleepy)
 
-				//DEBUG_LOG(("calling update %08lx (%d %d)... ",update,update->friend_getNextCallFrame(),update->friend_getNextCallPhase()));
 				m_curUpdateModule = u;
 
 				sleepLen = u->update();
 				DEBUG_ASSERTCRASH(sleepLen > 0, ("you may not return 0 from update"));
-				if (sleepLen < 1) 
+				if (sleepLen < 1)
 					sleepLen = UPDATE_SLEEP_NONE;
 
 				m_curUpdateModule = NULL;
@@ -3759,23 +3820,33 @@ void GameLogic::update( void )
 			u->friend_setNextCallFrame(now + sleepLen);
 			rebalanceSleepyUpdate(0);
 		}
+	} catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] sleepyUpdates loop #%d\n",c);fflush(lf);fclose(lf);}}
 	}
 
-	validateSleepyUpdate();
+	try { validateSleepyUpdate(); } catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] validateSleepyUpdate() #%d\n",c);fflush(lf);fclose(lf);}}
+	}
 
 	// update the Artificial Intelligence system
-	{
+	try {
 		TheAI->UPDATE();
+	} catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] TheAI->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
 	}
 
 	// production updates
-	{
+	try {
 		TheBuildAssistant->UPDATE();
+	} catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] TheBuildAssistant->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
 	}
 
 	// update partition info
-	{
+	try {
 		ThePartitionManager->UPDATE();
+	} catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] ThePartitionManager->UPDATE() #%d\n",c);fflush(lf);fclose(lf);}}
 	}
 
 	//
@@ -3783,10 +3854,14 @@ void GameLogic::update( void )
 	//
 
 	// destroy all pending objects
-	processDestroyList();
+	try { processDestroyList(); } catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] processDestroyList() #%d\n",c);fflush(lf);fclose(lf);}}
+	}
 
 	// reset the command list, destroying all messages
-	TheCommandList->reset();
+	try { TheCommandList->reset(); } catch (...) {
+		static int c=0; if(++c<=3){FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a");if(lf){fprintf(lf,"[LOGIC-CRASH] TheCommandList->reset() #%d\n",c);fflush(lf);fclose(lf);}}
+	}
 
 	TheWeaponStore->UPDATE();	
 	TheLocomotorStore->UPDATE();	

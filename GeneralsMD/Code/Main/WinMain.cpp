@@ -67,12 +67,28 @@
 #include "Resource.h"
 
 #include <rts/profile.h>
+#include <stdio.h>
 
 #ifdef _INTERNAL
 // for occasional debugging...
 //#pragma optimize("", off)
 //#pragma message("************************************** WARNING, optimization disabled for debugging purposes")
 #endif
+
+// BGFX PORT: Pre-WinMain logging — runs during CRT static initialization
+#pragma init_seg(compiler)
+static const char* BGFX_LOG_PATH = "C:\\TheLab\\bgfx_startup.log";
+struct EarlyLogger {
+	EarlyLogger() {
+		FILE *logf = fopen(BGFX_LOG_PATH, "w");
+		if (logf) {
+			fprintf(logf, "=== BGFX Port Startup Log ===\n");
+			fprintf(logf, "Static initializers starting (pre-WinMain)\n");
+			fclose(logf);
+		}
+	}
+};
+static EarlyLogger _earlyLogger;
 
 // GLOBALS ////////////////////////////////////////////////////////////////////
 HINSTANCE ApplicationHInstance = NULL;  ///< our application instance
@@ -876,6 +892,12 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
 	checkProtection();
 
+	// BGFX PORT: file-based startup diagnostics
+	{
+		FILE *logf = fopen(BGFX_LOG_PATH, "a");
+		if (logf) { fprintf(logf, "=== WinMain entered ===\n"); fclose(logf); }
+	}
+
 #ifdef _PROFILE
   Profile::StartRange("init");
 #endif
@@ -1064,7 +1086,15 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		DEBUG_LOG(("CRC message is %d\n", GameMessage::MSG_LOGIC_CRC));
 
 		// run the game main loop
+		{
+			FILE *logf = fopen(BGFX_LOG_PATH, "a");
+			if (logf) { fprintf(logf, "About to call GameMain\n"); fclose(logf); }
+		}
 		GameMain(argc, argv);
+		{
+			FILE *logf = fopen(BGFX_LOG_PATH, "a");
+			if (logf) { fprintf(logf, "GameMain returned\n"); fclose(logf); }
+		}
 
 #ifdef DO_COPY_PROTECTION
 		// Clean up copy protection

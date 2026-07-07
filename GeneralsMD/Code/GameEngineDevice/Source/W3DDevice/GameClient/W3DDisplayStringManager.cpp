@@ -110,7 +110,13 @@ void W3DDisplayStringManager::postProcessLoad( void )
 //-------------------------------------------------------------------------------------------------
 DisplayString *W3DDisplayStringManager::newDisplayString( void )
 {
+	auto dsLog = [](const char* msg) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "  DSM: %s\n", msg); fflush(logf); fclose(logf); }
+	};
+	dsLog("newDisplayString: enter");
 	DisplayString *newString = newInstance(W3DDisplayString);
+	dsLog("newDisplayString: allocated");
 
 	// sanity
 	if( newString == NULL )
@@ -125,18 +131,25 @@ DisplayString *W3DDisplayStringManager::newDisplayString( void )
 	// assign a default font
 	if (TheGlobalLanguageData && TheGlobalLanguageData->m_defaultDisplayStringFont.name.isNotEmpty())
 	{
+		dsLog("newDisplayString: setFont (GlobalLanguage)...");
 		newString->setFont(TheFontLibrary->getFont(
 			TheGlobalLanguageData->m_defaultDisplayStringFont.name,
 			TheGlobalLanguageData->m_defaultDisplayStringFont.size,
 			TheGlobalLanguageData->m_defaultDisplayStringFont.bold) );
+		dsLog("newDisplayString: setFont done");
 	}
 	else
+	{
+		dsLog("newDisplayString: setFont (Times New Roman)...");
 		newString->setFont( TheFontLibrary->getFont( AsciiString("Times New Roman"), 12, FALSE ) );
+		dsLog("newDisplayString: setFont done");
+	}
 
 	// link string to list
 	link( newString );
 
 	// return our new string
+	dsLog("newDisplayString: return");
 	return newString;
 
 }  // end newDisplayString

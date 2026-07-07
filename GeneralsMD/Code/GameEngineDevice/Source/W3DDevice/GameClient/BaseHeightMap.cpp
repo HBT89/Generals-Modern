@@ -255,6 +255,12 @@ BaseHeightMapRenderObjClass::~BaseHeightMapRenderObjClass(void)
 //=============================================================================
 BaseHeightMapRenderObjClass::BaseHeightMapRenderObjClass(void)
 {
+	auto hmLog = [](const char* msg) {
+		FILE *f = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (f) { fprintf(f, "  HM: %s\n", msg); fflush(f); fclose(f); }
+	};
+
+	hmLog("BaseHeightMapRenderObjClass ctor...");
 	m_x=0;
 	m_y=0;
 	m_needFullUpdate = false;
@@ -288,24 +294,35 @@ BaseHeightMapRenderObjClass::BaseHeightMapRenderObjClass(void)
 	m_useDepthFade = false;
 	m_disableTextures = false;
 	TheTerrainRenderObject = this;
-	m_treeBuffer = NULL; 
+	m_treeBuffer = NULL;
 
+	hmLog("NEW W3DTreeBuffer...");
 	m_treeBuffer = NEW W3DTreeBuffer;
+	hmLog("W3DTreeBuffer done");
 
-	m_propBuffer = NULL; 
+	m_propBuffer = NULL;
 
+	hmLog("NEW W3DPropBuffer...");
 	m_propBuffer = NEW W3DPropBuffer;
-
+	hmLog("W3DPropBuffer done");
 
 	m_bibBuffer = NULL;
+	hmLog("NEW W3DBibBuffer...");
 	m_bibBuffer = NEW W3DBibBuffer;
+	hmLog("W3DBibBuffer done");
 	m_curImpassableSlope = 45.0f;	// default to 45 degrees.
 	m_bridgeBuffer = NULL;
+	hmLog("NEW W3DBridgeBuffer...");
 	m_bridgeBuffer = NEW W3DBridgeBuffer;
+	hmLog("W3DBridgeBuffer done");
+	hmLog("NEW W3DWaypointBuffer...");
 	m_waypointBuffer = NEW W3DWaypointBuffer;
+	hmLog("W3DWaypointBuffer done");
 #ifdef DO_ROADS
 	m_roadBuffer = NULL;
+	hmLog("NEW W3DRoadBuffer...");
 	m_roadBuffer = NEW W3DRoadBuffer;
+	hmLog("W3DRoadBuffer done");
 #endif
 #ifdef DO_SCORCH
 	m_vertexScorch = NULL;
@@ -319,9 +336,13 @@ BaseHeightMapRenderObjClass::BaseHeightMapRenderObjClass(void)
 	else
 		m_shroud = NULL;
 #else
+	hmLog("NEW W3DShroud...");
 	m_shroud = NEW W3DShroud;
+	hmLog("W3DShroud done");
 #endif
+	hmLog("SetCleanupHook...");
 	DX8Wrapper::SetCleanupHook(this);
+	hmLog("BaseHeightMapRenderObjClass ctor done");
 }
 
 void BaseHeightMapRenderObjClass::setTextureLOD(Int lod)

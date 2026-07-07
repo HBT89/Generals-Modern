@@ -214,6 +214,10 @@ INI::~INI( void )
 	* If we are to load subdirectories, we will load them *after* we load all the
 	* files in the current directory */
 //-------------------------------------------------------------------------------------------------
+static void bgfxINILog(const char* msg) {
+	FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+	if (logf) { fprintf(logf, "      INI: %s\n", msg); fflush(logf); fclose(logf); }
+}
 void INI::loadDirectory( AsciiString dirName, Bool subdirs, INILoadType loadType, Xfer *pXfer )
 {
 	// sanity
@@ -224,7 +228,11 @@ void INI::loadDirectory( AsciiString dirName, Bool subdirs, INILoadType loadType
 	{
 		FilenameList filenameList;
 		dirName.concat('\\');
+		bgfxINILog("getFileListInDirectory...");
 		TheFileSystem->getFileListInDirectory(dirName, "*.ini", filenameList, TRUE);
+		char countBuf[64];
+		sprintf(countBuf, "found %d files", (int)filenameList.size());
+		bgfxINILog(countBuf);
 		// Load the INI files in the dir now, in a sorted order.  This keeps things the same between machines
 		// in a network game.
 		FilenameList::const_iterator it = filenameList.begin();
@@ -235,11 +243,19 @@ void INI::loadDirectory( AsciiString dirName, Bool subdirs, INILoadType loadType
 
 			if ((tempname.find('\\') == NULL) && (tempname.find('/') == NULL)) {
 				// this file doesn't reside in a subdirectory, load it first.
-				load( *it, loadType, pXfer );
+				bgfxINILog((*it).str());
+				try {
+					load( *it, loadType, pXfer );
+				} catch (...) {
+					char errBuf[512];
+					sprintf(errBuf, "EXCEPTION loading %s - skipping", (*it).str());
+					bgfxINILog(errBuf);
+				}
 			}
 			++it;
 		}
 
+		bgfxINILog("loading subdirectory files...");
 		it = filenameList.begin();
 		while (it != filenameList.end())
 		{
@@ -247,13 +263,21 @@ void INI::loadDirectory( AsciiString dirName, Bool subdirs, INILoadType loadType
 			tempname = (*it).str() + dirName.getLength();
 
 			if ((tempname.find('\\') != NULL) || (tempname.find('/') != NULL)) {
-				load( *it, loadType, pXfer );
+				bgfxINILog((*it).str());
+				try {
+					load( *it, loadType, pXfer );
+				} catch (...) {
+					char errBuf[512];
+					sprintf(errBuf, "EXCEPTION loading %s - skipping", (*it).str());
+					bgfxINILog(errBuf);
+				}
 			}
 			++it;
 		}
-	} 
-	catch (...) 
+	}
+	catch (...)
 	{
+		bgfxINILog("EXCEPTION in loadDirectory!");
 		// propagate the exception
 		throw;
 	}
@@ -381,11 +405,29 @@ void INI::load( AsciiString filename, INILoadType loadType, Xfer *pXfer )
 						(*parse)( this );
 
 					} catch (...) {
-						DEBUG_CRASH(("Error parsing block '%s' in INI file '%s'\n", token, m_filename.str()) );
+						// Log the error but continue parsing — don't crash the game
+						// over a single malformed INI block.
 						char buff[1024];
-						sprintf(buff, "Error parsing INI file '%s' (Line: '%s')\n", m_filename.str(), currentLine.str());
-
-						throw INIException(buff);
+						sprintf(buff, "Error parsing block in INI file '%s' (Line: '%s')\n", m_filename.str(), currentLine.str());
+						{ FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a"); if (lf) { fprintf(lf, "[INI] %s", buff); fflush(lf); fclose(lf); } }
+						DEBUG_LOG(("%s", buff));
+						// Skip to the matching End of this top-level block.
+						// Object blocks contain nested sub-blocks (Body, Draw, Behavior, etc.)
+						// each with their own End. In the INI files, the top-level End is
+						// always at column 0 (no leading whitespace), while sub-block End
+						// tokens are indented with spaces or tabs.
+						while (m_endOfFile == FALSE) {
+							readLine();
+							// Check raw buffer: top-level End starts at column 0
+							if (m_buffer[0] == 'E' || m_buffer[0] == 'e') {
+								char lineCopy[1024];
+								strncpy(lineCopy, m_buffer, sizeof(lineCopy));
+								lineCopy[sizeof(lineCopy)-1] = 0;
+								const char *skipTok = strtok(lineCopy, m_seps);
+								if (skipTok && _stricmp(skipTok, "End") == 0)
+									break;
+							}
+						}
 					}
 					#if defined(_DEBUG) || defined(_INTERNAL)
 						strcpy(m_curBlockStart, "NO_BLOCK");

@@ -33,6 +33,7 @@ if(MSVC)
         /D_WINDOWS
         /DNOMINMAX
         /DDIRECTINPUT_VERSION=0x0800
+        # /D_INTERNAL  # Disabled — causes static initializer crash (investigate later)
     )
     # Disable specific warnings that flood the build
     add_compile_options(
@@ -40,6 +41,8 @@ if(MSVC)
         /wd4018 /wd4305 /wd4309 /wd4800 /wd4838
         /wd4102 /wd4473 /wd5043 /wd4146 /wd4804
     )
+    # Enable SEH exception handling so catch(...) catches access violations
+    add_compile_options(/EHa)
     # Linker flags for inline assembly compatibility
     add_link_options(/SAFESEH:NO)
 endif()
@@ -159,11 +162,11 @@ list(REMOVE_ITEM WW3D2_SRC
     ${LIBS_VEGAS}/WW3D2/dx8wrapper.cpp
     ${LIBS_VEGAS}/WW3D2/dx8caps.cpp
     ${LIBS_VEGAS}/WW3D2/dx8webbrowser.cpp
-    ${LIBS_VEGAS}/WW3D2/missingtexture.cpp
 )
 add_library(ww3d2 STATIC ${WW3D2_SRC})
 target_include_directories(ww3d2 PUBLIC ${COMMON_INCLUDES})
-target_link_libraries(ww3d2 PUBLIC wwlib wwmath wwaudio wwdebug bgfx bx bimg)
+target_link_libraries(ww3d2 PUBLIC wwlib wwmath wwaudio wwdebug bgfx bx bimg d3dcompiler)
+set_target_properties(ww3d2 PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
 # =============================================================================
 # Library: wwshade
@@ -195,7 +198,8 @@ endif()
 # Library: bimg (BIMG image library)
 # =============================================================================
 file(GLOB BIMG_SRC ${LIBS_SOURCE}/bimg/src/*.cpp)
-add_library(bimg STATIC ${BIMG_SRC})
+file(GLOB ASTCENC_SRC ${LIBS_SOURCE}/bimg/3rdparty/astc-encoder/source/*.cpp)
+add_library(bimg STATIC ${BIMG_SRC} ${ASTCENC_SRC})
 target_include_directories(bimg PUBLIC ${BIMG_INCLUDE})
 target_include_directories(bimg PRIVATE
     ${LIBS_SOURCE}/bimg/src
@@ -255,6 +259,11 @@ foreach(GSLIB gamespyhttp gamespypatching gamespypeer gamespypresence gamespysta
     target_include_directories(${GSLIB} PUBLIC ${COMMON_INCLUDES})
 endforeach()
 
+# Profile library
+file(GLOB PROFILE_SRC ${LIBS_SOURCE}/profile/*.cpp)
+add_library(profile STATIC ${PROFILE_SRC})
+target_include_directories(profile PUBLIC ${COMMON_INCLUDES})
+
 # Benchmark stub
 if(EXISTS ${LIBS_SOURCE}/Benchmark/benchmark_stub.c)
     add_library(benchmark STATIC ${LIBS_SOURCE}/Benchmark/benchmark_stub.c)
@@ -274,7 +283,6 @@ file(GLOB_RECURSE GAMEENGINE_SRC ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine/Source/*
 # Exclude files with missing dependencies
 list(REMOVE_ITEM GAMEENGINE_SRC
     ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine/Source/Common/Audio/GameSpeech.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/GameEngine/Source/GameNetwork/WOLBrowser/WebBrowser.cpp
 )
 add_library(GameEngine STATIC ${GAMEENGINE_SRC})
 target_include_directories(GameEngine PUBLIC
@@ -301,6 +309,7 @@ target_include_directories(GameEngineDevice PUBLIC
     ${ENGINE_INCLUDE}
     ${COMMON_INCLUDES}
     ${DX8_SDK_INCLUDE}
+    ${CMAKE_CURRENT_SOURCE_DIR}/Main
 )
 target_link_libraries(GameEngineDevice PUBLIC GameEngine ww3d2 wwshade)
 target_compile_options(GameEngineDevice PRIVATE /FI"PreRTS.h")
@@ -310,6 +319,7 @@ target_compile_options(GameEngineDevice PRIVATE /FI"PreRTS.h")
 # =============================================================================
 add_executable(GeneralsZH WIN32
     ${CMAKE_CURRENT_SOURCE_DIR}/Main/WinMain.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/Main/linker_stubs.cpp
 )
 target_include_directories(GeneralsZH PRIVATE
     ${ENGINE_PRECOMPILED}
@@ -340,6 +350,7 @@ target_link_libraries(GeneralsZH PRIVATE
     gamespypeer
     gamespypresence
     gamespystats
+    profile
 )
 
 # Conditionally link zlib
@@ -371,6 +382,8 @@ target_link_libraries(GeneralsZH PRIVATE
     comdlg32
     d3d11
     dxgi
+    imm32
+    psapi
 )
 
 # =============================================================================
@@ -388,6 +401,24 @@ add_executable(test_math ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_math.cpp)
 target_include_directories(test_math PRIVATE ${COMMON_INCLUDES})
 target_link_libraries(test_math wwmath wwlib wwdebug)
 add_test(NAME MathLibrary COMMAND test_math)
+
+# Test: DX8 stub OUT-param safety (links bgfx for BGFXTexture8 destructor)
+add_executable(test_dx8_stubs ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_chunk_01_dx8_stubs.cpp)
+target_include_directories(test_dx8_stubs PRIVATE ${COMMON_INCLUDES})
+target_link_libraries(test_dx8_stubs PRIVATE bgfx bx bimg psapi)
+add_test(NAME DX8Stubs COMMAND test_dx8_stubs)
+
+# Test: BGFX CPU buffer mechanics (links bgfx for BGFXTexture8 destructor)
+add_executable(test_bgfx_buffers ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_chunk_02_bgfx_buffers.cpp)
+target_include_directories(test_bgfx_buffers PRIVATE ${COMMON_INCLUDES})
+target_link_libraries(test_bgfx_buffers PRIVATE bgfx bx bimg psapi)
+add_test(NAME BGFXBuffers COMMAND test_bgfx_buffers)
+
+# Test: BGFX headless init/frame/shutdown via Noop renderer
+add_executable(test_bgfx_headless ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_chunk_03_bgfx_headless.cpp)
+target_include_directories(test_bgfx_headless PRIVATE ${COMMON_INCLUDES})
+target_link_libraries(test_bgfx_headless bgfx bx bimg d3d11 dxgi psapi)
+add_test(NAME BGFXHeadless COMMAND test_bgfx_headless)
 
 message(STATUS "")
 message(STATUS "=== Generals: Zero Hour Build Configuration ===")

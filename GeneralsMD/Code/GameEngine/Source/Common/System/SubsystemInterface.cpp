@@ -156,20 +156,37 @@ void SubsystemInterfaceList::removeSubsystem(SubsystemInterface* sys)
 #endif
 }
 //-----------------------------------------------------------------------------
+static void bgfxSubLog(const char* msg) {
+	FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+	if (logf) { fprintf(logf, "    subsys: %s\n", msg); fclose(logf); }
+}
 void SubsystemInterfaceList::initSubsystem(SubsystemInterface* sys, const char* path1, const char* path2, const char* dirpath, Xfer *pXfer, AsciiString name)
 {
+	bgfxSubLog(name.str());
 	sys->setName(name);
+	bgfxSubLog("  init()...");
 	sys->init();
+	bgfxSubLog("  init() done");
 
 	INI ini;
-	if (path1)
+	if (path1) {
+		bgfxSubLog(path1);
 		ini.load(path1, INI_LOAD_OVERWRITE, pXfer );
-	if (path2)
+		bgfxSubLog("  loaded");
+	}
+	if (path2) {
+		bgfxSubLog(path2);
 		ini.load(path2, INI_LOAD_OVERWRITE, pXfer );
-	if (dirpath)
+		bgfxSubLog("  loaded");
+	}
+	if (dirpath) {
+		bgfxSubLog(dirpath);
 		ini.loadDirectory(dirpath, TRUE, INI_LOAD_OVERWRITE, pXfer );
+		bgfxSubLog("  loaded");
+	}
 
 	m_subsystems.push_back(sys);
+	bgfxSubLog("  complete");
 }
 
 //-----------------------------------------------------------------------------

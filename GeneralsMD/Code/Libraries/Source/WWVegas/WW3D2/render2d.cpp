@@ -47,6 +47,7 @@
 #include "texture.h"
 #include "matrix4.h"
 #include "matrix3d.h"
+#include <stdio.h>
 #include "BGFXWrapper.h" // Ported from dx8wrapper.h to BGFXWrapper.h
 #include "dx8indexbuffer.h"
 #include "dx8vertexbuffer.h"
@@ -70,6 +71,7 @@ RectClass							Render2DClass::ScreenResolution( 0,0,0,0 );
 Render2DClass::Render2DClass( TextureClass* tex ) :
 	CoordinateScale( 1, 1 ),
 	CoordinateOffset( 0, 0 ),
+	BiasedCoordinateOffset( 0, 0 ),
 	Texture(0),
 	ZValue(0),
 	IsHidden( false ),
@@ -89,9 +91,14 @@ Render2DClass::~Render2DClass()
 	REF_PTR_RELEASE(Texture);	
 }
 
-void	Render2DClass::Set_Screen_Resolution( const RectClass & screen )	
-{ 
-	ScreenResolution = screen; 
+void	Render2DClass::Set_Screen_Resolution( const RectClass & screen )
+{
+	ScreenResolution = screen;
+	// Diagnostic: log every call so we can see init order
+	{ FILE* lf = fopen("C:\\TheLab\\bgfx_draw.log", "a");
+	  if (lf) { fprintf(lf, "[SetScreenRes] L=%.0f T=%.0f R=%.0f B=%.0f (W=%.0f H=%.0f)\n",
+	    screen.Left, screen.Top, screen.Right, screen.Bottom, screen.Width(), screen.Height());
+	    fflush(lf); fclose(lf); } }
 #if 0
 	// Fool into pixel doubling  - Byon..
 	if ( screen.Width() >= 1280 ) {
@@ -187,9 +194,24 @@ void Render2DClass::Enable_Texturing(bool b)
 
 void	Render2DClass::Set_Coordinate_Range( const RectClass & range )
 {
+	// Guard against zero dimensions which would produce ±inf CoordinateScale.
+	float w = range.Width();
+	float h = range.Height();
+	// Diagnostic: log first 5 calls to trace init order
+	static int s_rangeLogCount = 0;
+	if (s_rangeLogCount < 5) {
+		FILE* lf = fopen("C:\\TheLab\\bgfx_draw.log", "a");
+		if (lf) { fprintf(lf, "[SetCoordRange #%d] L=%.0f T=%.0f R=%.0f B=%.0f (W=%.0f H=%.0f) -> scale=(%.6f,%.6f)\n",
+			s_rangeLogCount, range.Left, range.Top, range.Right, range.Bottom, w, h,
+			(w > 0 ? 2.0f/w : 0.0f), (h > 0 ? -2.0f/h : 0.0f));
+			fflush(lf); fclose(lf); }
+		++s_rangeLogCount;
+	}
+	if ( w == 0.0f || h == 0.0f ) return;
+
 	// default range is (-1,1)-(1,-1)
-	CoordinateScale.X = 2 / range.Width();
-	CoordinateScale.Y = -2 / range.Height();
+	CoordinateScale.X = 2 / w;
+	CoordinateScale.Y = -2 / h;
 	CoordinateOffset.X = -(CoordinateScale.X * range.Left) - 1;
 	CoordinateOffset.Y = -(CoordinateScale.Y * range.Top) + 1;
 

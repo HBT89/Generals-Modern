@@ -248,13 +248,20 @@ GameClient::~GameClient()
 //-------------------------------------------------------------------------------------------------
 void GameClient::init( void )
 {
+	// BGFX Port: granular logging
+	auto gcLog = [](const char* msg) {
+		FILE *logf = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (logf) { fprintf(logf, "    GC: %s\n", msg); fflush(logf); fclose(logf); }
+	};
 
+	gcLog("setFrameRate...");
 	setFrameRate(MSEC_PER_LOGICFRAME_REAL);		// from GameCommon.h... tell W3D what our expected framerate is
 
+	gcLog("DrawGroupInfo.ini...");
 	INI ini;
 	// Load the DrawGroupInfo here, before the Display Manager is loaded.
 	ini.load("Data\\INI\\DrawGroupInfo.ini", INI_LOAD_OVERWRITE, NULL);
-	
+
 	// Override the ini values with localized versions:
 	if (TheGlobalLanguageData && TheGlobalLanguageData->m_drawGroupInfoFont.name.isNotEmpty())
 	{
@@ -264,27 +271,34 @@ void GameClient::init( void )
 	}
 
 	// create the display string factory
+	gcLog("TheDisplayStringManager...");
 	TheDisplayStringManager = createDisplayStringManager();
 	if( TheDisplayStringManager )	{
 		TheDisplayStringManager->init();
 		TheDisplayStringManager->setName("TheDisplayStringManager");
 	}
-	
+
 	// create the keyboard
+	gcLog("TheKeyboard...");
 	TheKeyboard = createKeyboard();
 	TheKeyboard->init();
 	TheKeyboard->setName("TheKeyboard");
 
 	// allocate and load image collection for the GUI and just load the 256x256 ones for now
+	gcLog("TheMappedImageCollection...");
 	TheMappedImageCollection = MSGNEW("GameClientSubsystem") ImageCollection;
 	TheMappedImageCollection->load( 512 );
+	gcLog("TheMappedImageCollection done");
 
 	// now that we have all the images loaded ... load any animation definitions from those images
+	gcLog("TheAnim2DCollection...");
 	TheAnim2DCollection = MSGNEW("GameClientSubsystem") Anim2DCollection;
 	TheAnim2DCollection->init();
  	TheAnim2DCollection->setName("TheAnim2DCollection");
+	gcLog("TheAnim2DCollection done");
 
 	// register message translators
+	gcLog("MessageTranslators...");
 	if( TheMessageStream )
 	{
 
@@ -314,32 +328,43 @@ void GameClient::init( void )
 		//
 		m_translators[ m_numTranslators++ ] =	TheMessageStream->attachTranslator( MSGNEW("GameClientSubsystem") GameClientMessageDispatcher, 999999999 );
 
-	}  
+	}
+	gcLog("MessageTranslators done");
 
 	// create the font library
+	gcLog("TheFontLibrary...");
 	TheFontLibrary = createFontLibrary();
 	if( TheFontLibrary )
 		TheFontLibrary->init();
+	gcLog("TheFontLibrary done");
 
 	// create the mouse
+	gcLog("TheMouse...");
 	TheMouse = createMouse();
 	TheMouse->parseIni();
+	gcLog("TheMouse parseIni done, initCursorResources...");
 	TheMouse->initCursorResources();
  	TheMouse->setName("TheMouse");
+	gcLog("TheMouse done");
 
 	// instantiate the display
+	gcLog("TheDisplay = createGameDisplay()...");
 	TheDisplay = createGameDisplay();
 	if( TheDisplay ) {
+		gcLog("TheDisplay->init()...");
 		TheDisplay->init();
+		gcLog("TheDisplay->init() done");
  		TheDisplay->setName("TheDisplay");
 	}
-	
+
+	gcLog("TheHeaderTemplateManager...");
 	TheHeaderTemplateManager = MSGNEW("GameClientSubsystem") HeaderTemplateManager;
 	if(TheHeaderTemplateManager){
 		TheHeaderTemplateManager->init();
 	}
 
 	// create the window manager
+	gcLog("TheWindowManager...");
 	TheWindowManager = createWindowManager();
 	if( TheWindowManager )
 	{
@@ -351,6 +376,7 @@ void GameClient::init( void )
 	}  // end if
 
 	// create the IME manager
+	gcLog("TheIMEManager...");
 	TheIMEManager = CreateIMEManagerInterface();
 	if ( TheIMEManager )
 	{
@@ -359,6 +385,7 @@ void GameClient::init( void )
 	}
 
 	// create the shell
+	gcLog("TheShell...");
 	TheShell = MSGNEW("GameClientSubsystem") Shell;
 	if( TheShell ) {
 		TheShell->init();
@@ -366,38 +393,51 @@ void GameClient::init( void )
 	}
 
 	// instantiate the in-game user interface
+	gcLog("TheInGameUI...");
 	TheInGameUI = createInGameUI();
 	if( TheInGameUI ) {
 		TheInGameUI->init();
  		TheInGameUI->setName("TheInGameUI");
 	}
 
+	gcLog("TheChallengeGenerals...");
  	TheChallengeGenerals = createChallengeGenerals();
+	gcLog("TheChallengeGenerals created");
  	if( TheChallengeGenerals ) {
  		TheChallengeGenerals->init();
  	}
+	gcLog("TheChallengeGenerals done");
 
+	gcLog("TheHotKeyManager...");
 	TheHotKeyManager = MSGNEW("GameClientSubsystem") HotKeyManager;
 	if( TheHotKeyManager ) {
 		TheHotKeyManager->init();
  		TheHotKeyManager->setName("TheHotKeyManager");
 	}
+	gcLog("TheHotKeyManager done");
 
 	// instantiate the terrain visual display
+	gcLog("TheTerrainVisual...");
 	TheTerrainVisual = createTerrainVisual();
+	gcLog("TheTerrainVisual created");
 	if( TheTerrainVisual ) {
 		TheTerrainVisual->init();
  		TheTerrainVisual->setName("TheTerrainVisual");
 	}
+	gcLog("TheTerrainVisual done");
 
 	// allocate the ray effects manager
+	gcLog("TheRayEffects...");
 	TheRayEffects = MSGNEW("GameClientSubsystem") RayEffectSystem;
 	if( TheRayEffects )	{
 		TheRayEffects->init();
  		TheRayEffects->setName("TheRayEffects");
 	}
+	gcLog("TheRayEffects done");
 
+	gcLog("TheMouse->init...");
 	TheMouse->init();	//finish initializing the mouse.
+	gcLog("TheMouse->init done");
 
 	// set the limits of the mouse now that we've created the display and such
 	if( TheMouse )
@@ -408,12 +448,17 @@ void GameClient::init( void )
 	}  // end if
 
 	// create the video player
+	gcLog("TheVideoPlayer...");
 	TheVideoPlayer = createVideoPlayer();
+	gcLog("TheVideoPlayer created");
 	if ( TheVideoPlayer )
 	{
+		gcLog("TheVideoPlayer->init()...");
 		TheVideoPlayer->init();
+		gcLog("TheVideoPlayer->init() done");
  		TheVideoPlayer->setName("TheVideoPlayer");
 	}
+	gcLog("TheVideoPlayer done");
 
 	// create the language filter.
 	TheLanguageFilter = createLanguageFilter();

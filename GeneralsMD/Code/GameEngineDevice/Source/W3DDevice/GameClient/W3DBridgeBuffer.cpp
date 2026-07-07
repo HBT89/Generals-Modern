@@ -741,16 +741,26 @@ for the bridges. */
 //=============================================================================
 W3DBridgeBuffer::W3DBridgeBuffer(void)
 {
+	auto bbLog = [](const char* msg) {
+		FILE *f = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (f) { fprintf(f, "    BB: %s\n", msg); fflush(f); fclose(f); }
+	};
+	bbLog("W3DBridgeBuffer ctor start");
 	m_initialized = false;
 	m_vertexMaterial = NULL;
 	m_vertexBridge = NULL;
 	m_indexBridge = NULL;
 	m_bridgeTexture = NULL;
+	m_numBridges = 0;
 	m_curNumBridgeVertices=0;
 	m_curNumBridgeIndices=0;
+	bbLog("clearAllBridges...");
 	clearAllBridges();
+	bbLog("allocateBridgeBuffers...");
 	allocateBridgeBuffers();
+	bbLog("allocateBridgeBuffers done");
 	m_initialized = true;
+	bbLog("W3DBridgeBuffer ctor done");
 }
 
 
@@ -773,9 +783,17 @@ void W3DBridgeBuffer::freeBridgeBuffers(void)
 //=============================================================================
 void W3DBridgeBuffer::allocateBridgeBuffers(void)
 {
+	auto abLog = [](const char* msg) {
+		FILE *f = fopen("C:\\TheLab\\bgfx_startup.log", "a");
+		if (f) { fprintf(f, "    ABB: %s\n", msg); fflush(f); fclose(f); }
+	};
+	abLog("NEW_REF DX8VertexBufferClass...");
 	m_vertexBridge=NEW_REF(DX8VertexBufferClass,(DX8_FVF_XYZNDUV1,MAX_BRIDGE_VERTEX+4,DX8VertexBufferClass::USAGE_DYNAMIC));
+	abLog("NEW_REF DX8IndexBufferClass...");
 	m_indexBridge=NEW_REF(DX8IndexBufferClass,(MAX_BRIDGE_INDEX+4, DX8IndexBufferClass::USAGE_DYNAMIC));
+	abLog("VertexMaterialClass::Get_Preset...");
 	m_vertexMaterial=VertexMaterialClass::Get_Preset(VertexMaterialClass::PRELIT_DIFFUSE);
+	abLog("Get_Preset done");
 #ifdef USE_BRIDGE_NORMALS
 	m_vertexMaterial= NEW VertexMaterialClass();
 	m_vertexMaterial->Set_Shininess(0.0);

@@ -10,7 +10,7 @@
  * This stub provides fallback definitions. */
 
 #ifndef Bool
-typedef int Bool;
+typedef bool Bool;
 #endif
 
 #ifndef Int

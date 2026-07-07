@@ -34,27 +34,13 @@
 #define __GAMESPYGAMEINFO_H__
 
 #include "GameSpy/Peer/Peer.h"
-
 #include "GameNetwork/GameInfo.h"
+#include "GameNetwork/GameSpy/StagingRoomGameInfo.h"
 
 class Transport;
 class NAT;
 
-class GameSpyGameSlot : public GameSlot
-{
-public:
-	GameSpyGameSlot();
-	Int getProfileID( void ) { return m_profileID; }
-	void setProfileID( Int id ) { m_profileID = id; }
-	AsciiString getLoginName( void ) { return m_gameSpyLogin; }
-	void setLoginName( AsciiString name ) { m_gameSpyLogin = name; }
-	AsciiString getLocale( void ) { return m_gameSpyLocale; }
-	void setLocale( AsciiString name ) { m_gameSpyLocale = name; }
-protected:
-	Int m_profileID;
-	AsciiString m_gameSpyLogin;
-	AsciiString m_gameSpyLocale;
-};
+// GameSpyGameSlot is defined in StagingRoomGameInfo.h
 
 /**
   * GameSpyGameInfo class - maintains information about the GameSpy game and
@@ -87,7 +73,7 @@ public:
 	void gotGOACall( void );																			///< Mark the game info as having been queried
 };
 
-extern GameSpyGameInfo *TheGameSpyGame;
+// TheGameSpyGame is declared as GameSpyStagingRoom* in StagingRoomGameInfo.h (included above)
 
 void WOLDisplayGameOptions( void );
 void WOLDisplaySlotList( void );
