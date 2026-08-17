@@ -36,3 +36,10 @@
 # Scratch build-log dumps and file backups
 /build_*.txt
 w3dview_original.cpp
+
+# Local CMake toolchain. A full CMake 3.31.4 Windows distribution (~8,000 files,
+# including cmake-gui.exe) used to be committed here, which is not ours to
+# redistribute and dominated the repository size. It stays on disk because the
+# documented build command invokes it directly, but it is no longer tracked.
+# Building from a fresh clone requires CMake >= 3.20 installed separately.
+/cmake/
