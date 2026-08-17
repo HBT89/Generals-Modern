@@ -1,4 +1,7 @@
-# Ignore everything in this directory
+# Ignore everything in this directory (the proprietary GameSpy SDK is not redistributable)
 *
 # Except this file
 !.gitignore
+# ...and except our own clean-room stub, which CMakeLists.txt requires to configure.
+# Without this negation a fresh clone fails at CMake generate time.
+!gamespy_stub.cpp

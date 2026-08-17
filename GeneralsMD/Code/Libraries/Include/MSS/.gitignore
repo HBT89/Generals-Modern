@@ -1,4 +1,7 @@
-# Ignore everything in this directory
+# Ignore everything in this directory (the proprietary Miles Sound System SDK is not redistributable)
 *
 # Except this file
 !.gitignore
+# ...and except our own clean-room stub, included by MilesAudioManager.h.
+# Without this negation a fresh clone cannot compile GameEngineDevice.
+!MSS.h

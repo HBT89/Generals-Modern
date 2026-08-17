@@ -92,6 +92,13 @@ BrowserDispatch_i.c
 BrowserDispatch.h
 BrowserDispatch.tlb
 generatedVersion.h
+# Exception: the two checked-in version stubs. The original build generated these with
+# buildVersionUpdate.exe, which this fork does not build, so WinMain.cpp cannot compile
+# without them. Track them until CMake generates them via configure_file() instead.
+# (Note: git on Windows matches ignore patterns case-insensitively, so the bare
+#  "generatedVersion.h" above also hides Main/GeneratedVersion.h.)
+!/Code/Main/GeneratedVersion.h
+!/Code/GameEngine/Include/generatedVersion.h
 
 # Generated shader headers
 *.vsh_code.h
