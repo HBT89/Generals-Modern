@@ -1,0 +1,92 @@
+# Compile gate.
+#
+# Until this existed, nothing detected a broken build. The last known-good build
+# transcript predated HEAD by several weeks, and three build-critical files were
+# missing from the repository entirely without anyone noticing, because the only
+# machine that ever built the project had them sitting untracked on disk.
+#
+# This workflow is expected to be red at first. That is the point: a failing build
+# you can see beats a working build only one machine can reproduce.
+
+name: Build
+
+on:
+  push:
+    branches: [ ReshadeBranch, main ]
+  pull_request:
+    branches: [ ReshadeBranch, main ]
+  workflow_dispatch:
+
+# A newer push to the same branch makes an in-flight run obsolete.
+concurrency:
+  group: build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  windows:
+    name: Win32 / MSVC / Release
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # Guards the exact regression that made this repo unbuildable. Each of these
+      # is required to configure or compile, and each was previously hidden by a
+      # .gitignore containing '*'. Checking them here fails in seconds with a clear
+      # message instead of surfacing as a confusing CMake or compiler error.
+      - name: Verify build-critical stubs are committed
+        shell: pwsh
+        run: |
+          $required = @(
+            'GeneralsMD/Code/Libraries/Source/GameSpy/gamespy_stub.cpp',
+            'GeneralsMD/Code/Libraries/Include/MSS/MSS.h',
+            'GeneralsMD/Code/Main/GeneratedVersion.h',
+            'GeneralsMD/Code/GameEngine/Include/generatedVersion.h'
+          )
+          $missing = $required | Where-Object { -not (Test-Path $_) }
+          if ($missing) {
+            Write-Host "::error::Build-critical files are missing from the repository:"
+            $missing | ForEach-Object { Write-Host "::error::  $_" }
+            Write-Host "These are needed to configure or compile. If one is gitignored,"
+            Write-Host "add a negation for it rather than deleting the ignore rule."
+            exit 1
+          }
+          Write-Host "All $($required.Count) build-critical stubs present."
+
+      - name: Report toolchain versions
+        shell: pwsh
+        run: |
+          cmake --version
+          Write-Host "---"
+          Write-Host "Note: this project pins itself to Win32 (x86) because the engine"
+          Write-Host "contains ~120 inline __asm blocks across 16 files."
+
+      # The CMake root is GeneralsMD/Code, not the repository root. Win32 is not
+      # optional -- CMakeLists.txt forces it, and /SAFESEH:NO is required for the
+      # inline assembly to link.
+      - name: Configure
+        run: >
+          cmake -S GeneralsMD/Code -B build
+          -G "Visual Studio 17 2022" -A Win32
+          -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build GeneralsZH
+        run: cmake --build build --config Release --target GeneralsZH
+
+      # Five test executables have existed for months and have never been run by
+      # anything -- CTest's own log records zero tests. Do not fail the job on them
+      # yet: at least one contains an assertion that contradicts the shipped code,
+      # and in Release the asserts compile out entirely. Surface the results, fix
+      # the tests, then remove continue-on-error so they become a real gate.
+      - name: Run tests
+        continue-on-error: true
+        run: ctest --test-dir build -C Release --output-on-failure --no-tests=error
+
+      - name: Upload GeneralsZH.exe
+        if: success()
+        uses: actions/upload-artifact@v4
+        with:
+          name: GeneralsZH-win32-release
+          path: build/Release/GeneralsZH.exe
+          if-no-files-found: error
