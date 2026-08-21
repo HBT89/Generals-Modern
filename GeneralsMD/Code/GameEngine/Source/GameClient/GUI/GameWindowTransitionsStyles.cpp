@@ -184,6 +184,34 @@ void FlashTransition::reverse( void )
 
 void FlashTransition::draw( void )
 {
+	// ========================================================================
+	// ALPHA TRANSITION EFFECTS DISABLED (temporary, by request)
+	//
+	// The five alpha-based window transitions (FlashTransition,
+	// ButtonFlashTransition, FadeTransition, ScreenFadeTransition,
+	// FullFadeTransition) all render wrong under the BGFX port and actively
+	// obscure the menus and camera work being debugged underneath:
+	//
+	//   * The alpha never resolves. A vertex patch in BGFXWrapper::SubmitDraw
+	//     forces vertex alpha to 0xFF whenever stage-0 texture state reads
+	//     ALPHAOP=SELECTARG1, which the port itself writes on every 3D->2D
+	//     switch. So a fading overlay is republished fully opaque every frame
+	//     and can never fade out -- a black slab over the menu.
+	//   * Where the effect draws a window's own Image, the UV sub-rect is lost
+	//     and the ENTIRE UI atlas is drawn instead, which is the "grid of
+	//     icons" seen across the Options background and inside buttons.
+	//
+	// Only draw() is disabled. update() is deliberately left running, because
+	// it owns the state machine: it calls winHide() and sets m_isFinished, so
+	// gutting it would leave windows stuck mid-transition and menus
+	// potentially unnavigable. Disabling only the visual is therefore safe.
+	//
+	// Restoring these belongs with the native BGFX pass work, where a fade is
+	// an explicit pass with its own program and blend state, inheriting no
+	// texture or combiner state.
+	// TODO(bgfx-native-pass): re-enable all five draw() bodies together.
+	// ========================================================================
+	return;
 	switch (m_drawState) 
 	{
 		case FLASHTRANSITION_FADE_IN_1:
@@ -501,6 +529,10 @@ void ButtonFlashTransition::reverse( void )
 
 void ButtonFlashTransition::draw( void )
 {
+	// Alpha transition effect disabled -- see the note on FlashTransition::draw.
+	// update() is left intact so the transition state machine still completes.
+	// TODO(bgfx-native-pass): re-enable with the other four.
+	return;
 	switch (m_drawState) 
 	{
 		case BUTTONFLASHTRANSITION_FADE_IN_1:
@@ -690,6 +722,13 @@ void FadeTransition::reverse( void )
 
 void FadeTransition::draw( void )
 {
+	// Alpha transition effect disabled -- see the note on FlashTransition::draw.
+	// This one is the worst offender: it draws m_win->winGetEnabledImage(0), and
+	// the lost UV sub-rect makes that the whole UI atlas.
+	// update() is left intact so the transition state machine still completes.
+	// TODO(bgfx-native-pass): re-enable with the other four.
+	return;
+
 	if(!m_win)
 		return;
 	const Image *image = m_win->winGetEnabledImage(0);
@@ -1664,6 +1703,13 @@ void ScreenFadeTransition::reverse( void )
 
 void ScreenFadeTransition::draw( void )
 {
+	// Alpha transition effect disabled -- see the note on FlashTransition::draw.
+	// Draws a full-screen black rect with animating alpha; the alpha is forced
+	// opaque by the vertex patch, so this is a permanent black slab.
+	// update() is left intact so the transition state machine still completes.
+	// TODO(bgfx-native-pass): re-enable with the other four.
+	return;
+
 	Int alpha = m_percent*255 *m_drawState;
 	if(alpha > 255)
 		alpha = 255;
@@ -1869,6 +1915,11 @@ void FullFadeTransition::reverse( void )
 
 void FullFadeTransition::draw( void )
 {
+	// Alpha transition effect disabled -- see the note on FlashTransition::draw.
+	// update() is left intact so the transition state machine still completes,
+	// including its winHide() calls at FULLFADETRANSITION_END/2.
+	// TODO(bgfx-native-pass): re-enable with the other four.
+	return;
 	Int alpha;
 	if(m_drawState > (FULLFADETRANSITION_END/2))
 		alpha = m_percent * 255 * (FULLFADETRANSITION_END - m_drawState);
