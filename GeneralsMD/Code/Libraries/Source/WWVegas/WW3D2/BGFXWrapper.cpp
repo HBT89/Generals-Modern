@@ -597,6 +597,28 @@ bool BGFXWrapper::Init(void* hwnd, bool lite)
     init.resolution.height = (ResolutionHeight > 0) ? (uint32_t)ResolutionHeight : 600u;
     init.resolution.reset  = IsWindowed ? BGFX_RESET_NONE : BGFX_RESET_FULLSCREEN;
 
+    // -----------------------------------------------------------------------
+    // Transient buffer sizes.
+    //
+    // No geometry in this port is GPU-resident yet: every vertex and index
+    // buffer is a malloc in system RAM and is re-uploaded through bgfx's
+    // TRANSIENT buffers on every single frame. That makes the per-frame
+    // transient pool, not VRAM, the hard ceiling on scene complexity.
+    //
+    // bgfx defaults to 6 MB vertex / 2 MB index (config.h:320, :324). At the
+    // 44-byte XYZNDUV2 stride that is only ~143k vertices per frame, and the
+    // shell map's terrain alone is 16 tiles x 4096 vertices x 2 passes ~= 131k
+    // before a single unit or UI element is drawn. Measured consequence, from
+    // a live run: "DROP transient exhausted: need v=4096 avail v=2734",
+    // 5 dropped draws every frame, i.e. terrain tiles silently missing.
+    //
+    // These are a STOPGAP. The real fix is backing static geometry with real
+    // bgfx vertex/index buffers so terrain stops being re-uploaded per frame;
+    // once that lands these can come back down. bgfx honours these values
+    // directly with no clamp against the compile-time macro (bgfx.cpp:2053).
+    init.limits.transientVbSize = 48u << 20; // 48 MB ~= 1.1M vertices/frame
+    init.limits.transientIbSize = 12u << 20; // 12 MB ~= 6.2M indices/frame
+
     bool bgfxOk = bgfx::init(init);
     s_bgfxReallyInitted = bgfxOk;
     Trace("INIT", "bgfx::init() %s renderer=%s", bgfxOk ? "SUCCEEDED" : "FAILED",
