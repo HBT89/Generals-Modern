@@ -1576,7 +1576,24 @@ static void SubmitDraw(const BYTE* vdata, unsigned vb_start, unsigned v_count,
         }
     }
 
-    if (bgfx::getAvailTransientVertexBuffer(v_count, s_layoutXYZNDUV2) < v_count) return;
+    // Check BOTH transient pools before allocating EITHER. Allocating the vertex
+    // buffer first and then failing the index check wastes the vertex allocation
+    // and drops the draw regardless. Also log it: a silent `return` here is
+    // geometry vanishing with no trace, and it gets more likely the busier the
+    // scene gets, which is the worst possible failure signature to debug.
+    if (bgfx::getAvailTransientVertexBuffer(v_count, s_layoutXYZNDUV2) < v_count ||
+        bgfx::getAvailTransientIndexBuffer(i_count) < i_count) {
+        ++s_frameReject;
+        static int s_dropLog = 0;
+        if (s_dropLog < 30) {
+            ++s_dropLog;
+            Trace("DRAW", "DROP transient exhausted: need v=%u i=%u avail v=%u i=%u",
+                v_count, i_count,
+                bgfx::getAvailTransientVertexBuffer(v_count, s_layoutXYZNDUV2),
+                bgfx::getAvailTransientIndexBuffer(i_count));
+        }
+        return;
+    }
     bgfx::TransientVertexBuffer tvb;
     bgfx::allocTransientVertexBuffer(&tvb, v_count, s_layoutXYZNDUV2);
 
@@ -1602,12 +1619,31 @@ static void SubmitDraw(const BYTE* vdata, unsigned vb_start, unsigned v_count,
         }
     }
 
-    if (bgfx::getAvailTransientIndexBuffer(i_count) < i_count) return;
+    // Availability was already checked above, alongside the vertex pool.
     bgfx::TransientIndexBuffer tib;
     bgfx::allocTransientIndexBuffer(&tib, i_count);
     uint16_t* idst = reinterpret_cast<uint16_t*>(tib.data);
-    for (unsigned k = 0; k < i_count; ++k)
-        idst[k] = (uint16_t)(src_idx[k] - (uint16_t)min_vi);
+
+    // Rebase absolute VB indices onto the transient buffer, which starts at the
+    // draw's first vertex. An index below min_vi underflows to ~65535 and one at
+    // or past v_count points outside the buffer we just allocated; either makes
+    // the GPU fetch vertices that are not ours. Validate rather than submit it.
+    bool idx_ok = true;
+    for (unsigned k = 0; k < i_count; ++k) {
+        const unsigned raw = src_idx[k];
+        if (raw < min_vi || (raw - min_vi) >= v_count) { idx_ok = false; break; }
+        idst[k] = (uint16_t)(raw - min_vi);
+    }
+    if (!idx_ok) {
+        ++s_frameReject;
+        static int s_idxLog = 0;
+        if (s_idxLog < 20) {
+            ++s_idxLog;
+            Trace("DRAW", "REJECT index out of range: i=%u v=%u min_vi=%u i0=%u",
+                i_count, v_count, min_vi, (unsigned)src_idx[0]);
+        }
+        return;
+    }
 
     bgfx::setVertexBuffer(0, &tvb);
     bgfx::setIndexBuffer(&tib);
@@ -1906,12 +1942,34 @@ void BGFXWrapper::Draw(
         }
     }
 
-    // Fix up degenerate vertex_count (matches original DX8Wrapper::Draw logic)
+    // Fix up degenerate vertex_count (matches original DX8Wrapper::Draw logic).
+    //
+    // The original subtraction is performed on unsigned values and WRAPS if the
+    // offsets exceed the buffer's vertex count, producing a bogus count close to
+    // 65535. Every reader below then walks off the end of the vertex buffer, which
+    // is an out-of-bounds read rather than a bad picture. Compute it in a wide
+    // signed type and reject the draw instead.
+    const unsigned vb_vertex_count = vb->Get_Vertex_Count();
     if (vertex_count < 3) {
         min_vertex_index = 0;
-        vertex_count = (vb_type == BUFFER_TYPE_DX8)
-            ? (unsigned short)(vb->Get_Vertex_Count() - render_state.index_base_offset - render_state.vba_offset)
-            : render_state.vba_count;
+        if (vb_type == BUFFER_TYPE_DX8) {
+            const long long avail = (long long)vb_vertex_count
+                                  - (long long)render_state.index_base_offset
+                                  - (long long)render_state.vba_offset;
+            if (avail <= 0) {
+                static int s_badCountLog = 0;
+                if (s_badCountLog < 20) {
+                    ++s_badCountLog;
+                    Trace("DRAW", "REJECT degenerate count: vb=%u base=%u vba=%u avail=%lld",
+                        vb_vertex_count, render_state.index_base_offset,
+                        render_state.vba_offset, avail);
+                }
+                return;
+            }
+            vertex_count = (unsigned short)avail;
+        } else {
+            vertex_count = render_state.vba_count;
+        }
     }
 
     // Lock vertex data (BGFXVertexBuffer8::Lock just returns m_data + offset)
@@ -1923,6 +1981,22 @@ void BGFXWrapper::Draw(
     unsigned vb_start = min_vertex_index +
         (vb_type == BUFFER_TYPE_DYNAMIC_DX8 ? render_state.vba_offset : 0u) +
         render_state.index_base_offset;
+
+    // Everything downstream reads vertex_count vertices starting at vb_start,
+    // either as 44-byte XYZNDUV2 (fast path) or at `stride` bytes (conversion
+    // path). Neither reader bounds-checks, so verify the window lies inside the
+    // buffer before any of them touch it. This is the guard that turns a silent
+    // out-of-bounds read into a logged, skipped draw.
+    if ((unsigned long long)vb_start + vertex_count > (unsigned long long)vb_vertex_count) {
+        static int s_oobLog = 0;
+        if (s_oobLog < 20) {
+            ++s_oobLog;
+            Trace("DRAW", "REJECT vertex range out of bounds: start=%u count=%u vb=%u stride=%u fvf=0x%X",
+                vb_start, vertex_count, vb_vertex_count, stride, fvfFlags);
+        }
+        static_cast<DX8VertexBufferClass*>(vb)->Get_DX8_Vertex_Buffer()->Unlock();
+        return;
+    }
 
     // Get index data
     BGFXIndexBuffer8* bib = static_cast<BGFXIndexBuffer8*>(
