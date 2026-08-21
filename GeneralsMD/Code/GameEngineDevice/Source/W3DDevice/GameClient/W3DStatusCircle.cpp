@@ -342,6 +342,30 @@ void W3DStatusCircle::Render(RenderInfoClass & rinfo)
 		return;
 	}
 
+	// ------------------------------------------------------------------------
+	// FADE DISABLED (temporary, by request).
+	//
+	// This draws a full-screen quad to tint the scene for script/cinematic
+	// fades. Under the BGFX port it renders as the entire UI texture atlas
+	// smeared over the screen -- every icon at once -- as an opaque slab.
+	//
+	// Two independent reasons, both of which need real fixes before this can
+	// come back:
+	//   1. Set_Texture(0, NULL) above does not actually unbind in this port, so
+	//      this untextured quad samples whichever texture was last bound.
+	//   2. The blend modes below (SC_ADD, plus REVSUBTRACT / DESTCOLOR-SRCCOLOR
+	//      / ZERO-SRCCOLOR via D3DRS_BLENDOP and SRCBLEND/DESTBLEND) are DX8
+	//      fixed-function state. Only 8 render states are honoured by the BGFX
+	//      state path, and D3DRS_BLENDOP is not among them -- so SUBTRACT,
+	//      SATURATE and MULTIPLY all silently degrade to whatever ADD did.
+	//
+	// Restoring this belongs with the native BGFX pass work, where the fade
+	// becomes an explicit pass with its own program, blend state and no
+	// inherited texture. Until then it is strictly worse than nothing: it
+	// obscures the scene the camera work is being debugged against.
+	// TODO(bgfx-native-pass): reinstate as an explicit fade pass.
+	return;
+
 	if (!setIndex) {
 		DX8Wrapper::Set_Material(m_vertexMaterialClass);
 		DX8Wrapper::Set_Index_Buffer(m_indexBuffer,0);
