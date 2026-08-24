@@ -271,6 +271,14 @@ private:
 	Bool		m_cameraHasMovedSinceRequest;					///< If true, throw out all saved locations
 	VecPosRequests	m_locationRequests;		///< These are cached. New requests are added here
 
+	// Validated GameData.ini camera values, cached by init(). The raw globals are
+	// 0.0f until all INI files parse, and several sites divide by tan(pitch);
+	// tan(0) is a singularity that puts the camera at infinity. init() already
+	// substitutes the retail defaults, so cache the checked values and use these
+	// instead of re-reading TheGlobalData at those sites.
+	Real m_iniCamHeight;
+	Real m_iniCamPitch;															///< degrees, guaranteed > 0
+	Real m_iniCamYaw;
 	Coord3D m_cameraOffset;													///< offset for camera from view center
 	Coord3D m_previousLookAtPosition;													///< offset for camera from view center
 	Coord2D m_scrollAmount;													///< scroll speed

@@ -184,9 +184,16 @@ W3DView::W3DView()
 	m_3DCamera = NULL;
 	m_2DCamera = NULL;
 	m_groundLevel = 10.0;
-	m_cameraOffset.z = TheGlobalData->m_cameraHeight;
-	m_cameraOffset.y = -(m_cameraOffset.z / tan(TheGlobalData->m_cameraPitch * (PI / 180.0)));
-	m_cameraOffset.x = -(m_cameraOffset.y * tan(TheGlobalData->m_cameraYaw * (PI / 180.0)));
+	// TheGlobalData camera values are still 0.0f at construction time (GameData.ini
+	// has not parsed yet), so seed the retail defaults and build the offset from
+	// those. init() re-reads the real INI values and rebuilds this.
+	m_iniCamHeight = 232.0f;
+	m_iniCamPitch  = 37.5f;
+	m_iniCamYaw    = 0.0f;
+	m_cameraOffset.z = (TheGlobalData->m_cameraHeight > 0.0f)
+		? TheGlobalData->m_cameraHeight : m_iniCamHeight;
+	m_cameraOffset.y = -(m_cameraOffset.z / tan(m_iniCamPitch * (PI / 180.0)));
+	m_cameraOffset.x = -(m_cameraOffset.y * tan(m_iniCamYaw * (PI / 180.0)));
 
 	m_viewFilterMode = FM_VIEW_DEFAULT;
 	m_viewFilter = FT_VIEW_DEFAULT;
@@ -350,7 +357,12 @@ void W3DView::buildCameraTransform( Matrix3D *transform )
 	targetPos.Z = 0;
 
 
-	Real factor = 1.0 - (groundLevel/sourcePos.Z );
+	// factor scales the eye offset so the camera holds a constant height above
+	// groundLevel. It turns negative once sourcePos.Z falls below groundLevel,
+	// which mirrors the eye through the look-at point and buries the camera below
+	// the terrain (the "underground, fully black" case). Clamp it positive.
+	Real factor = 1.0 - (groundLevel / sourcePos.Z);
+	if (factor < 0.01f) factor = 0.01f;
 
 	// construct a matrix to rotate around the up vector by the given angle
 	Matrix3D angleTransform( Vector3( 0.0f, 0.0f, 1.0f ), angle );
@@ -679,6 +691,11 @@ void W3DView::init( void )
 		Real camYaw    = TheGlobalData->m_cameraYaw;
 		if (camHeight <= 0.0f) camHeight = 232.0f;   // retail GameData.ini default
 		if (camPitch  <= 0.0f) camPitch  = 37.5f;    // retail GameData.ini default (degrees)
+		// Publish the validated values; every other site that needs tan(pitch) reads
+		// these rather than the raw globals.
+		m_iniCamHeight = camHeight;
+		m_iniCamPitch  = camPitch;
+		m_iniCamYaw    = camYaw;
 		m_cameraOffset.z = camHeight;
 		m_cameraOffset.y = -(m_cameraOffset.z / tan(camPitch * (PI / 180.0f)));
 		m_cameraOffset.x = -(m_cameraOffset.y * tan(camYaw   * (PI / 180.0f)));
@@ -1559,8 +1576,9 @@ void W3DView::moveAlongWaypointPath(Int milliseconds)
 		m_freezeTimeForCameraMovement = false;
 		m_angle = m_mcwpInfo.cameraAngle[m_mcwpInfo.numWaypoints];
 		m_groundLevel = m_mcwpInfo.groundHeight[m_mcwpInfo.numWaypoints];
-		m_cameraOffset.y = -(m_cameraOffset.z / tan(TheGlobalData->m_cameraPitch * (PI / 180.0)));
-		m_cameraOffset.x = -(m_cameraOffset.y * tan(TheGlobalData->m_cameraYaw * (PI / 180.0)));
+		// Validated cached values, not the raw globals: tan(0) is a singularity.
+		m_cameraOffset.y = -(m_cameraOffset.z / tan(m_iniCamPitch * (PI / 180.0)));
+		m_cameraOffset.x = -(m_cameraOffset.y * tan(m_iniCamYaw * (PI / 180.0)));
 		Coord3D pos = m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints];
 		pos.z = 0;
 		setPosition(&pos);
@@ -1608,8 +1626,9 @@ void W3DView::moveAlongWaypointPath(Int milliseconds)
 	m_timeMultiplier = REAL_TO_INT_FLOOR(0.5 + timeMultiplier);
 	m_groundLevel = m_mcwpInfo.groundHeight[m_mcwpInfo.curSegment] * factor1 +
 		m_mcwpInfo.groundHeight[m_mcwpInfo.curSegment + 1] * factor2;
-	m_cameraOffset.y = -(m_cameraOffset.z / tan(TheGlobalData->m_cameraPitch * (PI / 180.0)));
-	m_cameraOffset.x = -(m_cameraOffset.y * tan(TheGlobalData->m_cameraYaw * (PI / 180.0)));
+	// Validated cached values, not the raw globals: tan(0) is a singularity.
+	m_cameraOffset.y = -(m_cameraOffset.z / tan(m_iniCamPitch * (PI / 180.0)));
+	m_cameraOffset.x = -(m_cameraOffset.y * tan(m_iniCamYaw * (PI / 180.0)));
 
 	Coord3D start, mid, end;
 	if (factor < 0.5) {
@@ -1677,18 +1696,68 @@ void W3DView::forceRedraw( void ) { /* TODO: BGFX port */ }
 
 void W3DView::setAngle( Real angle ) { m_angle = angle; }
 void W3DView::setPitch( Real angle ) { m_pitchAngle = angle; }
-void W3DView::setAngleAndPitchToDefault( void ) { /* TODO: BGFX port */ }
+void W3DView::setAngleAndPitchToDefault( void )
+{
+	// call our base class, we are adding functionality
+	View::setAngleAndPitchToDefault();
+
+	this->m_FXPitch = 1.0;
+
+	// set the camera
+	setCameraTransform();
+}
 
 void W3DView::lookAt( const Coord3D *o )
 {
 	if (o) { m_pos.x = o->x; m_pos.y = o->y; m_pos.z = o->z; }
 }
 
-void W3DView::initHeightForMap( void ) { /* TODO: BGFX port */ }
+void W3DView::initHeightForMap( void )
+{
+	m_groundLevel = TheTerrainLogic->getGroundHeight(m_pos.x, m_pos.y);
+	const Real MAX_GROUND_LEVEL = 120.0; // jba - starting ground level cannot exceed this height.
+	if (m_groundLevel > MAX_GROUND_LEVEL) {
+		m_groundLevel = MAX_GROUND_LEVEL;
+	}
+
+	// Rebase the camera offset onto this map ground level. Without this the offset
+	// keeps its startup value while m_groundLevel tracks real terrain, and the two
+	// diverge until the height factor in buildCameraTransform goes negative.
+	m_cameraOffset.z = m_groundLevel + m_iniCamHeight;
+	m_cameraOffset.y = -(m_cameraOffset.z / tan(m_iniCamPitch * (PI / 180.0)));
+	m_cameraOffset.x = -(m_cameraOffset.y * tan(m_iniCamYaw * (PI / 180.0)));
+	m_cameraConstraintValid = false;	// possible ground level change invalidates cam constraints
+	setCameraTransform();
+}
 
 void W3DView::moveCameraTo( const Coord3D *o, Int milliseconds, Int shutter, Bool orient, Real easeIn, Real easeOut )
 {
-	if (o) { m_pos.x = o->x; m_pos.y = o->y; m_pos.z = o->z; }
+	m_mcwpInfo.waypoints[0] = *getPosition();
+	m_mcwpInfo.cameraAngle[0] = getAngle();
+	m_mcwpInfo.waySegLength[0] = 0;
+
+	m_mcwpInfo.waypoints[1] = *getPosition();
+	m_mcwpInfo.waySegLength[1] = 0;
+
+	m_mcwpInfo.waypoints[2] = *o;
+	m_mcwpInfo.waySegLength[2] = 0;
+
+	m_mcwpInfo.numWaypoints = 2;
+	if (milliseconds < 1) milliseconds = 1;
+	m_mcwpInfo.totalTimeMilliseconds = milliseconds;
+	m_mcwpInfo.shutter = 1;
+	m_mcwpInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
+	m_mcwpInfo.curSegment = 1;
+	m_mcwpInfo.curSegDistance = 0;
+	m_mcwpInfo.totalDistance = 0;
+
+	setupWaypointPath(orient);
+	if (m_mcwpInfo.totalTimeMilliseconds == 1) {
+		// do it instantly.
+		moveAlongWaypointPath(1);
+		m_doingMoveCameraOnWaypointPath = true;
+		m_CameraArrivedAtWaypointOnPathFlag = false;
+	}
 }
 
 void W3DView::moveCameraAlongWaypointPath( Waypoint *pWay, Int milliseconds, Int shutter, Bool orient, Real easeIn, Real easeOut )
@@ -1804,11 +1873,28 @@ Bool W3DView::isCameraMovementFinished( void )
 		&& !m_doingPitchCamera && !m_doingZoomCamera;
 }
 
-Bool W3DView::isCameraMovementAtWaypointAlongPath( void ) { return FALSE; }
-
-void W3DView::resetCamera( const Coord3D *location, Int frames, Real easeIn, Real easeOut )
+Bool W3DView::isCameraMovementAtWaypointAlongPath( void )
 {
-	if (location) { m_pos.x = location->x; m_pos.y = location->y; m_pos.z = location->z; }
+	Bool return_value = m_CameraArrivedAtWaypointOnPathFlag;
+	m_CameraArrivedAtWaypointOnPathFlag = false;	// cleared by the poll, per retail
+	return return_value;
+}
+
+void W3DView::resetCamera( const Coord3D *location, Int milliseconds, Real easeIn, Real easeOut )
+{
+	moveCameraTo(location, milliseconds, 0, false, easeIn, easeOut);
+	m_mcwpInfo.cameraAngle[2] = 0.0; // default angle.
+	m_angle = m_mcwpInfo.cameraAngle[0];
+
+	// terrain height + desired height offset == cameraOffset * actual zoom
+	// find best approximation of max terrain height we can see
+	Real terrainHeightMax = getHeightAroundPos(location->x, location->y);
+	Real desiredHeight = (terrainHeightMax + m_maxHeightAboveGround);
+	Real desiredZoom = desiredHeight / m_cameraOffset.z;
+
+	zoomCamera( desiredZoom, milliseconds, easeIn, easeOut );
+
+	pitchCamera( 1.0, milliseconds, easeIn, easeOut );
 }
 
 void W3DView::rotateCamera( Real rotations, Int frames, Real easeIn, Real easeOut ) { /* TODO: BGFX port */ }
@@ -1817,9 +1903,23 @@ void W3DView::rotateCameraTowardPosition( const Coord3D *pLoc, Int milliseconds,
 
 void W3DView::cameraModFreezeAngle( void ) { /* TODO: BGFX port */ }
 void W3DView::cameraModFinalZoom( Real finalZoom, Real easeIn, Real easeOut ) { /* TODO: BGFX port */ }
-void W3DView::cameraModRollingAverage( Int framesToAverage ) { /* TODO: BGFX port */ }
+void W3DView::cameraModRollingAverage( Int framesToAverage )
+{
+	if (framesToAverage < 1) framesToAverage = 1;
+	m_mcwpInfo.rollingAverageFrames = framesToAverage;
+}
 void W3DView::cameraModFinalTimeMultiplier( Int finalMultiplier ) { /* TODO: BGFX port */ }
-void W3DView::cameraModFinalPitch( Real finalPitch, Real easeIn, Real easeOut ) { /* TODO: BGFX port */ }
+void W3DView::cameraModFinalPitch( Real finalPitch, Real easeIn, Real easeOut )
+{
+	if (m_doingRotateCamera) {
+		Real time = (m_rcInfo.numFrames + m_rcInfo.numHoldFrames - m_rcInfo.curFrame)*TheW3DFrameLengthInMsec;
+		pitchCamera( finalPitch, time, time*easeIn, time*easeOut );
+	}
+	if (m_doingMoveCameraOnWaypointPath) {
+		Real time = m_mcwpInfo.totalTimeMilliseconds - m_mcwpInfo.elapsedTimeMilliseconds;
+		pitchCamera( finalPitch, time, time*easeIn, time*easeOut );
+	}
+}
 void W3DView::cameraModLookToward( Coord3D *pLoc )
 {
 	if (m_doingRotateCamera)
@@ -1919,15 +2019,111 @@ void W3DView::Add_Camera_Shake( const Coord3D &position, float radius, float dur
 
 void W3DView::setDefaultView( Real pitch, Real angle, Real maxHeight )
 {
-	m_pitchAngle = pitch;
-	m_angle = angle;
-	m_maxHeightAboveGround = maxHeight;
+	// MDC - we no longer want to rotate maps (design made all of them right to begin with)
+	//	m_defaultAngle = angle * M_PI/180.0f;
+	// NB: writes the *default* pitch, not the live pitch/angle, and scales maxHeight
+	// by the global cap instead of assigning it raw. Assigning it raw left
+	// m_maxHeightAboveGround at 1.0, since InGameUI calls this with maxHeight 1.0.
+	m_defaultPitchAngle = pitch;
+	m_maxHeightAboveGround = TheGlobalData->m_maxCameraHeight * maxHeight;
+	if (m_minHeightAboveGround > m_maxHeightAboveGround)
+		m_maxHeightAboveGround = m_minHeightAboveGround;
 }
 
-void W3DView::zoomCamera( Real finalZoom, Int milliseconds, Real easeIn, Real easeOut ) { /* TODO: BGFX port */ }
-void W3DView::pitchCamera( Real finalPitch, Int milliseconds, Real easeIn, Real easeOut ) { /* TODO: BGFX port */ }
+void W3DView::zoomCamera( Real finalZoom, Int milliseconds, Real easeIn, Real easeOut )
+{
+	if (milliseconds < 1) milliseconds = 1;
+	m_zcInfo.numFrames = milliseconds/TheW3DFrameLengthInMsec;
+	if (m_zcInfo.numFrames < 1) {
+		m_zcInfo.numFrames = 1;
+	}
+	m_zcInfo.curFrame = 0;
+	m_doingZoomCamera = TRUE;
+	m_zcInfo.startZoom = m_zoom;
+	m_zcInfo.endZoom = finalZoom;
+	m_zcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
+}
+void W3DView::pitchCamera( Real finalPitch, Int milliseconds, Real easeIn, Real easeOut )
+{
+	if (milliseconds < 1) milliseconds = 1;
+	m_pcInfo.numFrames = milliseconds/TheW3DFrameLengthInMsec;
+	if (m_pcInfo.numFrames < 1) {
+		m_pcInfo.numFrames = 1;
+	}
+	m_pcInfo.curFrame = 0;
+	m_doingPitchCamera = TRUE;
+	m_pcInfo.startPitch = m_FXPitch;
+	m_pcInfo.endPitch = finalPitch;
+	m_pcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
+}
 
-void W3DView::setHeightAboveGround( Real z ) { m_heightAboveGround = z; }
-void W3DView::setZoom( Real z ) { m_zoom = z; }
-void W3DView::setZoomToDefault( void ) { m_zoom = m_maxZoom; }
+void W3DView::setHeightAboveGround( Real z )
+{
+	m_heightAboveGround = z;
+
+	// if our zoom is limited, we will stay within a predefined distance from the terrain
+	if( m_zoomLimited )
+	{
+		if (m_heightAboveGround < m_minHeightAboveGround)
+			m_heightAboveGround = m_minHeightAboveGround;
+
+		if (m_heightAboveGround > m_maxHeightAboveGround)
+			m_heightAboveGround = m_maxHeightAboveGround;
+	}  // end if
+
+	m_doingMoveCameraOnWaypointPath = false;
+	m_CameraArrivedAtWaypointOnPathFlag = false;
+	m_doingRotateCamera = false;
+	m_doingPitchCamera = false;
+	m_doingZoomCamera = false;
+	m_doingScriptedCameraLock = false;
+	m_cameraConstraintValid = false; // recalc it.
+	setCameraTransform();
+}
+void W3DView::setZoom( Real z )
+{
+	m_zoom = z;
+
+	if (m_zoom < m_minZoom)
+		m_zoom = m_minZoom;
+
+	if (m_zoom > m_maxZoom)
+		m_zoom = m_maxZoom;
+
+	m_doingMoveCameraOnWaypointPath = false;
+	m_CameraArrivedAtWaypointOnPathFlag = false;
+	m_doingRotateCamera = false;
+	m_doingPitchCamera = false;
+	m_doingZoomCamera = false;
+	m_doingScriptedCameraLock = false;
+	m_cameraConstraintValid = false; // recalc it.
+	setCameraTransform();
+}
+void W3DView::setZoomToDefault( void )
+{
+	// default zoom has to be max, otherwise players will just zoom to max always
+
+	// terrain height + desired height offset == cameraOffset * actual zoom
+	// find best approximation of max terrain height we can see
+	Real terrainHeightMax = getHeightAroundPos(m_pos.x, m_pos.y);
+
+	Real desiredHeight = (terrainHeightMax + m_maxHeightAboveGround);
+	Real desiredZoom = desiredHeight / m_cameraOffset.z;
+
+	m_zoom = desiredZoom;
+	// This assignment is the whole point: m_heightAboveGround has no other
+	// initialiser anywhere in the tree, so without it the height servo in
+	// updateCameraMovements runs against a setpoint of 0 and drives the camera
+	// down onto the terrain.
+	m_heightAboveGround = m_maxHeightAboveGround;
+
+	m_doingMoveCameraOnWaypointPath = false;
+	m_CameraArrivedAtWaypointOnPathFlag = false;
+	m_doingRotateCamera = false;
+	m_doingPitchCamera = false;
+	m_doingZoomCamera = false;
+	m_doingScriptedCameraLock = false;
+	m_cameraConstraintValid = false; // recalc it.
+	setCameraTransform();
+}
 
