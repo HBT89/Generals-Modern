@@ -672,13 +672,67 @@ TextureClass * W3DAssetManager::Recolor_Texture_One_Time(TextureClass *texture, 
 
 	SurfaceClass::SurfaceDescription desc;
 	SurfaceClass *newsurf, *oldsurf;
-	texture->Get_Level_Description(desc);		
+
+	// ------------------------------------------------------------------------
+	// BGFX PORT: acquire the source surface FIRST and bail if it is missing.
+	//
+	// This was the top crash on level load -- 1,580 first-chance access
+	// violations in a 75-second capture, all on this path. House-colour
+	// recolouring runs for every unit created, so it fired continuously:
+	//
+	//   SurfaceClass::Get_Description         surfaceclass.cpp:254   <-- AV
+	//   SurfaceClass::Copy                    surfaceclass.cpp:477
+	//   W3DAssetManager::Recolor_Texture_One_Time              :686
+	//   ... Recolor_Texture / Recolor_Mesh / Recolor_HLOD
+	//   ScriptActions::doCreateReinforcements
+	//
+	// TextureClass::Get_Surface_Level (texture.cpp:988) returns 0 when
+	// Peek_D3D_Texture() is NULL, and its WWASSERT_PRINT is compiled out in
+	// Release. Copy() then called Get_Description on a NULL SurfaceClass* --
+	// its own WWASSERT(other) is likewise compiled out.
+	//
+	// Two faults actually hid here, which is why the guard goes before the
+	// description query rather than just before Copy: Get_Level_Description
+	// (texture.cpp:1008) null-checks internally and returns leaving `desc`
+	// UNINITIALISED, so psize and the new surface's dimensions were computed
+	// from stack garbage even when Copy did not fault.
+	//
+	// Returning NULL is an established contract for this function -- it already
+	// does so for procedural textures above, and Recolor_Texture passes the
+	// result straight through. The cost is that a unit whose texture has not
+	// been realised renders in its default colours instead of its player's,
+	// which is a cosmetic loss rather than a crash.
+	//
+	// The real fix is upstream: work out why Peek_D3D_Texture() is NULL here
+	// when Request_Foreground_Loading was just asked to load it. Textures in
+	// this port are uploaded lazily at draw time, so a texture that has never
+	// been drawn has no D3D object yet, and this path runs at object-creation
+	// time -- before any draw.
+	// TODO(bgfx-native-pass): make texture realisation explicit, then remove.
+	// ------------------------------------------------------------------------
+	oldsurf=texture->Get_Surface_Level();
+	if (oldsurf == NULL)
+	{
+		static int s_noSurfLog = 0;
+		if (s_noSurfLog < 20)
+		{
+			++s_noSurfLog;
+			FILE* lf = fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log", "a");
+			if (lf)
+			{
+				fprintf(lf, "[RECOLOR-SKIP] no surface for '%s' (D3DTexture NULL) - skipping recolor\n",
+					name ? name : "(unnamed)");
+				fclose(lf);
+			}
+		}
+		return NULL;
+	}
+
+	texture->Get_Level_Description(desc);
 
 	Int psize;
 	psize=PixelSize(desc);
 	DEBUG_ASSERTCRASH( psize == 2 || psize == 4, ("Can't Recolor Texture %s", name) );
-
-	oldsurf=texture->Get_Surface_Level();
 
 	newsurf=NEW_REF(SurfaceClass,(desc.Width,desc.Height,desc.Format));
 	newsurf->Copy(0,0,0,0,desc.Width,desc.Height,oldsurf);
