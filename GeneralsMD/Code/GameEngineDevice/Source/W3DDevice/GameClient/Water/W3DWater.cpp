@@ -2782,6 +2782,49 @@ void WaterRenderObjClass::drawRiverWater(PolygonTrigger *pTrig)
 	static Bool doWobble = true;
 
 	if (m_disableRiver) return;
+
+	// ========================================================================
+	// RIVER WATER DISABLED — this function reproducibly corrupts the stack.
+	//
+	// It is the crash that has been blocking level loads, and a debugger has now
+	// identified it exactly. Under cdb with symbols:
+	//
+	//   ExceptionAddress: GeneralsZH!WaterRenderObjClass::drawRiverWater+0xa48
+	//   ExceptionCode:    c0000005   Attempt to read from address 00000000
+	//   eax=004f0138 ebx=00000000 esp=00000000 ebp=004ff368
+	//
+	//   00a29c43  mov esp,ebp
+	//   00a29c46  mov esp,ebx     <-- ebx is 0, so esp becomes 0
+	//   00a29c48  <fault>
+	//
+	// This is NOT a null-pointer dereference, which is what it looks like from
+	// the exception code alone. The saved stack pointer held in ebx has been
+	// clobbered to zero, the epilogue restores esp from it, and the next stack
+	// access reads address 0. cdb confirms the corruption independently:
+	// "Stack overflow detected. The unwound frames are extracted from outside
+	// normal stack bounds." Adding null checks to the globals this function
+	// dereferences was tried first and did NOT help, which is consistent.
+	//
+	// Something in this function or a callee is violating the ABI or overrunning
+	// a stack buffer. Prime suspects, none yet proven: the index-buffer write
+	// loop just below (curIb comes from a lock that in this port simply returns
+	// m_data + offset, with rectangleCount derived from pTrig->getNumPoints()/2
+	// and no bounds check), and the fact that this file is one of the four never
+	// ported to BGFX -- it still drives W3DShaderManager's unported
+	// ST_SHROUD_TEXTURE path and makes raw calls on the no-op stub device.
+	//
+	// Also note the catch(...) around that write loop. With /EHa it converts an
+	// access violation into a swallowed C++ exception, which is why the
+	// top-level SetUnhandledExceptionFilter never produced a report and why this
+	// needed a debugger to find at all. Those handlers hide the faults being
+	// hunted and should go during the rebase.
+	//
+	// Disabled rather than half-fixed: no river water is a cosmetic loss, a
+	// crash on level load is not. Revisit when water is ported properly.
+	// TODO(bgfx-native-pass): port water; find the stack corruption first.
+	// ========================================================================
+	return;
+
 	m_drawingRiver = true;
 
 	//allocate 2 triangles per side with 3 indices per triangle
@@ -2988,7 +3031,14 @@ void WaterRenderObjClass::drawRiverWater(PolygonTrigger *pTrig)
 		DX8Wrapper::Set_DX8_Render_State(D3DRS_SRCBLEND, D3DBLEND_ONE );
 
 	//do second pass to apply the shroud on water plane
-	if (TheTerrainRenderObject->getShroud())
+	// BGFX PORT: the original only checked getShroud(). TheTerrainRenderObject
+	// itself and getShroudTexture() are both dereferenced unchecked, and the
+	// shroud path leads into W3DShaderManager (ST_SHROUD_TEXTURE), which is also
+	// unported -- its SP_SHROUD program slot is never assigned. Check the whole
+	// chain; see the note at the top of this function.
+	if (TheTerrainRenderObject
+		&& TheTerrainRenderObject->getShroud()
+		&& TheTerrainRenderObject->getShroud()->getShroudTexture())
 	{
 		W3DShaderManager::setTexture(0,TheTerrainRenderObject->getShroud()->getShroudTexture());
 		W3DShaderManager::setShader(W3DShaderManager::ST_SHROUD_TEXTURE, 0);
