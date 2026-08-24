@@ -2819,11 +2819,14 @@ void WaterRenderObjClass::drawRiverWater(PolygonTrigger *pTrig)
 	// needed a debugger to find at all. Those handlers hide the faults being
 	// hunted and should go during the rebase.
 	//
-	// Disabled rather than half-fixed: no river water is a cosmetic loss, a
-	// crash on level load is not. Revisit when water is ported properly.
-	// TODO(bgfx-native-pass): port water; find the stack corruption first.
+	// RE-ENABLED. The stack corruption above was NOT specific to this function.
+	// It was fast_float_trunc's inline asm clobbering EBX -- the caller's
+	// stack-realignment frame base -- via REAL_TO_INT, which this file uses at
+	// :2900, :3256 and REAL_TO_INT_FLOOR at :2740-2741. Fixed in the header
+	// (commit 59ad3fc1), which is why the `mov esp,ebx` fingerprint recorded
+	// above matched WeaponTemplate::fireWeaponTemplate exactly. Kept the
+	// analysis above because it is the evidence trail for that diagnosis.
 	// ========================================================================
-	return;
 
 	m_drawingRiver = true;
 
