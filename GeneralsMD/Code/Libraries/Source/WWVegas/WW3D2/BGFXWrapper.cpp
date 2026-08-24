@@ -80,8 +80,6 @@ static BgfxDiagCallback s_bgfxCallback;
 int DX8Wrapper_PreserveFPU = 0;
 
 // Static storage for texture handle cache (defined in RenderTypes.h)
-TexHandleCache::Entry TexHandleCache::s_cache[TexHandleCache::MAX_CACHED] = {};
-int TexHandleCache::s_count = 0;
 
 // ============================================================================
 // Unified timestamped trace log — all BGFX diagnostics in one place
@@ -1432,40 +1430,43 @@ static unsigned short UploadSurface(BGFXTexture8* tex)
     bool isCreate = (tex->m_bgfxIdx == 0xFFFF);
 
     if (isCreate) {
-        // Try to reuse a cached handle (same dimensions) to avoid handle churn.
-        unsigned short cached = TexHandleCache::Take(surf->m_width, surf->m_height);
-        bgfx::TextureHandle th;
-        if (cached != 0xFFFF) {
-            // Reuse cached handle — just update its content.
-            th.idx = cached;
-            tex->m_bgfxIdx = cached;
+        // Each BGFXTexture8 now OWNS its bgfx handle for its whole lifetime:
+        // created here, destroyed in ~BGFXTexture8, never shared or recycled.
+        //
+        // This replaces TexHandleCache, which pooled freed handles keyed on
+        // {width, height} and NOTHING ELSE. Because format was not part of the
+        // key, a freed 512x512 BC3 handle could be handed to a new 512x512
+        // BGRA8 texture, which then wrote BGRA8 bytes into a block-compressed
+        // resource through updateTexture2D. The live logs show both formats
+        // coexisting at that size ("TEX CREATE 512x512 d3dfmt=21" alongside
+        // "d3dfmt=894720068", which is 'DXT5'), so the collision was reachable,
+        // silent, and would have shown up as garbled textures rather than an
+        // error -- bgfx runs with validation compiled out in Release.
+        //
+        // Its Put() was also unsound at the boundary: once the 64-entry pool was
+        // full it destroyed the INCOMING handle rather than evicting the oldest,
+        // so the pool permanently held the first 64 handles ever freed and every
+        // later free became a destroy anyway.
+        //
+        // Owning handles cost some handle churn, which is what the cache was
+        // built to avoid ("stops font glyph handles (64x64) from being recycled
+        // by terrain"). That churn is benign; feeding one format's bytes to
+        // another format's resource is not.
+        bgfx::TextureHandle th = bgfx::createTexture2D(
+            (uint16_t)surf->m_width, (uint16_t)surf->m_height,
+            false, 1, fmt, BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE, NULL);
+        tex->m_bgfxIdx = th.idx;
+        if (bgfx::isValid(th)) {
             bgfx::updateTexture2D(th, 0, 0, 0, 0,
                 (uint16_t)surf->m_width, (uint16_t)surf->m_height, mem);
-            static int s_reuseLog = 0;
-            if (s_reuseLog < 50) {
-                Trace("TEX", "REUSE %ux%u d3dfmt=%d idx=%u (cached)",
-                    (unsigned)surf->m_width, (unsigned)surf->m_height,
-                    (int)surf->m_format, (unsigned)cached);
-                s_reuseLog++;
-            }
-        } else {
-            // No cached handle — create new mutable texture.
-            th = bgfx::createTexture2D(
-                (uint16_t)surf->m_width, (uint16_t)surf->m_height,
-                false, 1, fmt, BGFX_TEXTURE_NONE | BGFX_SAMPLER_NONE, NULL);
-            tex->m_bgfxIdx = th.idx;
-            if (bgfx::isValid(th)) {
-                bgfx::updateTexture2D(th, 0, 0, 0, 0,
-                    (uint16_t)surf->m_width, (uint16_t)surf->m_height, mem);
-            }
-            static int s_createLog = 0;
-            if (s_createLog < 200 || !bgfx::isValid(th)) {
-                Trace("TEX", "CREATE %ux%u d3dfmt=%d bgfxfmt=%d sz=%u => idx=%u valid=%d",
-                    (unsigned)surf->m_width, (unsigned)surf->m_height,
-                    (int)surf->m_format, (int)fmt, sz,
-                    (unsigned)th.idx, bgfx::isValid(th) ? 1 : 0);
-                s_createLog++;
-            }
+        }
+        static int s_createLog = 0;
+        if (s_createLog < 200 || !bgfx::isValid(th)) {
+            Trace("TEX", "CREATE %ux%u d3dfmt=%d bgfxfmt=%d sz=%u => idx=%u valid=%d",
+                (unsigned)surf->m_width, (unsigned)surf->m_height,
+                (int)surf->m_format, (int)fmt, sz,
+                (unsigned)th.idx, bgfx::isValid(th) ? 1 : 0);
+            s_createLog++;
         }
     } else {
         // Texture is mutable — just update content in place (handle stays stable).

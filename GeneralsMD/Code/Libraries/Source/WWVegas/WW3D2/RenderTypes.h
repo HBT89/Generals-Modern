@@ -1224,34 +1224,14 @@ struct BGFXSurface8 : public IDirect3DSurface8 {
 // pull a cached handle and just updateTexture2D with new content.
 // This stops font glyph handles (64x64) from being recycled by terrain.
 // ---------------------------------------------------------------------------
-struct TexHandleCache {
-    struct Entry { unsigned short idx; UINT w; UINT h; };
-    static const int MAX_CACHED = 64;
-    static Entry s_cache[MAX_CACHED];
-    static int   s_count;
-
-    static unsigned short Take(UINT w, UINT h) {
-        for (int i = 0; i < s_count; i++) {
-            if (s_cache[i].w == w && s_cache[i].h == h) {
-                unsigned short idx = s_cache[i].idx;
-                s_cache[i] = s_cache[--s_count]; // swap-remove
-                return idx;
-            }
-        }
-        return 0xFFFF; // nothing cached
-    }
-
-    static void Put(unsigned short idx, UINT w, UINT h) {
-        if (idx == 0xFFFF) return;
-        if (s_count < MAX_CACHED) {
-            s_cache[s_count++] = { idx, w, h };
-        } else {
-            // Cache full — must destroy to avoid leak
-            bgfx::TextureHandle th; th.idx = idx;
-            bgfx::destroy(th);
-        }
-    }
-};
+// TexHandleCache was REMOVED. Textures now own their bgfx handle for their whole
+// lifetime -- see the note in UploadSurface (BGFXWrapper.cpp) and ~BGFXTexture8
+// below. It pooled freed handles keyed on {width, height} with NO format field,
+// so a freed BC3 handle could be reissued to a BGRA8 texture and then written
+// with BGRA8 bytes; and once its 64-entry pool filled it destroyed the incoming
+// handle instead of evicting the oldest, so the pool froze with the first 64
+// handles ever freed. Do not reintroduce a shared handle pool without making
+// format part of the key.
 
 // BGFXTexture8 — concrete texture backed by a BGFXSurface8 level 0.
 // The game writes pixels via LockRect/UnlockRect on the mip level 0.
@@ -1265,12 +1245,11 @@ struct BGFXTexture8 : public IDirect3DTexture8 {
     BGFXTexture8(UINT w, UINT h, D3DFORMAT fmt)
         : m_surface(new BGFXSurface8(w, h, fmt)), m_bgfxIdx(0xFFFF), m_bgfxDirty(false), m_refs(1) {}
     ~BGFXTexture8() {
-        // Cache the GPU handle instead of destroying it — prevents handle
-        // recycling between font glyphs and terrain textures.
-        if (m_bgfxIdx != 0xFFFF && m_surface) {
-            TexHandleCache::Put(m_bgfxIdx, m_surface->m_width, m_surface->m_height);
-            m_bgfxIdx = 0xFFFF;
-        } else if (m_bgfxIdx != 0xFFFF) {
+        // This texture owns its GPU handle: destroy it here, unconditionally.
+        // It is never handed to another texture, so no other object can be
+        // holding it. (Previously this returned the handle to TexHandleCache,
+        // which could reissue it to a texture of a DIFFERENT format.)
+        if (m_bgfxIdx != 0xFFFF) {
             bgfx::TextureHandle th; th.idx = m_bgfxIdx;
             bgfx::destroy(th);
             m_bgfxIdx = 0xFFFF;
