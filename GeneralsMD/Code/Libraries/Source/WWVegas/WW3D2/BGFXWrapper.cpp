@@ -215,6 +215,34 @@ static unsigned*               s_RS  = nullptr; // → BGFXWrapper::RenderStates
 static IDirect3DBaseTexture8** s_TX  = nullptr; // → BGFXWrapper::Textures
 static unsigned              (*s_TSS)[32] = nullptr; // → BGFXWrapper::TextureStageStates
 
+// ---------------------------------------------------------------------------
+// The ShaderClass texturing bit: a real bug, and why a global cannot fix it.
+//
+// THE BUG IS REAL. ShaderClass carries a texturing bit (shader.h:219-220,
+// TEXTURING_DISABLE / TEXTURING_ENABLE) and Set_Shader translates blend, alpha
+// test and depth while silently DROPPING it -- `grep -c Get_Texturing
+// BGFXWrapper.cpp` returns 0. The fragment shader multiplies tex * vertexColor
+// unconditionally and render2d.cpp binds its shared texture and never releases
+// it, so a deliberately UNTEXTURED primitive samples whatever atlas page was
+// last bound and paints a full copy of it. Real callers depend on this bit:
+// HeightMap.cpp:2434, W3DScene.cpp:86, W3DWater.cpp:144, dazzle.cpp:284/292.
+//
+// THE GLOBAL FIX DOES NOT WORK -- tried and reverted. Gating the texture bind on
+// a file-static set from Set_Shader made the ENTIRE MENU DISAPPEAR: logo,
+// buttons and text all gone, leaving terrain and one white block.
+//
+// The reason is that Set_Shader does not write render_state.shader, so such a
+// flag is a last-writer-wins LATCH, not per-draw state. Some earlier draw sets
+// TEXTURING_DISABLE, the UI path never sets it back before its own draws, and
+// every UI texture collapses to the 1x1 white default.
+//
+// So the texturing bit has to travel WITH each draw, alongside the geometry and
+// the rest of the material, rather than living in a global the draw happens to
+// observe. That is precisely what the pass/material rebase is for -- the bit
+// belongs in a per-draw material key. Do not retry this as a point patch.
+// ---------------------------------------------------------------------------
+static bool                  s_shaderTexturingEnabled = true; // reserved; see above
+
 // Per-stage texture transform state (internal)
 namespace {
     constexpr int kMaxStages = 4;
@@ -1166,6 +1194,11 @@ void BGFXWrapper::Set_Gamma(float gamma, float bright, float contrast, bool cali
 bool BGFXWrapper::Validate_Device(void) { return true; }
 
 void BGFXWrapper::Set_Shader(const ShaderClass& shader) {
+    // NOTE: the ShaderClass texturing bit is deliberately NOT consulted here.
+    // Tracking it in a global was tried and reverted -- see the note on
+    // s_shaderTexturingEnabled above. It needs to travel per draw, not per state
+    // latch, which is architecture work rather than a patch.
+
     // ----------------------------------------------------------------
     // Translate ShaderClass bit-packed state into D3D render states.
     // SubmitDraw already reads these render states to configure bgfx.
@@ -1674,6 +1707,12 @@ static void SubmitDraw(const BYTE* vdata, unsigned vb_start, unsigned v_count,
     // Resolve stage-0 texture: upload if dirty, bind GPU handle (or fallback).
     // -----------------------------------------------------------------------
     bgfx::TextureHandle bindTex = s_defaultTexture;
+    // When the ShaderClass asked for TEXTURING_DISABLE, leave the 1x1 white
+    // default bound and do not resolve the latched texture at all. The fragment
+    // shader multiplies tex * vertexColor unconditionally, so a white texel makes
+    // the multiply an identity and the primitive renders as its vertex colour --
+    // which is what "texturing disabled" means. Without this, untextured UI fills
+    // sampled the last atlas page and drew the whole icon sheet.
     if (s_TX && s_TX[0]) {
         BGFXTexture8* tex = static_cast<BGFXTexture8*>(s_TX[0]);
         BGFXSurface8* surf = tex->m_surface;
@@ -1857,7 +1896,8 @@ void BGFXWrapper::Draw_Sorting_IB_VB(
     bgfx::setVertexBuffer(0, &tvb);
     bgfx::setIndexBuffer(&tib);
 
-    // Bind texture (same logic as SubmitDraw — upload if dirty, then bind)
+    // Bind texture (same logic as SubmitDraw — upload if dirty, then bind).
+    // Also honours the ShaderClass texturing bit; see s_shaderTexturingEnabled.
     bgfx::TextureHandle bindTex = s_defaultTexture;
     if (Textures[0]) {
         BGFXTexture8* tex = static_cast<BGFXTexture8*>(Textures[0]);
