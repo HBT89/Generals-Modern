@@ -200,10 +200,46 @@ namespace rts
 
 	template<> struct hash<AsciiString>
 	{
-		size_t operator()(AsciiString ast) const
-		{ 
-			std::hash<const char *> tmp;
-			return tmp((const char *) ast.str());
+		// Hash the string CONTENT, not the buffer address.
+		//
+		// This previously did `std::hash<const char*>{}((const char*)ast.str())`,
+		// which hashes the POINTER. Meanwhile equal_to<AsciiString> below compares
+		// CONTENT via AsciiString::operator==. That pairing violates the invariant
+		// every hash container requires -- equal keys must hash equally -- so any
+		// lookup whose query string did not happen to share the stored key's
+		// refcounted buffer probed the wrong bucket and returned end() on an entry
+		// that was physically present.
+		//
+		// Measured, not inferred. Two _strdup("GLAHole") buffers with identical
+		// content:  hash(a)=4173723804  hash(b)=1730860830  strcmp_equal=1.
+		// And in the game: 53 of 53 logged ObjectReskin source lookups failed,
+		// zero succeeded -- a total failure, not an intermittent one.
+		//
+		// Consequences this caused: ~960 ObjectReskin blocks skipped, so every
+		// general's variant faction (AirF_, Chem_, Boss_, the GLA sets) ended up
+		// with no object definitions; loading GLA then produced a player with zero
+		// units and zero buildings and the "no units, no buildings" defeat
+		// condition fired on frame one. It also explains units never appearing --
+		// there was nothing to create, so this was never a renderer bug.
+		//
+		// Latent all along, but exposed by the STLport -> std::unordered_map swap:
+		// std::hash<const char*> is the pointer specialisation.
+		//
+		// FNV-1a, 32-bit constants (size_t is 32-bit on this Win32 target).
+		// Case-sensitive, matching equal_to<AsciiString>'s operator==.
+		size_t operator()(const AsciiString& ast) const
+		{
+			const char* s = ast.str();
+			size_t h = 2166136261u;            // FNV offset basis
+			if (s)
+			{
+				while (*s)
+				{
+					h ^= (size_t)(unsigned char)(*s++);
+					h *= 16777619u;            // FNV prime
+				}
+			}
+			return h;
 		}
 	};
 
