@@ -322,16 +322,33 @@ void SortingRendererClass::Insert_Triangles(
 
 void Release_Refs(SortingNodeStruct* state)
 {
-	int i;
-	for (i=0;i<MAX_VERTEX_STREAMS;++i) {
-		REF_PTR_RELEASE(state->sorting_state.vertex_buffers[i]);
-	}
-	REF_PTR_RELEASE(state->sorting_state.index_buffer);
-	REF_PTR_RELEASE(state->sorting_state.material);
-	for (i=0;i<BGFXWrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
-	{
-		REF_PTR_RELEASE(state->sorting_state.Textures[i]);
-	}
+	// ------------------------------------------------------------------------
+	// The sorting node's state snapshot is NON-OWNING, so nothing is released.
+	//
+	// This body used to REF_PTR_RELEASE the vertex buffers, index buffer,
+	// material and textures. Under the BGFX port that is an over-release: the
+	// snapshot is taken by BGFXWrapper::Get_Render_State (BGFXWrapper.cpp:1302),
+	// which is `state = render_state`, and RenderStateStruct::operator=
+	// (BGFXWrapper.cpp:2300-2304) is a raw `memcpy` of the whole struct. No
+	// Add_Ref is taken anywhere on that path, and BGFXWrapper assigns the buffer
+	// pointers raw when they are set. So these are borrowed pointers.
+	//
+	// It has never been noticed because this function has never actually run in
+	// this build. Apply_Render_State faulted on a NULL material every time
+	// (683 first-chance access violations in an 85-second capture), and with no
+	// try/catch between here and the engine's catch(...) the exception unwound
+	// straight past this loop. Deleting that fault therefore ACTIVATES this code
+	// for the first time -- which is why the two changes have to land together,
+	// or a swallowed AV is traded for a use-after-free.
+	//
+	// Left as an empty function rather than deleted so the call sites and the
+	// clean-list bookkeeping around them stay untouched. When the sorting path is
+	// rebuilt natively it should own its snapshot explicitly -- take references
+	// when the snapshot is made, release them here -- rather than memcpy'ing
+	// borrowed pointers around.
+	// TODO(bgfx-native-pass): give the snapshot real ownership, then restore.
+	// ------------------------------------------------------------------------
+	(void)state;
 }
 
 static unsigned overlapping_node_count;
@@ -359,56 +376,38 @@ void SortingRendererClass::Insert_To_Sorting_Pool(SortingNodeStruct* state)
 // ----------------------------------------------------------------------------
 //static unsigned prevLight = 0xffffffff;
 
-static void Apply_Render_State(RenderStateStruct& render_state)
-{
-
-
-
-	BGFXWrapper::Set_Shader(render_state.shader);
-
-	BGFXWrapper::Set_Material(render_state.material);
-
-	for (int i=0;i<BGFXWrapper::Get_Current_Caps()->Get_Max_Textures_Per_Pass();++i) 
-	{
-		BGFXWrapper::Set_Texture(i,render_state.Textures[i]);
-	}
-
-	// TODO: Replace DX8 transform and light calls with BGFX equivalents
-	// BGFXWrapper::_Set_Transform(World, render_state.world);
-	// BGFXWrapper::_Set_Transform(View, render_state.view);
-
-
-
-  if (!render_state.material->Get_Lighting())
-    return;
-  //prevLight = render_state.lightsHash;
-
-	if (render_state.LightEnable[0]) 
-  {
-    
-    BGFXWrapper::Set_DX8_Light(0,&render_state.Lights[0]);
-		if (render_state.LightEnable[1]) 
-    {
-			BGFXWrapper::Set_DX8_Light(1,&render_state.Lights[1]);
-			if (render_state.LightEnable[2]) 
-      {
-				BGFXWrapper::Set_DX8_Light(2,&render_state.Lights[2]);
-				if (render_state.LightEnable[3]) 
-					BGFXWrapper::Set_DX8_Light(3,&render_state.Lights[3]);
-				else 
-					BGFXWrapper::Set_DX8_Light(3,NULL);
-			}
-			else 
-				BGFXWrapper::Set_DX8_Light(2,NULL);
-		}
-		else 
-			BGFXWrapper::Set_DX8_Light(1,NULL);
-	}
-	else 
-		BGFXWrapper::Set_DX8_Light(0,NULL);
-
-
-}
+// Apply_Render_State was DELETED.
+//
+// It was the single largest source of faults in the build: 683 first-chance
+// access violations in an 85-second capture, every one of them
+//
+//     GeneralsZH!Apply_Render_State+0x50    cmp byte ptr [eax+6Dh],0
+//     eax=00000000, fault address 0000006d
+//
+// which is `if (!render_state.material->Get_Lighting())` on a NULL material.
+// The material is NULL because BGFXWrapper::Set_Material is an empty body, so
+// RenderStateStruct::material is never written, and the memcpy operator= copies
+// that NULL verbatim into every sorting node's snapshot.
+//
+// Deleted rather than guarded, deliberately. A null check would have preserved
+// DX8 fixed-function emulation that has to go under the 100% BGFX direction, and
+// it would have fallen straight through into the light cascade -- which is inert
+// anyway: BGFXWrapper::Set_DX8_Light writes render_state.Lights[] and
+// CurrentDX8LightEnables, and NOTHING reads either. The Set_Shader and
+// Set_Texture calls here were also applying state for draws that do not happen:
+// the Draw_Triangles calls at both former call sites are commented out, so this
+// function configured a stub device in front of nothing.
+//
+// With it gone the fault is structurally impossible rather than suppressed, and
+// the sorting path is left doing only what it actually does today -- sorting and
+// bookkeeping. Restoring alpha-sorted rendering belongs with the native pass
+// work, where the material travels with the draw instead of being latched into a
+// global render_state and memcpy'd around.
+//
+// NOTE: deleting this ACTIVATED the Release_Refs loop below, which had never run
+// because the fault unwound past it every frame. See Release_Refs for why that
+// loop had to be neutered in the same change.
+// TODO(bgfx-native-pass): rebuild alpha-sorted submission as a real pass.
 
 // ----------------------------------------------------------------------------
 
@@ -569,8 +568,9 @@ void SortingRendererClass::Flush_Sorting_Pool()
 	unsigned node_id=tis[0].idx;
 	for (unsigned i=1;i<overlapping_polygon_count;++i) {
 		if (node_id!=tis[i].idx) {
-			SortingNodeStruct* state=overlapping_nodes[node_id];
-			Apply_Render_State(state->sorting_state);
+			// Apply_Render_State deleted -- it faulted on a NULL material and
+			// configured a stub device in front of a Draw_Triangles that is
+			// commented out below. Nothing to apply.
 
 			// DX8Wrapper::Draw_Triangles(
 			// 	start_index*3,
@@ -587,8 +587,7 @@ void SortingRendererClass::Flush_Sorting_Pool()
 
 	// Render any remaining polygons...
 	if (count_to_render) {
-		SortingNodeStruct* state=overlapping_nodes[node_id];
-		Apply_Render_State(state->sorting_state);
+		// Apply_Render_State deleted -- see the note where it used to be defined.
 
 		// DX8Wrapper::Draw_Triangles(
 		// 	start_index*3,
