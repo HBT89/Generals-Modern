@@ -1106,7 +1106,16 @@ static void renderAIDebug( void )
 // =============================================================================
 // Stub implementations for virtual methods not yet ported to BGFX
 // =============================================================================
-void W3DView::setFieldOfView( Real angle ) { /* TODO: BGFX port */ }
+void W3DView::setFieldOfView( Real angle )
+{
+	View::setFieldOfView( angle );
+
+	// Retail only refreshed the transform in debug/internal builds, since
+	// recalculating the camera every frame is wasteful.
+#if defined(_DEBUG) || defined(_INTERNAL)
+	setCameraTransform();
+#endif
+}
 
 View::WorldToScreenReturn W3DView::worldToScreenTriReturn( const Coord3D *w, ICoord2D *s )
 {
@@ -1129,8 +1138,20 @@ void W3DView::screenToWorldAtZ( const ICoord2D *s, Coord3D *w, Real z )
 	if (w) { w->x = 0; w->y = 0; w->z = z; }
 }
 
-void W3DView::setCameraLock( ObjectID id ) { /* TODO: BGFX port */ }
-void W3DView::setSnapMode( CameraLockType lockType, Real lockDist ) { /* TODO: BGFX port */ }
+void W3DView::setCameraLock( ObjectID id )
+{
+	// If we are disabling camera movements, do not lock onto the object.
+	if (TheGlobalData->m_disableCameraMovement && id != INVALID_ID) {
+		return;
+	}
+	View::setCameraLock(id);
+	m_doingScriptedCameraLock = FALSE;
+}
+void W3DView::setSnapMode( CameraLockType lockType, Real lockDist )
+{
+	View::setSnapMode(lockType, lockDist);
+	m_doingScriptedCameraLock = TRUE;
+}
 void W3DView::shake( const Coord3D *epicenter, CameraShakeType shakeType ) { /* TODO: BGFX port */ }
 
 Bool W3DView::setViewFilterMode( enum FilterModes filterMode )
@@ -1691,11 +1712,82 @@ Int W3DView::iterateDrawablesInRegion( IRegion2D *screenRegion,
 	return 0;
 }
 
-void W3DView::scrollBy( Coord2D *delta ) { /* TODO: BGFX port */ }
-void W3DView::forceRedraw( void ) { /* TODO: BGFX port */ }
+void W3DView::scrollBy( Coord2D *delta )
+{
+	// if we have not moved, ignore
+	if( delta && (delta->x != 0 || delta->y != 0) )
+	{
+		const Real SCROLL_RESOLUTION = 250.0f;
 
-void W3DView::setAngle( Real angle ) { m_angle = angle; }
-void W3DView::setPitch( Real angle ) { m_pitchAngle = angle; }
+		Vector3 world, worldStart, worldEnd;
+		Vector2 screen, start, end;
+
+		m_scrollAmount = *delta;
+
+		screen.X = delta->x;
+		screen.Y = delta->y;
+
+		start.X = getWidth();
+		start.Y = getHeight();
+		Real aspect = getWidth()/getHeight();
+		end.X = start.X + delta->x * SCROLL_RESOLUTION;
+		end.Y = start.Y + delta->y * SCROLL_RESOLUTION*aspect;
+
+		if (m_3DCamera == NULL) return;
+		m_3DCamera->Device_To_World_Space( start, &worldStart );
+		m_3DCamera->Device_To_World_Space( end, &worldEnd );
+
+		world.X = worldEnd.X - worldStart.X;
+		world.Y = worldEnd.Y - worldStart.Y;
+		world.Z = worldEnd.Z - worldStart.Z;
+
+		// scroll by delta
+		Coord3D pos = *getPosition();
+		pos.x += world.X;
+		pos.y += world.Y;
+		// no change to z
+		setPosition(&pos);
+
+		m_doingRotateCamera = false;
+		// set new camera position
+		setCameraTransform();
+	}  // end if
+}  // end scrollBy
+void W3DView::forceRedraw( void )
+{
+	// set the camera
+	setCameraTransform();
+}
+
+void W3DView::setAngle( Real angle )
+{
+	// Normalize to +-PI.
+	normAngle(angle);
+	// call our base class, we are adding functionality
+	View::setAngle( angle );
+
+	m_doingMoveCameraOnWaypointPath = false;
+	m_CameraArrivedAtWaypointOnPathFlag = false;
+	m_doingRotateCamera = false;
+	m_doingPitchCamera = false;
+	m_doingZoomCamera = false;
+	m_doingScriptedCameraLock = false;
+	// set the camera
+	setCameraTransform();
+}
+void W3DView::setPitch( Real angle )
+{
+	// call our base class, we are extending functionality
+	View::setPitch( angle );
+
+	m_doingMoveCameraOnWaypointPath = false;
+	m_doingRotateCamera = false;
+	m_doingPitchCamera = false;
+	m_doingZoomCamera = false;
+	m_doingScriptedCameraLock = false;
+	// set the camera
+	setCameraTransform();
+}
 void W3DView::setAngleAndPitchToDefault( void )
 {
 	// call our base class, we are adding functionality
@@ -1897,18 +1989,158 @@ void W3DView::resetCamera( const Coord3D *location, Int milliseconds, Real easeI
 	pitchCamera( 1.0, milliseconds, easeIn, easeOut );
 }
 
-void W3DView::rotateCamera( Real rotations, Int frames, Real easeIn, Real easeOut ) { /* TODO: BGFX port */ }
-void W3DView::rotateCameraTowardObject( ObjectID id, Int milliseconds, Int holdMilliseconds, Real easeIn, Real easeOut ) { /* TODO: BGFX port */ }
-void W3DView::rotateCameraTowardPosition( const Coord3D *pLoc, Int milliseconds, Real easeIn, Real easeOut, Bool reverseRotation ) { /* TODO: BGFX port */ }
+void W3DView::rotateCamera( Real rotations, Int milliseconds, Real easeIn, Real easeOut )
+{
+	m_rcInfo.numHoldFrames = 0;
+	m_rcInfo.trackObject = FALSE;
 
-void W3DView::cameraModFreezeAngle( void ) { /* TODO: BGFX port */ }
-void W3DView::cameraModFinalZoom( Real finalZoom, Real easeIn, Real easeOut ) { /* TODO: BGFX port */ }
+	if (milliseconds < 1) milliseconds = 1;
+	m_rcInfo.numFrames = milliseconds/TheW3DFrameLengthInMsec;
+	if (m_rcInfo.numFrames < 1) {
+		m_rcInfo.numFrames = 1;
+	}
+	m_rcInfo.curFrame = 0;
+	m_doingRotateCamera = true;
+	m_rcInfo.angle.startAngle = m_angle;
+	m_rcInfo.angle.endAngle = m_angle + 2*PI*rotations;
+	m_rcInfo.startTimeMultiplier = m_timeMultiplier;
+	m_rcInfo.endTimeMultiplier = m_timeMultiplier;
+	m_rcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
+
+	m_doingMoveCameraOnWaypointPath = false;
+	m_CameraArrivedAtWaypointOnPathFlag = false;
+}
+void W3DView::rotateCameraTowardObject( ObjectID id, Int milliseconds, Int holdMilliseconds, Real easeIn, Real easeOut )
+{
+	m_rcInfo.trackObject = TRUE;
+	if (holdMilliseconds < 1) holdMilliseconds = 0;
+	m_rcInfo.numHoldFrames = holdMilliseconds/TheW3DFrameLengthInMsec;
+	if (m_rcInfo.numHoldFrames < 1) {
+		m_rcInfo.numHoldFrames = 0;
+	}
+
+	if (milliseconds < 1) milliseconds = 1;
+	m_rcInfo.numFrames = milliseconds/TheW3DFrameLengthInMsec;
+	if (m_rcInfo.numFrames < 1) {
+		m_rcInfo.numFrames = 1;
+	}
+	m_rcInfo.curFrame = 0;
+	m_doingRotateCamera = true;
+	m_rcInfo.target.targetObjectID = id;
+	m_rcInfo.startTimeMultiplier = m_timeMultiplier;
+	m_rcInfo.endTimeMultiplier = m_timeMultiplier;
+	m_rcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
+
+	m_doingMoveCameraOnWaypointPath = false;
+	m_CameraArrivedAtWaypointOnPathFlag = false;
+}
+void W3DView::rotateCameraTowardPosition( const Coord3D *pLoc, Int milliseconds, Real easeIn, Real easeOut, Bool reverseRotation )
+{
+	m_rcInfo.numHoldFrames = 0;
+	m_rcInfo.trackObject = FALSE;
+
+	if (milliseconds < 1) milliseconds = 1;
+	m_rcInfo.numFrames = milliseconds/TheW3DFrameLengthInMsec;
+	if (m_rcInfo.numFrames < 1) {
+		m_rcInfo.numFrames = 1;
+	}
+	Coord3D curPos = *getPosition();
+	Vector2 dir(pLoc->x-curPos.x, pLoc->y-curPos.y);
+	const Real dirLength = dir.Length();
+	if (dirLength < 0.1f) return;
+	Real angle = WWMath::Acos(dir.X/dirLength);
+	if (dir.Y < 0.0f) {
+		angle = -angle;
+	}
+	// Default camera is rotated 90 degrees, so match.
+	angle -= PI/2;
+	normAngle(angle);
+
+	if (reverseRotation) {
+		if (m_angle < angle) {
+			angle -= 2.0f*WWMATH_PI;
+		} else {
+			angle += 2.0f*WWMATH_PI;
+		}
+	}
+
+	m_rcInfo.curFrame = 0;
+	m_doingRotateCamera = true;
+	m_rcInfo.angle.startAngle = m_angle;
+	m_rcInfo.angle.endAngle = angle;
+	m_rcInfo.startTimeMultiplier = m_timeMultiplier;
+	m_rcInfo.endTimeMultiplier = m_timeMultiplier;
+	m_rcInfo.ease.setEaseTimes(easeIn/milliseconds, easeOut/milliseconds);
+
+	m_doingMoveCameraOnWaypointPath = false;
+	m_CameraArrivedAtWaypointOnPathFlag = false;
+}
+
+void W3DView::cameraModFreezeAngle( void )
+{
+	if (m_doingRotateCamera) {
+		if (m_rcInfo.trackObject) {
+			m_rcInfo.target.targetObjectID = INVALID_ID;
+		} else {
+			m_rcInfo.angle.startAngle = m_rcInfo.angle.endAngle = m_angle; // Silly, but consistent.
+		}
+	}
+	if (m_doingMoveCameraOnWaypointPath) {
+		Int i;
+		for (i = 0; i < m_mcwpInfo.numWaypoints; i++) {
+			m_mcwpInfo.cameraAngle[i+1] = m_mcwpInfo.cameraAngle[0];
+		}
+	}
+}
+void W3DView::cameraModFinalZoom( Real finalZoom, Real easeIn, Real easeOut )
+{
+	if (m_doingRotateCamera)
+	{
+		Real terrainHeightMax = getHeightAroundPos(m_pos.x, m_pos.y);
+		Real maxHeight = (terrainHeightMax + m_maxHeightAboveGround);
+		Real maxZoom = maxHeight / m_cameraOffset.z;
+
+		Real time = (m_rcInfo.numFrames + m_rcInfo.numHoldFrames - m_rcInfo.curFrame)*TheW3DFrameLengthInMsec;
+		zoomCamera( finalZoom*maxZoom, time, time*easeIn, time*easeOut );
+	}
+	if (m_doingMoveCameraOnWaypointPath)
+	{
+		Coord3D pos = m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints];
+		Real terrainHeightMax = getHeightAroundPos(pos.x, pos.y);
+		Real maxHeight = (terrainHeightMax + m_maxHeightAboveGround);
+		Real maxZoom = maxHeight / m_cameraOffset.z;
+
+		Real time = m_mcwpInfo.totalTimeMilliseconds - m_mcwpInfo.elapsedTimeMilliseconds;
+		zoomCamera( finalZoom*maxZoom, time, time*easeIn, time*easeOut );
+	}
+}
 void W3DView::cameraModRollingAverage( Int framesToAverage )
 {
 	if (framesToAverage < 1) framesToAverage = 1;
 	m_mcwpInfo.rollingAverageFrames = framesToAverage;
 }
-void W3DView::cameraModFinalTimeMultiplier( Int finalMultiplier ) { /* TODO: BGFX port */ }
+void W3DView::cameraModFinalTimeMultiplier( Int finalMultiplier )
+{
+	if (m_doingZoomCamera)
+		m_zcInfo.endTimeMultiplier = finalMultiplier;
+	if (m_doingPitchCamera)
+		m_pcInfo.endTimeMultiplier = finalMultiplier;
+	if (m_doingRotateCamera) {
+		m_rcInfo.endTimeMultiplier = finalMultiplier;
+	} else if (m_doingMoveCameraOnWaypointPath) {
+		Int i;
+		Real curDistance = 0;
+		for (i = 0; i < m_mcwpInfo.numWaypoints; i++) {
+			curDistance += m_mcwpInfo.waySegLength[i];
+			Real factor2 = curDistance / m_mcwpInfo.totalDistance;
+			Real factor1 = 1.0-factor2;
+			m_mcwpInfo.timeMultiplier[i+1] = REAL_TO_INT_FLOOR(0.5+m_mcwpInfo.timeMultiplier[i+1]*factor1 + finalMultiplier*factor2);
+		}
+	} else {
+		// If we are not doing a camera movement, just set the time.
+		m_timeMultiplier = finalMultiplier;
+	}
+}
 void W3DView::cameraModFinalPitch( Real finalPitch, Real easeIn, Real easeOut )
 {
 	if (m_doingRotateCamera) {
@@ -2008,7 +2240,25 @@ void W3DView::cameraModFinalLookToward( Coord3D *pLoc )
 		}
 	}
 }
-void W3DView::cameraModFinalMoveTo( Coord3D *pLoc ) { /* TODO: BGFX port */ }
+void W3DView::cameraModFinalMoveTo( Coord3D *pLoc )
+{
+	if (m_doingRotateCamera) {
+		return; // Does not apply to rotate about a point.
+	}
+	if (m_doingMoveCameraOnWaypointPath) {
+		Int i;
+		Coord3D start, delta;
+		start = m_mcwpInfo.waypoints[m_mcwpInfo.numWaypoints];
+		delta.x = pLoc->x - start.x;
+		delta.y = pLoc->y - start.y;
+		for (i = 2; i <= m_mcwpInfo.numWaypoints; i++) {
+			Coord3D result = m_mcwpInfo.waypoints[i];
+			result.x += delta.x;
+			result.y += delta.y;
+			m_mcwpInfo.waypoints[i] = result;
+		}
+	}
+}
 
 void W3DView::cameraEnableSlaveMode( const AsciiString &thingtemplateName, const AsciiString &boneName ) { /* TODO: BGFX port */ }
 void W3DView::cameraDisableSlaveMode( void ) { /* TODO: BGFX port */ }
