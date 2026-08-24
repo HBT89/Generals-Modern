@@ -68,6 +68,45 @@
 
 #include <rts/profile.h>
 #include <stdio.h>
+#include "Common/StackDump.h"
+
+// ---------------------------------------------------------------------------
+// Top-level unhandled-exception filter.
+//
+// Writes the crash report next to the exe as GeneralsZH_crash.txt. Kept
+// deliberately dumb -- plain fopen/fprintf, no allocation of its own beyond
+// what DumpExceptionInfo already does -- because the process is already in an
+// undefined state by the time this runs.
+//
+// DumpExceptionInfo populates g_LastErrorDump with the exception class, the
+// faulting access address and direction, every register (Eip included), and a
+// walked stack. Installed from WinMain; see the note there for why
+// _set_se_translator alone was not enough.
+// ---------------------------------------------------------------------------
+static LONG WINAPI GeneralsUnhandledExceptionFilter( EXCEPTION_POINTERS *e_info )
+{
+	static bool s_alreadyDumping = false;
+	if ( s_alreadyDumping ) return EXCEPTION_EXECUTE_HANDLER; // fault inside the dumper
+	s_alreadyDumping = true;
+
+	if ( e_info && e_info->ExceptionRecord )
+	{
+		// Fills g_LastErrorDump with registers, access address and a stack walk.
+		DumpExceptionInfo( e_info->ExceptionRecord->ExceptionCode, e_info );
+
+		FILE *f = fopen( "GeneralsZH_crash.txt", "w" );
+		if ( f )
+		{
+			fprintf( f, "=== GeneralsZH unhandled exception ===\n" );
+			fprintf( f, "code    : 0x%08X\n", (unsigned)e_info->ExceptionRecord->ExceptionCode );
+			fprintf( f, "address : 0x%08X\n", (unsigned)(uintptr_t)e_info->ExceptionRecord->ExceptionAddress );
+			fprintf( f, "\n%s\n", g_LastErrorDump.str() );
+			fflush( f );
+			fclose( f );
+		}
+	}
+	return EXCEPTION_EXECUTE_HANDLER;
+}
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -905,6 +944,26 @@ Int APIENTRY WinMain( HINSTANCE hInstance, HINSTANCE hPrevInstance,
 	try {
 
 		_set_se_translator( DumpExceptionInfo ); // Hook that allows stack trace.
+
+		// --------------------------------------------------------------------
+		// Top-level crash handler.
+		//
+		// _set_se_translator above only converts an SEH fault into a C++
+		// exception for code inside a try block; an access violation that
+		// nobody catches simply terminates the process with no output at all.
+		// That is how this port has been behaving: every 0xC0000005 died
+		// silently, and faults had to be diagnosed by reading trace logs and
+		// guessing, which produced two wrong root causes.
+		//
+		// DumpExceptionInfo (GameEngine/Source/Common/System/StackDump.cpp) is
+		// a full dumper -- it reads the faulting CONTEXT, reports the access
+		// address and whether it was a read or a write, dumps every register
+		// including Eip, and walks the stack. Its DOUBLE_DEBUG macro concats
+		// into g_LastErrorDump even when DEBUG_LOG is compiled out in Release,
+		// so the text is captured; it just never reached disk. This filter is
+		// the missing flush.
+		// --------------------------------------------------------------------
+		SetUnhandledExceptionFilter( GeneralsUnhandledExceptionFilter );
 		//
 		// there is something about checkin in and out the .dsp and .dsw files 
 		// that blows the working directory information away on each of the 

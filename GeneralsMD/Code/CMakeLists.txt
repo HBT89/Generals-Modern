@@ -34,6 +34,22 @@ if(MSVC)
         /DNOMINMAX
         /DDIRECTINPUT_VERSION=0x0800
         # /D_INTERNAL  # Disabled — causes static initializer crash (investigate later)
+        # Enable the REAL stack-trace / exception-dump implementation.
+        #
+        # GameEngine/Source/Common/System/StackDump.cpp wraps its entire body in
+        #   #if defined(_DEBUG) || defined(_INTERNAL) || defined(IG_DEBUG_STACKTRACE)
+        # so in a Release build with _INTERNAL disabled (above) all of
+        # FillStackAddresses / StackDumpFromAddresses / GetFunctionDetails /
+        # DumpExceptionInfo vanished, and Main/linker_stubs.cpp supplied no-op
+        # replacements. The result was that every crash produced no stack trace at
+        # all, which made three separate faults this week diagnosable only by log
+        # archaeology.
+        #
+        # IG_DEBUG_STACKTRACE is the narrow switch for exactly this block, so it
+        # avoids whatever static-initializer problem _INTERNAL causes. Dbghelp is
+        # pulled in by a #pragma comment(linker) inside StackDump.cpp itself, and
+        # imagehlp is already linked below.
+        /DIG_DEBUG_STACKTRACE
     )
     # Disable specific warnings that flood the build
     add_compile_options(
@@ -45,6 +61,22 @@ if(MSVC)
     add_compile_options(/EHa)
     # Linker flags for inline assembly compatibility
     add_link_options(/SAFESEH:NO)
+
+    # Debug symbols in Release.
+    #
+    # Release was building with no PDB at all, so nothing could symbolise a
+    # crash: Windows Error Reporting could only say "fault at RVA 0x29c20 in
+    # GeneralsZH.exe" and neither cdb nor a map lookup could turn that into a
+    # function. Combined with the gutted DumpExceptionInfo, every access
+    # violation this week was diagnosed by guessing.
+    #
+    # /Zi emits debug info, /DEBUG writes the PDB, and /OPT:REF,/OPT:ICF restore
+    # the dead-code and identical-COMDAT folding that /DEBUG otherwise disables
+    # -- so this costs disk, not speed. /MAP additionally gives a plain-text
+    # RVA-to-symbol table, which is what lets a WER fault offset be resolved
+    # without a debugger attached.
+    add_compile_options(/Zi)
+    add_link_options(/DEBUG /MAP /OPT:REF /OPT:ICF)
 endif()
 
 # =============================================================================

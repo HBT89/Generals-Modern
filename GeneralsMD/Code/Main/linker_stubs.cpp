@@ -7,41 +7,32 @@
 // AsciiString is available via forced PreRTS.h include
 #include "Common/AsciiString.h"
 
-// g_LastErrorDump — global referenced by Debug.obj
-AsciiString g_LastErrorDump;
-
 // GameSpy QR2 hosting status — declared extern "C" in source
 extern "C" int getQR2HostingStatus(void) { return 0; }
 
-// Stack dump functions — not critical for initial launch
-void FillStackAddresses(void **addresses, unsigned int numAddresses, unsigned int skipFrames)
-{
-    for (unsigned int i = 0; i < numAddresses; ++i)
-        addresses[i] = nullptr;
-}
-
-void StackDumpFromAddresses(void **addresses, unsigned int numAddresses, void (*callback)(const char *))
-{
-    if (callback)
-        callback("(stack dump not available in this build)\n");
-}
-
-// Debug crash handler — SEH translator function
-void DumpExceptionInfo(unsigned int exceptionCode, struct _EXCEPTION_POINTERS *exceptionInfo)
-{
-    (void)exceptionCode;
-    (void)exceptionInfo;
-}
-
-// Debug function details — used in WinMain for stack traces
-void GetFunctionDetails(void *addr, char *name, char *file, unsigned int *line, unsigned int *address)
-{
-    (void)addr;
-    if (name) name[0] = '\0';
-    if (file) file[0] = '\0';
-    if (line) *line = 0;
-    if (address) *address = 0;
-}
+// ---------------------------------------------------------------------------
+// The crash-reporting stubs that used to live here have been REMOVED.
+//
+// This file previously supplied no-op replacements for FillStackAddresses,
+// StackDumpFromAddresses, GetFunctionDetails and DumpExceptionInfo — plus the
+// g_LastErrorDump global — because GameEngine/Source/Common/System/StackDump.cpp
+// compiles its real implementations only under
+//   #if defined(_DEBUG) || defined(_INTERNAL) || defined(IG_DEBUG_STACKTRACE)
+// and none of those were defined in this Release build.
+//
+// The consequence was severe and quiet: DumpExceptionInfo was an empty function
+// and FillStackAddresses nulled every frame, so an access violation produced no
+// stack trace whatsoever. Multiple faults this week — including a reproducible
+// level-load crash — had to be diagnosed by reading trace logs and guessing,
+// which produced two wrong root causes.
+//
+// CMakeLists.txt now defines IG_DEBUG_STACKTRACE, so StackDump.cpp provides the
+// real versions and these stubs would be duplicate symbols. It also defines
+// g_LastErrorDump (StackDump.cpp:453), so that is gone from here too.
+//
+// Do not re-add these. If a link error for one of them appears, the correct fix
+// is to work out why StackDump.cpp is no longer being compiled.
+// ---------------------------------------------------------------------------
 
 // DX8Wrapper_IsWindowed — referenced by Debug.obj (ReleaseCrash)
 bool DX8Wrapper_IsWindowed = true;
