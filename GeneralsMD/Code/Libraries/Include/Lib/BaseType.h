@@ -195,14 +195,55 @@ __forceinline long fast_float2long_round(float f)
 // code courtesy of Martin Hoffesommer (grin)
 __forceinline float fast_float_trunc(float f)
 {
+  // A zero held in MEMORY, not in a register.
+  //
+  // This block used to do `xor ebx,ebx` and then `cmovc eax,ebx`, clobbering EBX
+  // without preserving it. Because this function is __forceinline, that clobber
+  // lands in the CALLER's frame -- and MSVC saves EBX in the enclosing prologue,
+  // which is useless when the same compiler has elected EBX as that function's
+  // STACK-REALIGNMENT FRAME BASE:
+  //
+  //     push ebx ; mov ebx,esp ; and esp,-16 ; ...   ; mov esp,ebx ; pop ebx
+  //
+  // The epilogue needs the LIVE value, so zeroing EBX mid-body sets esp = 0 on
+  // the way out. Measured, with symbols, under cdb:
+  //
+  //     GeneralsZH!WeaponTemplate::fireWeaponTemplate+0x759   pop ebx
+  //     esp=00000000 ebx=00000000   "Stack overflow detected"
+  //
+  // An esp=0 fault is UNCATCHABLE -- the kernel cannot write the exception
+  // record to the user stack -- so this was the terminating crash, not one of
+  // the survivable ones the engine's catch(...) handlers swallow.
+  //
+  // EBX is also the argument base in such functions, so the same clobber has a
+  // second face: a plain-looking argument dereference through a zeroed base,
+  // faulting on a small address like 0x00000008 long before any epilogue.
+  //
+  // Four functions in this build compile with an EBX realignment base and inline
+  // this: W3DTreeBuffer::doLighting, WeaponTemplate::fireWeaponTemplate,
+  // BridgeBehavior::createScaffolding, AIPlayer::computeSuperweaponTarget. It is
+  // also the fingerprint recorded in W3DWater.cpp's drawRiverWater note
+  // (commit 992d4276) -- same `mov esp,ebx` with ebx=0 -- so this one edit very
+  // likely closes that too.
+  //
+  // Fixed with a memory operand rather than a spare register: cmovc takes r/m32,
+  // this needs no second GP register, and the shr/sub/cmov/sar/and arithmetic is
+  // byte-identical, so REAL_TO_* results -- and therefore replay and multiplayer
+  // CRCs -- do not move. The static-in-function idiom matches fast_float_floor
+  // and fast_float_ceil below.
+  //
+  // Deliberately NOT `xor edx,edx`: EDX is live across this block in
+  // fireWeaponTemplate (it carries damagePos), so a miss in MSVC's clobber
+  // accounting would silently corrupt a pointer in a lockstep-critical function
+  // -- strictly worse than a crash.
+  static const unsigned s_zero = 0;
   _asm
   {
     mov ecx,[f]
     shr ecx,23
     mov eax,0xff800000
-    xor ebx,ebx
     sub cl,127
-    cmovc eax,ebx
+    cmovc eax,dword ptr [s_zero]
     sar eax,cl
     and [f],eax
   }
