@@ -2,3 +2,6 @@
 *
 # Except this file
 !.gitignore
+# Except our stand-in for the stripped SDK header: its macros expand to nothing, so
+# it holds no SafeDisc code. Real SDK files dropped here stay ignored.
+!CdaPfn.h

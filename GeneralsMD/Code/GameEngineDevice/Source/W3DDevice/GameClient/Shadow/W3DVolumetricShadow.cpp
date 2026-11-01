@@ -701,7 +701,10 @@ Int W3DShadowGeometry::initFromHLOD(RenderObjClass *robj)
 		}
 
 		
-#if (1) //(cnc3)(gth) Support for ShaderMeshes!
+// Off: wwshade is not built (its bump shaders need NVASM-generated headers), and only
+// wwshade's ShdMeshClass reports CLASSID_SHDMESH, so this test could never pass. As in
+// Zero Hour Reforged's W3DVolumetricShadow.cpp. Turn it back to 1 if wwshade ever builds.
+#if (0) //(cnc3)(gth) Support for ShaderMeshes!
 // I'm coding this as a completely independent block rather than re-factoring the code above
 // because it will probably save us pain in future merges.
 		if (hlod->Peek_Lod_Model(top,i) && hlod->Peek_Lod_Model(top,i)->Class_ID() == RenderObjClass::CLASSID_SHDMESH)

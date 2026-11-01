@@ -187,6 +187,7 @@ target_include_directories(compression PUBLIC
     ${LIBS_SOURCE}/Compression
     ${LIBS_SOURCE}/Compression/EAC
     ${LIBS_SOURCE}/Compression/LZHCompress
+    ${LIBS_SOURCE}/Compression/LZHCompress/CompLibHeader
     ${COMMON_INCLUDES}
 )
 target_compile_definitions(compression PRIVATE Z_PREFIX)
@@ -215,12 +216,15 @@ target_link_libraries(ww3d2 PUBLIC wwlib wwmath wwaudio wwdebug bgfx bx bimg d3d
 set_target_properties(ww3d2 PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED ON)
 
 # =============================================================================
-# Library: wwshade
+# wwshade: headers only, not built
 # =============================================================================
-file(GLOB WWSHADE_SRC ${LIBS_VEGAS}/wwshade/*.cpp)
-add_library(wwshade STATIC ${WWSHADE_SRC})
-target_include_directories(wwshade PUBLIC ${COMMON_INCLUDES})
-target_link_libraries(wwshade PUBLIC ww3d2 wwlib)
+# Its shd*bump* sources include *_code.h headers that NVASM generated, and NVASM
+# no longer exists, so they cannot compile from a fresh clone. Nothing needs them:
+# the engine only creates shader meshes under USE_WWSHADE (WW3D2/shdlib.h), which
+# is never defined, and the one consumer of wwshade code, the shader-mesh branch
+# in W3DVolumetricShadow.cpp, is compiled out to match. Approach taken from Zero
+# Hour Reforged (github.com/olcayseygan/CnCGeneralsZH-Reforged), whose
+# CMakeLists.txt leaves wwshade header-only for the same reason.
 
 # =============================================================================
 # Library: bx (BX base library - must be built before bgfx)
@@ -283,17 +287,20 @@ target_compile_definitions(bgfx PRIVATE
 # =============================================================================
 # Zlib (external)
 # =============================================================================
-if(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/Source/Zlib)
-    file(GLOB ZLIB_SRC ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/Source/Zlib/*.c)
-    add_library(zlib STATIC ${ZLIB_SRC})
-    target_include_directories(zlib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Libraries/Source/Zlib)
-    target_compile_definitions(zlib PRIVATE Z_PREFIX)
-elseif(EXISTS "c:/TheLab/zlib-extract/zlib-1.3.1")
-    file(GLOB ZLIB_SRC "c:/TheLab/zlib-extract/zlib-1.3.1/*.c")
-    add_library(zlib STATIC ${ZLIB_SRC})
-    target_include_directories(zlib PUBLIC "c:/TheLab/zlib-extract/zlib-1.3.1")
-    target_compile_definitions(zlib PRIVATE Z_PREFIX)
-endif()
+# zlib 1.3.1, committed at the repository root (zlib-extract/zlib-1.3.1). This used
+# to fall back to a hard-coded c:/TheLab path, which only one machine had. EA shipped
+# 1.1.4; the calls the engine makes (z_compress2, z_uncompress, under Z_PREFIX) are
+# the same. The sources are listed rather than globbed so contrib/ and test/ stay out.
+set(ZLIB_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../zlib-extract/zlib-1.3.1)
+add_library(zlib STATIC
+    ${ZLIB_DIR}/adler32.c ${ZLIB_DIR}/compress.c ${ZLIB_DIR}/crc32.c ${ZLIB_DIR}/deflate.c
+    ${ZLIB_DIR}/gzclose.c ${ZLIB_DIR}/gzlib.c ${ZLIB_DIR}/gzread.c ${ZLIB_DIR}/gzwrite.c
+    ${ZLIB_DIR}/infback.c ${ZLIB_DIR}/inffast.c ${ZLIB_DIR}/inflate.c ${ZLIB_DIR}/inftrees.c
+    ${ZLIB_DIR}/trees.c ${ZLIB_DIR}/uncompr.c ${ZLIB_DIR}/zutil.c
+)
+target_include_directories(zlib PUBLIC ${ZLIB_DIR})
+target_compile_definitions(zlib PUBLIC Z_PREFIX)
+target_link_libraries(compression PUBLIC zlib)
 
 # =============================================================================
 # Stub libraries for proprietary dependencies
@@ -339,7 +346,7 @@ target_include_directories(GameEngine PUBLIC
     ${DX8_SDK_INCLUDE}
 )
 target_link_libraries(GameEngine PUBLIC
-    ww3d2 wwshade wwlib wwmath wwaudio wwdebug wwsaveload wwutil wwdownload compression
+    ww3d2 wwlib wwmath wwaudio wwdebug wwsaveload wwutil wwdownload compression
 )
 # GameEngine uses forced include of precompiled header
 target_compile_options(GameEngine PRIVATE /FI"PreRTS.h")
@@ -357,7 +364,7 @@ target_include_directories(GameEngineDevice PUBLIC
     ${DX8_SDK_INCLUDE}
     ${CMAKE_CURRENT_SOURCE_DIR}/Main
 )
-target_link_libraries(GameEngineDevice PUBLIC GameEngine ww3d2 wwshade)
+target_link_libraries(GameEngineDevice PUBLIC GameEngine ww3d2)
 target_compile_options(GameEngineDevice PRIVATE /FI"PreRTS.h")
 
 # =============================================================================
@@ -379,7 +386,6 @@ target_link_libraries(GeneralsZH PRIVATE
     GameEngineDevice
     GameEngine
     ww3d2
-    wwshade
     wwlib
     wwmath
     wwaudio
@@ -398,11 +404,6 @@ target_link_libraries(GeneralsZH PRIVATE
     gamespystats
     profile
 )
-
-# Conditionally link zlib
-if(TARGET zlib)
-    target_link_libraries(GeneralsZH PRIVATE zlib)
-endif()
 
 # Windows system libraries
 target_link_libraries(GeneralsZH PRIVATE

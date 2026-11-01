@@ -28,7 +28,7 @@
 #include "Compression.h"
 #include "LZHCompress/NoxCompress.h"
 extern "C" {
-#include "ZLib/zlib.h"
+#include "zlib.h"  // zlib-extract/zlib-1.3.1, on the include path through the zlib target
 }
 #include "EAC/codex.h"
 #include "EAC/btreecodex.h"
