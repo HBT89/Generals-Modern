@@ -102,9 +102,7 @@
 #include "GameClient/GUICallbacks.h"
 
 #include "GameNetwork/NetworkInterface.h"
-#include "GameNetwork/WOLBrowser/WebBrowser.h"
 #include "GameNetwork/LANAPI.h"
-#include "GameNetwork/GameSpy/GameResultsThread.h"
 
 #include "Common/Version.h"
 
@@ -168,10 +166,25 @@ void initSubsystem(SUBSYSTEM*& sysref, AsciiString name, SUBSYSTEM* sys, Xfer *p
 }
 
 //-------------------------------------------------------------------------------------------------
-extern HINSTANCE ApplicationHInstance;  ///< our application instance
-#if __has_include(<atlbase.h>)
-extern CComModule _Module;
-#endif
+// Initialises OLE/COM for the whole process. This used to live in the WOL web browser, removed with online play; kept so the process starts exactly as before.
+/**
+	* OLEInitializer class - Init and shutdown OLE & COM as a global
+	* object.  Scary, nasty stuff, COM.  /me shivers.
+	*/
+class OLEInitializer
+{
+public:
+	OLEInitializer()
+	{
+		// Initialize this instance
+		OleInitialize(NULL);
+	 }
+	~OLEInitializer()
+	{
+		OleUninitialize(); 
+	}
+};
+OLEInitializer g_OLEInitializer;
 
 //-------------------------------------------------------------------------------------------------
 static void updateTGAtoDDS();
@@ -191,10 +204,6 @@ GameEngine::GameEngine( void )
 	m_maxFPS = 0;
 	m_quitting = FALSE;
 	m_isActive = FALSE;
-
-#if __has_include(<atlbase.h>)
-	_Module.Init(NULL, ApplicationHInstance);
-#endif
 }
 
 //-------------------------------------------------------------------------------------------------
@@ -208,8 +217,6 @@ GameEngine::~GameEngine()
 
 //	delete TheShell;
 //	TheShell = NULL;
-
-	TheGameResultsQueue->endThreads();
 
 	TheSubsystemList->shutdownAll();
 	delete TheSubsystemList;
@@ -231,10 +238,6 @@ GameEngine::~GameEngine()
 		delete TheGameLODManager;
 
 	Drawable::killStaticImages();
-
-#if __has_include(<atlbase.h>)
-	_Module.Term();
-#endif
 
 #ifdef PERF_TIMERS
 	PerfGather::termPerfDump();
@@ -581,17 +584,13 @@ void GameEngine::init( int argc, char *argv[] )
 
 
 		initSubsystem(TheActionManager,"TheActionManager", MSGNEW("GameEngineSubsystem") ActionManager(), NULL);
-		//initSubsystem((CComObject<WebBrowser> *)TheWebBrowser,"(CComObject<WebBrowser> *)TheWebBrowser", (CComObject<WebBrowser> *)createWebBrowser(), NULL);
 		initSubsystem(TheGameStateMap,"TheGameStateMap", MSGNEW("GameEngineSubsystem") GameStateMap, NULL, NULL, NULL );
 		initSubsystem(TheGameState,"TheGameState", MSGNEW("GameEngineSubsystem") GameState, NULL, NULL, NULL );
-
-		// Create the interface for sending game results
-		initSubsystem(TheGameResultsQueue,"TheGameResultsQueue", GameResultsInterface::createNewGameResultsInterface(), NULL, NULL, NULL, NULL);
 
 
 	#ifdef DUMP_PERF_STATS///////////////////////////////////////////////////////////////////////////
 	GetPrecisionTimer(&endTime64);//////////////////////////////////////////////////////////////////
-	sprintf(Buf,"----------------------------------------------------------------------------After TheGameResultsQueue = %f seconds \n",((double)(endTime64-startTime64)/(double)(freq64)));
+	sprintf(Buf,"----------------------------------------------------------------------------After TheGameState = %f seconds \n",((double)(endTime64-startTime64)/(double)(freq64)));
   startTime64 = endTime64;//Reset the clock ////////////////////////////////////////////////////////
 	DEBUG_LOG(("%s", Buf));////////////////////////////////////////////////////////////////////////////
 	#endif/////////////////////////////////////////////////////////////////////////////////////////////

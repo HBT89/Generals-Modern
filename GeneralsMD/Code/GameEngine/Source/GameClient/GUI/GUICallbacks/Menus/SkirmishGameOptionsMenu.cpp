@@ -57,7 +57,7 @@
 #include "GameClient/MapUtil.h"
 #include "GameClient/Mouse.h"
 #include "GameClient/GameWindowTransitions.h"
-#include "GameNetwork/GameSpy/LobbyUtils.h"
+#include "GameClient/Display.h"
 
 #include "Common/MultiplayerSettings.h"
 #include "GameClient/GameText.h"
@@ -1780,6 +1780,220 @@ WindowMsgHandledType SkirmishGameOptionsMenuSystem( GameWindow *window, Unsigned
 			return MSG_IGNORED;
 	}//Switch
 	return MSG_HANDLED;
+}
+
+// Battle honour list helpers (declared in Common/SkirmishBattleHonors.h); they used to live in the online player-info popup, removed with GameSpy.
+void BattleHonorTooltip(GameWindow *window,
+												WinInstanceData *instData,
+												UnsignedInt mouse)
+{
+	Int x, y, row, col;
+	x = LOLONGTOSHORT(mouse);
+	y = HILONGTOSHORT(mouse);
+
+	GadgetListBoxGetEntryBasedOnXY(window, x, y, row, col);
+
+	if (row == -1 || col == -1)
+	{
+		TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonors") );
+		return;
+	}
+
+	Int battleHonor = (Int)GadgetListBoxGetItemData( window, row, col );
+	Int extraValue = (Int)GadgetListBoxGetItemData( window, row - 1, col );
+	if (battleHonor == 0)
+	{
+		//DEBUG_CRASH(("No Battle Honor in listbox row %d, col %d!", row, col));
+		TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonors") );
+		return;
+	}
+	Real tooltipWidth = 1.5f;
+	if (BitTest(battleHonor, BATTLE_HONOR_NOT_GAINED))
+	{
+		if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_USA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyUSADisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_CHINA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyChinaDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_GLA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyGLADisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_BATTLE_TANK))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorBattleTankDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_AIR_WING))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorAirWingDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_ENDURANCE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorEnduranceDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CAMPAIGN_USA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignUSADisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CAMPAIGN_CHINA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignChinaDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CAMPAIGN_GLA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignGLADisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_BLITZ10))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorBlitzDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_FAIR_PLAY))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorFairPlayDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_APOCALYPSE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorApocalypseDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CHALLENGE_MODE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignChallengeDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_ULTIMATE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorUltimateDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_GLOBAL_GENERAL))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorGlobalGeneralDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CHALLENGE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorChallengeDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_STREAK))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreakDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_STREAK_ONLINE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreakOnlineDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_DOMINATION))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDominationDisabled"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_DOMINATION_ONLINE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDominationOnlineDisabled"), -1, NULL, tooltipWidth );
+	}
+	else
+	{
+		if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_USA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyUSA"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_CHINA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyChina"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_LOYALTY_GLA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorLoyaltyGLA"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_BATTLE_TANK))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorBattleTank"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_AIR_WING))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorAirWing"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_ENDURANCE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorEndurance"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CAMPAIGN_USA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignUSA"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CAMPAIGN_CHINA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignChina"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CAMPAIGN_GLA))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignGLA"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_BLITZ5))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorBlitz5"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_BLITZ10))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorBlitz10"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_FAIR_PLAY))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorFairPlay"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_APOCALYPSE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorApocalypse"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_OFFICERSCLUB))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorOfficersClub"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CHALLENGE_MODE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorCampaignChallenge"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_ULTIMATE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorUltimate"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_GLOBAL_GENERAL))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorGlobalGeneral"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_CHALLENGE))
+			TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorChallenge"), -1, NULL, tooltipWidth );
+		else if(BitTest(battleHonor, BATTLE_HONOR_STREAK))
+		{
+			if (extraValue >= 1000)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak1000"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 500)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak500"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 100)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak100"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 25)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak25"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 10)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak10"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 3)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak3"), -1, NULL, tooltipWidth );
+			else
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreakDisabled"), -1, NULL, tooltipWidth );
+		}
+		else if(BitTest(battleHonor, BATTLE_HONOR_STREAK_ONLINE))
+		{
+			if (extraValue >= 1000)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak1000Online"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 500)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak500Online"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 100)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak100Online"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 25)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak25Online"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 10)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak10Online"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 3)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreak3Online"), -1, NULL, tooltipWidth );
+			else
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorStreakOnlineDisabled"), -1, NULL, tooltipWidth );
+		}
+		else if(BitTest(battleHonor, BATTLE_HONOR_DOMINATION))
+		{
+			if (extraValue >= 10000)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDomination10000"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 1000)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDomination1000"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 500)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDomination500"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 100)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDomination100"), -1, NULL, tooltipWidth );
+			else
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDominationDisabled"), -1, NULL, tooltipWidth );
+		}
+		else if(BitTest(battleHonor, BATTLE_HONOR_DOMINATION_ONLINE))
+		{
+			if (extraValue >= 10000)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDomination10000Online"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 1000)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDomination1000Online"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 500)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDomination500Online"), -1, NULL, tooltipWidth );
+			else if (extraValue >= 100)
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDomination100Online"), -1, NULL, tooltipWidth );
+			else
+				TheMouse->setCursorTooltip( TheGameText->fetch("TOOLTIP:BattleHonorDominationOnlineDisabled"), -1, NULL, tooltipWidth );
+		}
+	}
+	
+}
+
+static Int rowsToSkip = 0;
+void ResetBattleHonorInsertion(void)
+{
+	rowsToSkip = 0;
+}
+void InsertBattleHonor(GameWindow *list, const Image *image, Bool enabled, Int itemData, Int& row, Int& column, UnicodeString text, Int extra)
+{
+	Int width = MAX_BATTLE_HONOR_IMAGE_WIDTH * (TheDisplay->getWidth() / 800.0f);
+	Int height = MAX_BATTLE_HONOR_IMAGE_HEIGHT * (TheDisplay->getHeight() / 600.0f);
+
+	static Int enabledColor = 0xFFFFFFFF;
+	static Int disabledColor = GameMakeColor(80, 80, 80, 255);
+	Int color;
+	if (enabled)
+		color = enabledColor;
+	else
+		color = disabledColor;
+	
+	if (!enabled)
+		itemData |= BATTLE_HONOR_NOT_GAINED;
+
+	GadgetListBoxAddEntryImage(list, image, row, column, height, width, TRUE, color);
+	GadgetListBoxSetItemData(list, (void *)itemData, row, column );
+	GadgetListBoxSetItemData(list, (void *)extra, row - 1, column );
+
+	/*
+	** removing text, since every place that adds text has alternate displays of the same thing
+	if (!text.isEmpty())
+	{
+		GadgetListBoxAddEntryText(list, text, GameSpyColor[GSCOLOR_DEFAULT], row+1, column, TRUE );
+		GadgetListBoxSetItemData(list, (void *)itemData, row+1, column );
+		rowsToSkip++;
+	}
+	*/
+
+	if(++column >= GadgetListBoxGetNumColumns(list))
+	{
+		column = 0;
+		row = row + 1 + rowsToSkip;
+		rowsToSkip = max(rowsToSkip-1, 0);
+	}
 }
 
 void populateSkirmishBattleHonors(void)

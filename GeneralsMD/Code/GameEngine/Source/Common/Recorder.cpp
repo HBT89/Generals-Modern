@@ -38,7 +38,6 @@
 
 #include "GameNetwork/LANAPICallbacks.h"
 #include "GameNetwork/GameMessageParser.h"
-#include "GameNetwork/GameSpy/PeerDefs.h"
 #include "GameNetwork/NetworkUtil.h"
 #include "GameLogic/GameLogic.h"
 #include "Common/RandomValue.h"
@@ -620,11 +619,6 @@ void RecorderClass::startRecording(GameDifficulty diff, Int originalGameMode, In
 					break;
 				}
 			}
-		}
-		else
-		{
-			theSlotList = GameInfoToAsciiString(TheGameSpyGame);
-			localIndex = TheGameSpyGame->getLocalSlotNum();
 		}
 	}
 	else
@@ -1507,8 +1501,6 @@ AsciiString RecorderClass::getLastReplayFileName()
 		GameInfo *game = NULL;
 		if (TheLAN)
 			game = TheLAN->GetMyGame();
-		else if (TheGameSpyInfo)
-			game = TheGameSpyGame;
 		if (game)
 		{
 			AsciiString players;

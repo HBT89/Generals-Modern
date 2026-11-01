@@ -21,7 +21,7 @@ If you wish to rebuild the source code and tools successfully you will need to f
 - Miles Sound System "Asimp3" - (expected path `\Code\Libraries\Source\WPAudio\Asimp3`)
   - Modern replacement: Use minimp3. See [Phase 2 - Sound.md](/Upgrade%20Docs/Phase%202%20-%20Sound.md) for details.
 - GameSpy SDK - (expected path `\Code\Libraries\Source\GameSpy\`)
-  - Modern replacement: Will create new one later
+  - Removed. Online play through GameSpy is gone from the game, along with its lobby, ladder, NAT and in-game browser code. LAN, skirmish, campaign and replays are unaffected.
 - ZLib (1.1.4) - (expected path `\Code\Libraries\Source\Compression\ZLib\`)
   - Modern replacement: Use the latest zlib (currently 1.3.x). Update your build scripts and includes.
 - LZH-Light (1.0) - (expected path `\Code\Libraries\Source\Compression\LZHCompress\CompLibSource` and `CompLibHeader`)

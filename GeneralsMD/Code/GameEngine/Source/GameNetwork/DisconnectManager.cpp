@@ -32,8 +32,6 @@
 #include "GameNetwork/DisconnectManager.h"
 #include "GameNetwork/NetworkInterface.h"
 #include "GameNetwork/NetworkUtil.h"
-#include "GameNetwork/GameSpy/PingThread.h"
-#include "GameNetwork/GameSpy/GSConfig.h"
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -131,54 +129,6 @@ void DisconnectManager::update(ConnectionManager *conMgr) {
 				m_pingFrame = TheGameLogic->getFrame();
 				m_pingsSent = 0;
 				m_pingsRecieved = 0;
-
-				// Send the pings
-				if (ThePinger)
-				{
-					//use next ping server
-					static int serverIndex = 0;
-					serverIndex++;
-					if( serverIndex >= TheGameSpyConfig->getPingServers().size() )
-						serverIndex = 0;  //wrap back to first ping server
-
-					std::list<AsciiString>::iterator it = TheGameSpyConfig->getPingServers().begin();
-					for( int i = 0;  i < serverIndex;  i++ )
-						it++;
-
-					PingRequest req;
-					req.hostname = it->str();
-					req.repetitions = 5;
-					req.timeout = 2000;
-					m_pingsSent = req.repetitions;
-					ThePinger->addRequest(req);
-					DEBUG_LOG(("DisconnectManager::update() - requesting %d pings of %d from %s\n",
-						req.repetitions, req.timeout, req.hostname.c_str()));
-				}
-			}
-		}
-
-		// update the ping thread, tracking pings if we are on the same frame
-		if (ThePinger)
-		{
-			PingResponse resp;
-			while (ThePinger->getResponse(resp))
-			{
-				if (m_pingFrame != TheGameLogic->getFrame())
-				{
-					// wrong frame - we're not pinging yet
-					DEBUG_LOG(("DisconnectManager::update() - discarding ping of %d from %s (%d reps)\n",
-						resp.avgPing, resp.hostname.c_str(), resp.repetitions));
-				}
-				else
-				{
-					// right frame
-					DEBUG_LOG(("DisconnectManager::update() - keeping ping of %d from %s (%d reps)\n",
-						resp.avgPing, resp.hostname.c_str(), resp.repetitions));
-					if (resp.avgPing < 2000)
-					{
-						m_pingsRecieved += resp.repetitions;
-					}
-				}
 			}
 		}
 	}

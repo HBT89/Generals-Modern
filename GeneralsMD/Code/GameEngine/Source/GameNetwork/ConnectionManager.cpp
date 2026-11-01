@@ -43,7 +43,6 @@
 #include "GameClient/MessageBox.h"
 #include "GameNetwork/ConnectionManager.h"
 #include "GameNetwork/LANAPICallbacks.h"
-#include "GameNetwork/NAT.h"
 #include "GameNetwork/NetCommandWrapperList.h"
 #include "GameNetwork/NetworkUtil.h"
 #include "GameLogic/GameLogic.h"
@@ -1877,7 +1876,6 @@ void ConnectionManager::parseUserList(const GameInfo *game)
 				m_connections[i] = newInstance(Connection)();
 				m_connections[i]->init();
 				m_connections[i]->attachTransport(m_transport);
-//				UnsignedShort port = (TheNAT)?TheNAT->getSlotPort(i):8088;
 				UnsignedShort port = slot->getPort();
 				m_connections[i]->setUser(newInstance(User)(slot->getName(), slot->getIP(), port));
 				m_frameData[i] = newInstance(FrameDataManager)(FALSE);

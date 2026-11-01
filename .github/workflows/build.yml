@@ -33,50 +33,40 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Guards the exact regression that made this repo unbuildable. Each of these
-      # is required to configure or compile, and each was previously hidden by a
-      # .gitignore containing '*'. Checking them here fails in seconds with a clear
-      # message instead of surfacing as a confusing CMake or compiler error.
-      - name: Verify build-critical stubs are committed
+      # Guards the exact regression that made this repo unbuildable: build inputs that
+      # existed only on the machine the game was developed on, because a .gitignore rule
+      # hid them from git (a '*' placeholder in a stripped-SDK folder, or EA's '[Dd]ebug*'
+      # build-output rule matching files such as bx's debug.h). Every path below is
+      # compiled or included by the build. A missing one fails here in seconds, by name,
+      # instead of as a compiler error several minutes in.
+      - name: Verify build inputs are committed
         shell: pwsh
         run: |
           $required = @(
-            'GeneralsMD/Code/Libraries/Source/GameSpy/gamespy_stub.cpp',
             'GeneralsMD/Code/Libraries/Include/MSS/MSS.h',
             'GeneralsMD/Code/Main/GeneratedVersion.h',
-            'GeneralsMD/Code/GameEngine/Include/generatedVersion.h'
+            'GeneralsMD/Code/GameEngine/Include/generatedVersion.h',
+            'GeneralsMD/Code/GameEngine/Include/Common/SafeDisc/CdaPfn.h',
+            'GeneralsMD/Code/Libraries/Source/bx/include/bx/debug.h',
+            'GeneralsMD/Code/Libraries/Source/bx/src/debug.cpp',
+            'GeneralsMD/Code/Libraries/Source/bgfx/src/debug_renderdoc.h',
+            'GeneralsMD/Code/Libraries/Source/bgfx/src/debug_renderdoc.cpp',
+            'GeneralsMD/Code/Libraries/Source/Compression/LZHCompress/CompLibHeader/lzhl.h',
+            'GeneralsMD/Code/Libraries/Source/Compression/LZHCompress/CompLibSource/Lzhl.cpp',
+            'GeneralsMD/Code/Libraries/Source/Compression/LZHCompress/CompLibSource/Lz.cpp',
+            'GeneralsMD/Code/Libraries/Source/Compression/LZHCompress/CompLibSource/Huff.cpp',
+            'zlib-extract/zlib-1.3.1/zlib.h',
+            'zlib-extract/zlib-1.3.1/deflate.c'
           )
           $missing = $required | Where-Object { -not (Test-Path $_) }
           if ($missing) {
-            Write-Host "::error::Build-critical files are missing from the repository:"
+            Write-Host "::error::Build inputs are missing from the repository:"
             $missing | ForEach-Object { Write-Host "::error::  $_" }
             Write-Host "These are needed to configure or compile. If one is gitignored,"
             Write-Host "add a negation for it rather than deleting the ignore rule."
             exit 1
           }
-          Write-Host "All $($required.Count) build-critical stubs present."
-
-      # Third-party sources EA stripped from the release. Each is #included by code
-      # that compiles, and none is in the repository yet: they exist only on the
-      # machine the game has been developed on. Reported up front, and not fatal
-      # until they are committed or fetched, so the compiler errors further down can
-      # be told apart from new breakage.
-      - name: Report missing third-party inputs
-        shell: pwsh
-        run: |
-          $inputs = [ordered]@{
-            'GeneralsMD/Code/Libraries/Source/Compression/ZLib/zlib.h'                  = 'zlib, for Compression/CompressionManager.cpp'
-            'GeneralsMD/Code/Libraries/Source/Compression/LZHCompress/CompLibHeader/lzhl.h' = 'LZH-Light, for LZHCompress/NoxCompress.cpp'
-            'GeneralsMD/Code/GameEngine/Include/Common/SafeDisc/CdaPfn.h'             = 'SafeDisc header, for Main/WinMain.cpp'
-            'GeneralsMD/Code/Libraries/Source/EABrowserDispatch/BrowserDispatch.h'     = 'MIDL output of BrowserDispatch.idl, for WOLBrowser/WebBrowser.h'
-            'GeneralsMD/Code/Libraries/Source/GameSpy/Peer/Peer.h'                     = 'GameSpy SDK, for GameSpy.h, PeerThread.h and 3 more'
-            'GeneralsMD/Code/Libraries/Source/GameSpy/GP/GP.h'                         = 'GameSpy SDK, for GameSpyGP.h, BuddyThread.h, PeerDefs.h'
-            'GeneralsMD/Code/Libraries/Source/GameSpy/ghttp/ghttp.h'                   = 'GameSpy SDK, for MainMenu.cpp, OptionsMenu.cpp, MainMenuUtils.cpp'
-            'GeneralsMD/Code/Libraries/Source/GameSpy/gstats/gpersist.h'               = 'GameSpy SDK, for PersistentStorageThread.h'
-          }
-          $missing = @($inputs.Keys | Where-Object { -not (Test-Path $_) })
-          foreach ($path in $missing) { Write-Host "::warning::Missing input: $path ($($inputs[$path]))" }
-          Write-Host "$($missing.Count) of $($inputs.Count) third-party inputs missing."
+          Write-Host "All $($required.Count) build inputs present."
 
       - name: Report toolchain versions
         shell: pwsh

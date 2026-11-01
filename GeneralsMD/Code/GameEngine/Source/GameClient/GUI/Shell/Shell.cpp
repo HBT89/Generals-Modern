@@ -39,8 +39,6 @@
 #include "GameClient/AnimateWindowManager.h"
 #include "GameClient/ShellMenuScheme.h"
 #include "GameLogic/GameLogic.h"
-#include "GameNetwork/GameSpyOverlay.h"
-#include "GameNetwork/GameSpy/PeerDefsImplementation.h"
 
 #include <rts/profile.h>
 
@@ -267,9 +265,6 @@ void Shell::push( AsciiString filename, Bool shutdownImmediate )
 	// sanity
 	if( filename.isEmpty() )
 		return;
-	if(TheGameSpyInfo)
-			GameSpyCloseAllOverlays();
-
 
 #ifdef DEBUG_LOGGING
 	DEBUG_LOG(("Shell:push(%s) - stack was\n", filename.str()));
@@ -331,9 +326,6 @@ void Shell::push( AsciiString filename, Bool shutdownImmediate )
 void Shell::pop( void )
 {
 	WindowLayout *screen = top();
-	if(TheGameSpyInfo)
-			GameSpyCloseAllOverlays();
-
 
 	// sanity
 	if( screen == NULL )
@@ -608,8 +600,6 @@ void Shell::unlinkScreen( WindowLayout *screen )
 //-------------------------------------------------------------------------------------------------
 void Shell::doPush( AsciiString layoutFile )
 {
-	if(TheGameSpyInfo)
-			GameSpyCloseAllOverlays();
 	WindowLayout *newScreen;
 	
 	// create new layout and load from window manager

@@ -39,8 +39,6 @@
 #include "Common/Xfer.h"
 #include "GameNetwork/FileTransfer.h"
 #include "GameNetwork/GameInfo.h"
-#include "GameNetwork/GameSpy/ThreadUtils.h"
-#include "GameNetwork/GameSpy/StagingRoomGameInfo.h"
 #include "GameNetwork/LANAPI.h"						// for testing packet size
 #include "GameNetwork/LANAPICallbacks.h"	// for testing packet size
 #include "strtok_r.h"
@@ -205,11 +203,6 @@ void GameSlot::setState( SlotState state, UnicodeString name, UnsignedInt IP )
 		m_startPos = -1;
 		m_playerTemplate = -1;
 		m_teamNumber = -1;
-
-		if (state == SLOT_OPEN && TheGameSpyGame && TheGameSpyGame->getConstSlot(0) == this)
-		{
-			DEBUG_CRASH(("Game Is Hosed!\n"));
-		}
 	}
 	if (state == SLOT_PLAYER)
 	{
@@ -893,6 +886,55 @@ Bool GameInfo::isSandbox(void)
 
 
 // Convenience Functions ----------------------------------------
+
+// UTF-8 conversion of player names in the game options string (LAN packets,
+// replay headers); moved unchanged from the removed GameSpy thread utilities.
+static std::wstring MultiByteToWideCharSingleLine( const char *orig )
+{
+	Int len = strlen(orig);
+	WideChar *dest = NEW WideChar[len+1];
+
+	MultiByteToWideChar(CP_UTF8, 0, orig, -1, dest, len);
+	WideChar *c = NULL;
+	do
+	{
+		c = wcschr(dest, L'\n');
+		if (c)
+		{
+			*c = L' ';
+		}
+	}
+	while ( c != NULL );
+	do
+	{
+		c = wcschr(dest, L'\r');
+		if (c)
+		{
+			*c = L' ';
+		}
+	}
+	while ( c != NULL );
+
+	dest[len] = 0;
+	std::wstring ret = dest;
+	delete dest;
+	return ret;
+}
+
+static std::string WideCharStringToMultiByte( const WideChar *orig )
+{
+	std::string ret;
+	Int len = WideCharToMultiByte( CP_UTF8, 0, orig, wcslen(orig), NULL, 0, NULL, NULL ) + 1;
+	if (len > 0)
+	{
+		char *dest = NEW char[len];
+		WideCharToMultiByte( CP_UTF8, 0, orig, -1, dest, len, NULL, NULL );
+		dest[len-1] = 0;
+		ret = dest;
+		delete dest;
+	}
+	return ret;
+}
 
 static const char slotListID		= 'S';
 

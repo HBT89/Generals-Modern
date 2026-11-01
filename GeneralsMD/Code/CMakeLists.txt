@@ -114,7 +114,6 @@ set(COMMON_INCLUDES
     ${LIBS_VEGAS}/wwshade
     ${LIBS_SOURCE}
     ${LIBS_SOURCE}/Compression
-    ${LIBS_SOURCE}/GameSpy
     ${LIBS_INCLUDE}
     ${LIBS_INCLUDE}/MSS
     ${LIBS_INCLUDE}/Bink
@@ -306,11 +305,8 @@ target_link_libraries(compression PUBLIC zlib)
 # Stub libraries for proprietary dependencies
 # =============================================================================
 
-# GameSpy stubs
-foreach(GSLIB gamespyhttp gamespypatching gamespypeer gamespypresence gamespystats)
-    add_library(${GSLIB} STATIC ${LIBS_SOURCE}/GameSpy/gamespy_stub.cpp)
-    target_include_directories(${GSLIB} PUBLIC ${COMMON_INCLUDES})
-endforeach()
+# GameSpy: none. Online play was removed from the game, so neither the SDK nor stubs
+# for it are built or linked. LAN, skirmish, campaign and replays do not use it.
 
 # Profile library
 file(GLOB PROFILE_SRC ${LIBS_SOURCE}/profile/*.cpp)
@@ -321,12 +317,6 @@ target_include_directories(profile PUBLIC ${COMMON_INCLUDES})
 if(EXISTS ${LIBS_SOURCE}/Benchmark/benchmark_stub.c)
     add_library(benchmark STATIC ${LIBS_SOURCE}/Benchmark/benchmark_stub.c)
     target_include_directories(benchmark PUBLIC ${COMMON_INCLUDES})
-endif()
-
-# EA Browser Dispatch stub
-if(EXISTS ${LIBS_SOURCE}/EABrowserDispatch/eabrowser_stub.c)
-    add_library(eabrowserdispatch STATIC ${LIBS_SOURCE}/EABrowserDispatch/eabrowser_stub.c)
-    target_include_directories(eabrowserdispatch PUBLIC ${COMMON_INCLUDES})
 endif()
 
 # =============================================================================
@@ -342,7 +332,6 @@ target_include_directories(GameEngine PUBLIC
     ${ENGINE_PRECOMPILED}
     ${ENGINE_INCLUDE}
     ${COMMON_INCLUDES}
-    ${LIBS_SOURCE}/GameSpy
     ${DX8_SDK_INCLUDE}
 )
 target_link_libraries(GameEngine PUBLIC
@@ -397,11 +386,6 @@ target_link_libraries(GeneralsZH PRIVATE
     bgfx
     bx
     bimg
-    gamespyhttp
-    gamespypatching
-    gamespypeer
-    gamespypresence
-    gamespystats
     profile
 )
 

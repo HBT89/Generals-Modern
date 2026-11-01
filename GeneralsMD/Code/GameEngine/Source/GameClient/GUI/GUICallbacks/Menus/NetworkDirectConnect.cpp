@@ -31,8 +31,6 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
-#include "GameSpy/peer/peer.h"
-
 #include "Common/QuotedPrintable.h"
 #include "Common/UserPreferences.h"
 #include "GameClient/AnimateWindowManager.h"

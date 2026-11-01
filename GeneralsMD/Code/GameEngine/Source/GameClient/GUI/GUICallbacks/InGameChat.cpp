@@ -153,38 +153,6 @@ Bool IsInGameChatActive() {
 	return FALSE;
 }
 
-// Slash commands -------------------------------------------------------------------------
-extern "C" {
-int getQR2HostingStatus(void);
-}
-extern int isThreadHosting;
-
-Bool handleInGameSlashCommands(UnicodeString uText)
-{
-	AsciiString message;
-	message.translate(uText);
-
-	if (message.getCharAt(0) != '/')
-	{
-		return FALSE; // not a slash command
-	}
-
-	AsciiString remainder = message.str() + 1;
-	AsciiString token;
-	remainder.nextToken(&token);
-	token.toLower();
-
-	if (token == "host")
-	{
-		UnicodeString s;
-		s.format(L"Hosting qr2:%d thread:%d", getQR2HostingStatus(), isThreadHosting);
-		TheInGameUI->message(s);
-		return TRUE; // was a slash command
-	}
-
-	return FALSE; // not a slash command
-}
-
 // ------------------------------------------------------------------------------------------------
 // ------------------------------------------------------------------------------------------------
 void ToggleInGameChat( Bool immediate )
@@ -214,7 +182,7 @@ void ToggleInGameChat( Bool immediate )
 				// Send what is there, clear it out, and hide the window
 				UnicodeString msg = GadgetTextEntryGetText( chatTextEntry );
 				msg.trim();
-				if (!msg.isEmpty() && !handleInGameSlashCommands(msg))
+				if (!msg.isEmpty())
 				{
 					const Player *localPlayer = ThePlayerList->getLocalPlayer();
 					AsciiString playerName;

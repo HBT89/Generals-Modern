@@ -30,8 +30,6 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
-#include "GameSpy/ghttp/ghttp.h"
-
 #include "Lib/BaseType.h"
 #include "Common/GameEngine.h"
 #include "Common/GameState.h"
@@ -62,16 +60,8 @@
 #include "GameClient/GameClient.h"
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/ScriptEngine.h"
-#include "GameNetwork/GameSpyOverlay.h"
 #include "GameClient/GameWindowTransitions.h"
 #include "GameClient/ChallengeGenerals.h"
-
-#include "GameNetwork/GameSpy/PeerDefs.h"
-#include "GameNetwork/GameSpy/PeerThread.h"
-#include "GameNetwork/GameSpy/BuddyThread.h"
-
-#include "GameNetwork/DownloadManager.h"
-#include "GameNetwork/GameSpy/MainMenuUtils.h"
 
 #include "GameClient/CDCheck.h"
 //Added By Saad
@@ -99,7 +89,6 @@ enum
 	DROPDOWN_COUNT // keep last
 };
 
-static Bool raiseMessageBoxes = TRUE;
 static Bool campaignSelected = FALSE;
 #if defined _DEBUG || defined _INTERNAL || defined _PROFILE
 static NameKeyType campaignID = NAMEKEY_INVALID;
@@ -224,15 +213,6 @@ extern Bool dispChanged;
 //
 
 void diffReverseSide( void );
-void HandleCanceledDownload( Bool resetDropDown )
-{
-	buttonPushed = FALSE;
-	if (resetDropDown)
-	{
-		dropDownWindows[DROPDOWN_MAIN]->winHide(FALSE);
-		TheTransitionHandler->setGroup("MainMenuDefaultMenuLogoFade");
-	}
-}
 
 //-------------------------------------------------------------------------------------------------
 /** This is called when a shutdown is complete for this menu */
@@ -550,6 +530,17 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 		dropDownWindows[i]->winHide(TRUE);
 
 	initialHide();
+	// Online play (GameSpy) was removed; this button is hidden. Window transitions un-hide
+	// the windows they animate, so it is also disabled and made see-through.
+	if (buttonOnline)
+	{
+		buttonOnline->winHide(TRUE);
+		buttonOnline->winEnable(FALSE);
+		buttonOnline->winSetStatus(WIN_STATUS_SEE_THRU);
+	}
+	// The patch download button belonged to the online patch check, removed with GameSpy.
+	if (getUpdate)
+		getUpdate->winHide(TRUE);
 	
 	showSelectiveButtons(SHOW_NONE);
 	// Set up the version number
@@ -624,11 +615,6 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 	}
 	/**/
 
-	if (TheGameSpyPeerMessageQueue && !TheGameSpyPeerMessageQueue->isConnected())
-	{
-		DEBUG_LOG(("Tearing down GameSpy from MainMenuInit()\n"));
-		TearDownGameSpy();
-	}
 	if (TheMapCache)
 		TheMapCache->updateCache();
 
@@ -640,7 +626,6 @@ void MainMenuInit( WindowLayout *layout, void *userData )
 	*/
 	
 	TheShell->loadScheme("MainMenu");
-	raiseMessageBoxes = TRUE;
 
 //	if(!localAnimateWindowManager)
 //		localAnimateWindowManager = NEW AnimateWindowManager;
@@ -684,8 +669,6 @@ void MainMenuShutdown( WindowLayout *layout, void *userData )
 	if (!startGame)
 		isShuttingDown = TRUE;
 
-	CancelPatchCheckCallback();
-
 	// if we are shutting down for an immediate pop, skip the animations
 	Bool popImmediate = *(Bool *)userData;
 	{ FILE* lf=fopen("C:\\TheLab\\Development\\Generals-Modern\\bgfx_loading.log","a"); if(lf){ fprintf(lf,"[MENU] MainMenuShutdown popImmediate=%d startGame=%d\n",(int)popImmediate,(int)startGame); fflush(lf); fclose(lf); } }
@@ -714,7 +697,8 @@ void MainMenuShutdown( WindowLayout *layout, void *userData )
 //		localAnimateWindowManager->reverseAnimateWindow();
 }  // end MainMenuShutdown
 
-extern Bool DontShowMainMenu;
+// Also used by ScoreScreen.cpp and PopupSaveLoad.cpp. It used to be defined in the online lobby (WOLLobbyMenu.cpp).
+Bool DontShowMainMenu = FALSE;
 
 ////////////////////////////////////////////////////////////////////////////
 //Added By Sadullah Nader
@@ -830,7 +814,6 @@ void ResolutionDialogUpdate()
 //-------------------------------------------------------------------------------------------------
 /** Main menu update method */
 //-------------------------------------------------------------------------------------------------
-void DownloadMenuUpdate( WindowLayout *layout, void *userData );
 void MainMenuUpdate( WindowLayout *layout, void *userData )
 {
 	if( TheGameLogic->isInGame() && !TheGameLogic->isInShellGame() )
@@ -839,12 +822,6 @@ void MainMenuUpdate( WindowLayout *layout, void *userData )
 	}
 	if(DontShowMainMenu && justEntered)
 		justEntered = FALSE;
-	
-	if (TheDownloadManager && !TheDownloadManager->isDone())
-	{
-		TheDownloadManager->update();
-		DownloadMenuUpdate(layout, userData);
-	}
 
 	// Added by Saad to the confirmation or decline of the resoluotion change
 	// dialog box.
@@ -922,14 +899,6 @@ void MainMenuUpdate( WindowLayout *layout, void *userData )
 			initialGadgetDelay--;
 	}
 
-	if (raiseMessageBoxes)
-	{
-		RaiseGSMessageBox();
-		raiseMessageBoxes = FALSE;
-	}
-
-	HTTPThinkWrapper();
-	GameSpyUpdateOverlays();
 //	if(localAnimateWindowManager)
 //		localAnimateWindowManager->update();
 //	if(localAnimateWindowManager && pendingDropDown != DROPDOWN_NONE && localAnimateWindowManager->isFinished())
@@ -1043,29 +1012,8 @@ void PrintOffsetsFromControlBarParent( void );
 WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg, 
 										 WindowMsgData mData1, WindowMsgData mData2 )
 {
-	static Bool triedToInitWOLAPI = FALSE;
-	static Bool canInitWOLAPI = FALSE;
-	
 	switch( msg ) 
 	{
-
-		//---------------------------------------------------------------------------------------------
-		case GWM_CREATE:
-		{
-			ghttpStartup();
-			break;
-		}  // end case
-
-		//---------------------------------------------------------------------------------------------
-		case GWM_DESTROY:
-		{
-			ghttpCleanup();
-			DEBUG_LOG(("Tearing down GameSpy from MainMenuSystem(GWM_DESTROY)\n"));
-			TearDownGameSpy();
-			StopAsyncDNSCheck(); // kill off the async DNS check thread in case it is still running
-			break;
-
-		}  // end case
 
 		// --------------------------------------------------------------------------------------------
 		case GWM_INPUT_FOCUS:
@@ -1083,11 +1031,7 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 		{
 			GameWindow *control = (GameWindow *)mData1;
 			Int controlID = control->winGetWindowId();
-			if(controlID == onlineID)
-			{
-				TheScriptEngine->signalUIInteract(TheShellHookNames[SHELL_SCRIPT_HOOK_MAIN_MENU_ONLINE_HIGHLIGHTED]);
-			}
-			else if(controlID == networkID)
+			if(controlID == networkID)
 			{
 				TheScriptEngine->signalUIInteract(TheShellHookNames[SHELL_SCRIPT_HOOK_MAIN_MENU_NETWORK_HIGHLIGHTED]);
 			}
@@ -1202,11 +1146,7 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 			GameWindow *control = (GameWindow *)mData1;
 			Int controlID = control->winGetWindowId();
 
-			if(controlID == onlineID)
-			{
-				TheScriptEngine->signalUIInteract(TheShellHookNames[SHELL_SCRIPT_HOOK_MAIN_MENU_ONLINE_UNHIGHLIGHTED]);
-			}
-			else if(controlID == networkID)
+			if(controlID == networkID)
 			{
 				TheScriptEngine->signalUIInteract(TheShellHookNames[SHELL_SCRIPT_HOOK_MAIN_MENU_NETWORK_UNHIGHLIGHTED]);
 			}
@@ -1463,20 +1403,6 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				TheShell->push( AsciiString("Menus/SkirmishGameOptionsMenu.wnd") );
 				TheScriptEngine->signalUIInteract(TheShellHookNames[SHELL_SCRIPT_HOOK_MAIN_MENU_SKIRMISH_SELECTED]);
 			}
-			else if( controlID == onlineID )
-			{
-				if(dontAllowTransitions)
-					break;
-				dontAllowTransitions = TRUE;
-				buttonPushed = TRUE;
-				dropDownWindows[DROPDOWN_MULTIPLAYER]->winHide(FALSE);
-				TheTransitionHandler->reverse("MainMenuMultiPlayerMenuTransitionToNext");
-
-				StartPatchCheck();
-//				localAnimateWindowManager->reverseAnimateWindow();
-				dropDown = DROPDOWN_NONE;
-
-			}  // end else if
 			else if( controlID == networkID )
 			{
 				if(dontAllowTransitions)
@@ -1516,10 +1442,6 @@ WindowMsgHandledType MainMenuSystem( GameWindow *window, UnsignedInt msg,
 				if(_spawnl(_P_NOWAIT,"WorldBuilder.exe","WorldBuilder.exe", NULL) < 0)
 					MessageBoxOk(TheGameText->fetch("GUI:WorldBuilder"), TheGameText->fetch("GUI:WorldBuilderLoadFailed"),NULL);
 #endif
-			}
-			else if( controlID == getUpdateID )
-			{
-				StartDownloadingPatches();
 			}
 			else if( controlID == exitID )
 			{

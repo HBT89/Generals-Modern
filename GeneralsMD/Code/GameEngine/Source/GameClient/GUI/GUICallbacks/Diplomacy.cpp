@@ -54,8 +54,6 @@
 #include "GameLogic/VictoryConditions.h"
 #include "GameNetwork/GameInfo.h"
 #include "GameNetwork/NetworkInterface.h"
-#include "GameNetwork/GameSpy/BuddyDefs.h"
-#include "GameNetwork/GameSpy/peerDefs.h"
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -94,10 +92,6 @@ static Int slotNumInRow[MAX_SLOTS];
 static WindowLayout *theLayout = NULL;
 static GameWindow *theWindow = NULL;
 static AnimateWindowManager *theAnimateWindowManager = NULL;
-WindowMsgHandledType BuddyControlSystem( GameWindow *window, UnsignedInt msg, 
-														 WindowMsgData mData1, WindowMsgData mData2);
-void InitBuddyControls(Int type);
-void updateBuddyInfo( void );
 static void grabWindowPointers( void )
 {
 	for (Int i=0; i<MAX_SLOTS; ++i)
@@ -270,16 +264,6 @@ void ShowDiplomacy( Bool immediate )
 	TheInGameUI->registerWindowLayout(theLayout);
 	grabWindowPointers();
 	PopulateInGameDiplomacyPopup();
-
-	if(TheGameSpyInfo && TheGameSpyInfo->getLocalProfileID() != 0)
-	{
-		radioButtonInGame->winHide(FALSE);
-		radioButtonBuddies->winHide(FALSE);
-		InitBuddyControls(1);
-		PopulateOldBuddyMessages();
-		updateBuddyInfo();
-	}
-	
 }
 
 // ------------------------------------------------------------------------------------------------
@@ -291,7 +275,6 @@ void ResetDiplomacy( void )
 		TheInGameUI->unregisterWindowLayout(theLayout);
 		theLayout->destroyWindows();
 		theLayout->deleteInstance();
-		InitBuddyControls(-1);
 	}
 	theLayout = NULL;
 	theWindow = NULL;
@@ -384,10 +367,6 @@ WindowMsgHandledType DiplomacyInput( GameWindow *window, UnsignedInt msg,
 WindowMsgHandledType DiplomacySystem( GameWindow *window, UnsignedInt msg, 
 																			 WindowMsgData mData1, WindowMsgData mData2 )
 {
-	if(BuddyControlSystem(window, msg, mData1, mData2) == MSG_HANDLED)
-	{
-		return MSG_HANDLED;
-	}
 	switch( msg ) 
 	{
 		//---------------------------------------------------------------------------------------------

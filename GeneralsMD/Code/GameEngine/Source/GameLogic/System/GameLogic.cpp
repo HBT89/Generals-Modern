@@ -59,7 +59,6 @@
 #include "Common/Xfer.h"
 #include "Common/XferCRC.h"
 #include "Common/XferDeepCRC.h"
-#include "Common/GameSpyMiscPreferences.h"
 
 #include "GameClient/ControlBar.h"
 #include "GameClient/Drawable.h"
@@ -103,12 +102,8 @@
 #include "Common/DataChunk.h"
 #include "GameLogic/Scripts.h"
 
-#include "GameNetwork/GameSpy/BuddyThread.h"
-#include "GameNetwork/GameSpy/PeerDefs.h"
-#include "GameNetwork/GameSpy/ThreadUtils.h"
 #include "GameNetwork/LANAPICallbacks.h"
 #include "GameNetwork/NetworkInterface.h"
-#include "GameNetwork/GameSpy/PersistentStorageThread.h"
 
 #include <rts/profile.h>
 
@@ -661,9 +656,6 @@ LoadScreen *GameLogic::getLoadScreen( Bool loadingSaveGame )
 	case GAME_REPLAY:
 		return NEW ShellGameLoadScreen;
 		break;
-	case GAME_INTERNET:
-		return NEW GameSpyLoadScreen;
-		break;
 	case GAME_NONE:
 	default:
 		return NULL;
@@ -1196,11 +1188,6 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 		{
 			DEBUG_LOG(("Starting network game\n"));
 			TheGameInfo = game = TheLAN->GetMyGame();
-		}
-		else
-		{
-			DEBUG_LOG(("Starting gamespy game\n"));
-			TheGameInfo = game = TheGameSpyGame;	/// @todo: MDC add back in after demo
 		}
 	}
 	else
@@ -2366,17 +2353,6 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 #endif
 	TheWritableGlobalData->m_loadScreenRender = FALSE;	///< mark to resume rendering as normal
 	
-	// if we're in a gamespy game, mark us as playing
-	if (TheGameSpyBuddyMessageQueue && TheGameSpyGame && isInInternetGame())
-	{
-		BuddyRequest req;
-		req.buddyRequestType = BuddyRequest::BUDDYREQUEST_SETSTATUS;
-		req.arg.status.status = GP_PLAYING;
-		strcpy(req.arg.status.statusString, "Playing");
-		sprintf(req.arg.status.locationString, "%s", WideCharStringToMultiByte(TheGameSpyGame->getGameName().str()).c_str());
-		TheGameSpyBuddyMessageQueue->addRequest(req);
-	}	
-	
   if( loadingSaveGame == FALSE )
   {
     // Drawables need to do some work on level start; give them a chance to do it
@@ -2400,11 +2376,6 @@ void GameLogic::startNewGame( Bool loadingSaveGame )
 	sprintf(Buf,"Total startnewgame=%f\n",((double)(endTime64-startTime64)/(double)(freq64)*1000.0));
 	DEBUG_LOG(("%s", Buf));
 #endif
-
-	//Assume that getting this far means we've successfully entered an online game.
-	//Add an additional disconnection to player stats in case he doesn't complete this game. -MW
-	if (TheGameSpyInfo)
-		TheGameSpyInfo->updateAdditionalGameSpyDisconnections(1);
 
   
   if ( isInReplayGame() && TheInGameUI && TheGameText )

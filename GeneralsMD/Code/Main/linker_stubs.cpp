@@ -7,9 +7,6 @@
 // AsciiString is available via forced PreRTS.h include
 #include "Common/AsciiString.h"
 
-// GameSpy QR2 hosting status — declared extern "C" in source
-extern "C" int getQR2HostingStatus(void) { return 0; }
-
 // ---------------------------------------------------------------------------
 // The crash-reporting stubs that used to live here have been REMOVED.
 //
@@ -36,10 +33,3 @@ extern "C" int getQR2HostingStatus(void) { return 0; }
 
 // DX8Wrapper_IsWindowed — referenced by Debug.obj (ReleaseCrash)
 bool DX8Wrapper_IsWindowed = true;
-
-
-// IID_IBrowserDispatch — COM GUID for EABrowserDispatch
-// {BC834510-C5BC-4B90-8C9A-0E4B1998796F}
-static const GUID local_IID_IBrowserDispatch =
-    { 0xBC834510, 0xC5BC, 0x4B90, { 0x8C, 0x9A, 0x0E, 0x4B, 0x19, 0x98, 0x79, 0x6F } };
-extern "C" const GUID IID_IBrowserDispatch = local_IID_IBrowserDispatch;

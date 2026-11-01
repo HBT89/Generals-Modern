@@ -30,8 +30,6 @@
 // INCLUDES ///////////////////////////////////////////////////////////////////////////////////////
 #include "PreRTS.h"	// This must go first in EVERY cpp file int the GameEngine
 
-#include "GameSpy/ghttp/ghttp.h"
-
 #include "Common/AudioAffect.h"
 #include "Common/AudioSettings.h"
 #include "Common/GameAudio.h"
@@ -63,8 +61,6 @@
 #include "GameClient/GUICallbacks.h"
 #include "GameNetwork/FirewallHelper.h"
 #include "GameNetwork/IPEnumeration.h"
-#include "GameNetwork/GameSpyOverlay.h"
-#include "GameNetwork/GameSpy/PeerDefs.h"
 #include "GameLogic/GameLogic.h"
 #include "GameLogic/ScriptEngine.h"
 #include "WWDownload/Registry.h"
@@ -807,7 +803,7 @@ static void setDefaults( void )
 	//-------------------------------------------------------------------------------------------------
 	// Resolution
 	//Find index of 800x600 mode.
-	if ((TheGameLogic->isInGame() == FALSE) || (TheGameLogic->isInShellGame() == TRUE)  && !TheGameSpyInfo) {
+	if ((TheGameLogic->isInGame() == FALSE) || (TheGameLogic->isInShellGame() == TRUE)) {
 		Int numResolutions = TheDisplay->getDisplayModeCount();
 		Int defaultResIndex=0;
 		for( Int i = 0; i < numResolutions; ++i )
@@ -1144,7 +1140,6 @@ static void saveOptions( void )
 		AsciiString aStr;
 		aStr.translate(uStr);
 		SetStringInRegistry("", "Proxy", aStr.str());
-		ghttpSetProxy(aStr.str());
 	}
 
 	//-------------------------------------------------------------------------------------------------
@@ -1796,7 +1791,7 @@ void OptionsMenuInit( WindowLayout *layout, void *userData )
 	GameWindow *parent = TheWindowManager->winGetWindowFromId( NULL, parentID );
 	TheWindowManager->winSetFocus( parent );
 	
-	if( (TheGameLogic->isInGame() && TheGameLogic->getGameMode() != GAME_SHELL) || TheGameSpyInfo )
+	if( TheGameLogic->isInGame() && TheGameLogic->getGameMode() != GAME_SHELL )
 	{
 		// disable controls that you can't change the options for in game
 		comboBoxLANIP->winEnable(FALSE);
@@ -1999,12 +1994,7 @@ WindowMsgHandledType OptionsMenuSystem( GameWindow *window, UnsignedInt msg,
 				comboBoxLANIP = NULL;
 				comboBoxOnlineIP = NULL;
 
-				if(GameSpyIsOverlayOpen(GSOVERLAY_OPTIONS))
-					GameSpyCloseOverlay(GSOVERLAY_OPTIONS);
-				else
-				{
-					DestroyOptionsLayout();
-				}
+				DestroyOptionsLayout();
 
 			}  // end if
 			else if (controlID == buttonAccept )
@@ -2025,15 +2015,10 @@ WindowMsgHandledType OptionsMenuSystem( GameWindow *window, UnsignedInt msg,
 					destroyQuitMenu(); // if we're in a game, the change res then enter the same kind of game, we nee the quit menu to be gone.
 
 
-				if(GameSpyIsOverlayOpen(GSOVERLAY_OPTIONS))
-					GameSpyCloseOverlay(GSOVERLAY_OPTIONS);
-				else
+				DestroyOptionsLayout();
+				if (dispChanged)
 				{
-					DestroyOptionsLayout();
-					if (dispChanged)
-					{
-						DoResolutionDialog();
-					}
+					DoResolutionDialog();
 				}
 
 			}

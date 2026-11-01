@@ -1,7 +1,5 @@
-# Ignore everything in this directory (the proprietary GameSpy SDK is not redistributable)
+# Online play (GameSpy) was removed and nothing builds from this directory any more.
+# A local copy of the proprietary GameSpy SDK may still be unpacked here on a developer
+# machine; it is not redistributable, so never let git pick it up.
 *
-# Except this file
 !.gitignore
-# ...and except our own clean-room stub, which CMakeLists.txt requires to configure.
-# Without this negation a fresh clone fails at CMake generate time.
-!gamespy_stub.cpp

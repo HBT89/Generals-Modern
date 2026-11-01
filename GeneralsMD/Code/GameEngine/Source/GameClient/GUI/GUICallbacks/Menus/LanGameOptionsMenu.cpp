@@ -50,7 +50,6 @@
 #include "GameClient/Mouse.h"
 #include "GameClient/GameWindowTransitions.h"
 #include "GameClient/ChallengeGenerals.h"
-#include "GameNetwork/GameSpy/LobbyUtils.h"
 
 #include "GameNetwork/FirewallHelper.h"
 #include "GameNetwork/LANAPI.h"
@@ -70,7 +69,25 @@ extern char *LANnextScreen;
 extern Bool LANisShuttingDown;
 extern Bool LANbuttonPushed;
 extern void MapSelectorTooltip(GameWindow *window, WinInstanceData *instData,	UnsignedInt mouse);
-extern void gameAcceptTooltip(GameWindow *window, WinInstanceData *instData, UnsignedInt mouse);
+
+static void gameAcceptTooltip(GameWindow *window, WinInstanceData *instData, UnsignedInt mouse)
+{
+	Int x, y;
+	x = LOLONGTOSHORT(mouse);
+	y = HILONGTOSHORT(mouse);
+
+	Int winPosX, winPosY, winWidth, winHeight;
+
+	window->winGetScreenPosition(&winPosX, &winPosY);
+
+	window->winGetSize(&winWidth, &winHeight);
+
+	if ((x > winPosX && x < (winPosX + winWidth)) && (y > winPosY && y < (winPosY + winHeight)))
+	{
+		TheMouse->setCursorTooltip(TheGameText->fetch("TOOLTIP:GameAcceptance"), -1, NULL);
+	}
+}
+
 Color white = GameMakeColor( 255, 255, 255, 255 );
 static bool s_isIniting = FALSE;
 // window ids ------------------------------------------------------------------------------

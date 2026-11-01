@@ -159,139 +159,15 @@ extern WindowMsgHandledType LanMapSelectMenuInput( GameWindow *window, UnsignedI
 extern void GameInfoWindowInit( WindowLayout *layout, void *userData );
 extern WindowMsgHandledType GameInfoWindowSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 
-// (Patch) Download Menu ----------------------------------------------------------------------------------
-extern void DownloadMenuInit( WindowLayout *layout, void *userData );
-extern void DownloadMenuUpdate( WindowLayout *layout, void *userData );
-extern void DownloadMenuShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType DownloadMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType DownloadMenuInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
 // Popup host Game Internet -----------------------------------------------------------------------------------
 extern void DifficultySelectInit( WindowLayout *layout, void *userData );
 extern WindowMsgHandledType DifficultySelectSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 extern WindowMsgHandledType DifficultySelectInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 
-
-//=================================================================================================
-//																				WOL UI																								 //
-//=================================================================================================
-//  WOL Ladder Screen ---------------------------------------------------------------------------------
-extern void WOLLadderScreenInit( WindowLayout *layout, void *userData );
-extern void WOLLadderScreenUpdate( WindowLayout *layout, void *userData );
-extern void WOLLadderScreenShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLLadderScreenSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLLadderScreenInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-//  WOL Login Menu ---------------------------------------------------------------------------------
-extern void WOLLoginMenuInit( WindowLayout *layout, void *userData );
-extern void WOLLoginMenuUpdate( WindowLayout *layout, void *userData );
-extern void WOLLoginMenuShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLLoginMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLLoginMenuInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-//  WOL Locale Select Popup ---------------------------------------------------------------------------------
-extern void WOLLocaleSelectInit( WindowLayout *layout, void *userData );
-extern void WOLLocaleSelectUpdate( WindowLayout *layout, void *userData );
-extern void WOLLocaleSelectShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLLocaleSelectSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLLocaleSelectInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// WOL Message Window ------------------------------------------------------------------------------
-extern void WOLMessageWindowInit( WindowLayout *layout, void *userData );
-extern void WOLMessageWindowUpdate( WindowLayout *layout, void *userData );
-extern void WOLMessageWindowShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLMessageWindowSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLMessageWindowInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// WOL Quick Match Menu ----------------------------------------------------------------------------
-extern void WOLQuickMatchMenuInit( WindowLayout *layout, void *userData );
-extern void WOLQuickMatchMenuUpdate( WindowLayout *layout, void *userData );
-extern void WOLQuickMatchMenuShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLQuickMatchMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLQuickMatchMenuInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// WOL Welcome Menu --------------------------------------------------------------------------------
-extern void WOLWelcomeMenuInit( WindowLayout *layout, void *userData );
-extern void WOLWelcomeMenuUpdate( WindowLayout *layout, void *userData );
-extern void WOLWelcomeMenuShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLWelcomeMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLWelcomeMenuInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// WOL Welcome Menu --------------------------------------------------------------------------------
-extern void WOLStatusMenuInit( WindowLayout *layout, void *userData );
-extern void WOLStatusMenuUpdate( WindowLayout *layout, void *userData );
-extern void WOLStatusMenuShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLStatusMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLStatusMenuInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// WOL Quickmatch Score Screen --------------------------------------------------------------------------------
-extern void WOLQMScoreScreenInit( WindowLayout *layout, void *userData );
-extern void WOLQMScoreScreenUpdate( WindowLayout *layout, void *userData );
-extern void WOLQMScoreScreenShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLQMScoreScreenSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLQMScoreScreenInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-//  WOL Lobby Menu ---------------------------------------------------------------------------------
-extern void WOLLobbyMenuInit( WindowLayout *layout, void *userData );
-extern void WOLLobbyMenuUpdate( WindowLayout *layout, void *userData );
-extern void WOLLobbyMenuShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLLobbyMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLLobbyMenuInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-//  WOL Game Setup Menu ---------------------------------------------------------------------------------
-extern void WOLGameSetupMenuInit( WindowLayout *layout, void *userData );
-extern void WOLGameSetupMenuUpdate( WindowLayout *layout, void *userData );
-extern void WOLGameSetupMenuShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLGameSetupMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLGameSetupMenuInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// WOL Custom Score Screen --------------------------------------------------------------------------------
-extern void WOLCustomScoreScreenInit( WindowLayout *layout, void *userData );
-extern void WOLCustomScoreScreenUpdate( WindowLayout *layout, void *userData );
-extern void WOLCustomScoreScreenShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLCustomScoreScreenSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLCustomScoreScreenInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-//  WOL Map Select Overlay ---------------------------------------------------------------------------------
-extern void WOLMapSelectMenuInit( WindowLayout *layout, void *userData );
-extern void WOLMapSelectMenuUpdate( WindowLayout *layout, void *userData );
-extern void WOLMapSelectMenuShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLMapSelectMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLMapSelectMenuInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-//  WOL Buddy Overlay ---------------------------------------------------------------------------------
-extern void WOLBuddyOverlayInit( WindowLayout *layout, void *userData );
-extern void WOLBuddyOverlayUpdate( WindowLayout *layout, void *userData );
-extern void WOLBuddyOverlayShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLBuddyOverlaySystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType WOLBuddyOverlayInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// WOL Buddy Overlay Right Click menu callbacks --------------------------------------------------------------
-extern void WOLBuddyOverlayRCMenuInit( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType WOLBuddyOverlayRCMenuSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-//  GameSpy Player Info Overlay ---------------------------------------------------------------------------------
-extern void GameSpyPlayerInfoOverlayInit( WindowLayout *layout, void *userData );
-extern void GameSpyPlayerInfoOverlayUpdate( WindowLayout *layout, void *userData );
-extern void GameSpyPlayerInfoOverlayShutdown( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType GameSpyPlayerInfoOverlaySystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType GameSpyPlayerInfoOverlayInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// Popup host Game Internet -----------------------------------------------------------------------------------
-extern void PopupHostGameInit( WindowLayout *layout, void *userData );
-extern void PopupHostGameUpdate( WindowLayout * layout, void *userData);
-extern WindowMsgHandledType PopupHostGameSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType PopupHostGameInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
 // Popup InGame Message Box -----------------------------------------------------------------------------------
 extern void InGamePopupMessageInit( WindowLayout *layout, void *userData );
 extern WindowMsgHandledType InGamePopupMessageSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 extern WindowMsgHandledType InGamePopupMessageInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// Popup join Game Internet -----------------------------------------------------------------------------------
-extern void PopupJoinGameInit( WindowLayout *layout, void *userData );
-extern WindowMsgHandledType PopupJoinGameSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType PopupJoinGameInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 
 //  Network Direct ConnectWindow ---------------------------------------------------------------------------------
 extern void NetworkDirectConnectInit( WindowLayout *layout, void *userData );
@@ -367,12 +243,6 @@ extern void ShowDisconnectWindow( void );
 extern void HideDisconnectWindow( void );
 extern WindowMsgHandledType DisconnectControlSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 extern WindowMsgHandledType DisconnectControlInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-
-// Establish Connections Window -------------------------------------------------------------------
-extern void ShowEstablishConnectionsWindow( void );
-extern void HideEstablishConnectionsWindow( void );
-extern WindowMsgHandledType EstablishConnectionsControlSystem( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
-extern WindowMsgHandledType EstablishConnectionsControlInput( GameWindow *window, UnsignedInt msg, WindowMsgData mData1, WindowMsgData mData2 );
 
 // The in game quit menu --------------------------------------------------------------------------
 extern void destroyQuitMenu();

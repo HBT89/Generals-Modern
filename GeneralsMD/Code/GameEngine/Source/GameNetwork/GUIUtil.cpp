@@ -40,6 +40,7 @@
 #include "GameClient/GadgetStaticText.h"
 #include "GameClient/GadgetPushButton.h"
 #include "GameClient/GameText.h"
+#include "GameClient/Mouse.h"
 #include "GameLogic/GameLogic.h" // SUPERWEAPON_RESTRICT_COUNT
 #include "GameNetwork/GameInfo.h"
 #include "Common/PlayerTemplate.h"
@@ -515,3 +516,60 @@ void UpdateSlotList( GameInfo *myGame, GameWindow *comboPlayer[],
 }
 
 // -----------------------------------------------------------------------------
+
+// for use by GameWindow::winSetTooltipFunc
+// displays the Army Tooltip for the player templates
+void playerTemplateComboBoxTooltip(GameWindow *wndComboBox, WinInstanceData *instData, UnsignedInt mouse)
+{
+	Int index = 0;
+	GadgetComboBoxGetSelectedPos(wndComboBox, &index);
+	Int templateNum = (Int)GadgetComboBoxGetItemData(wndComboBox, index);
+	UnicodeString ustringTooltip;
+	if (templateNum == -1)
+	{
+			// the "Random" template is always first
+			ustringTooltip = TheGameText->fetch("TOOLTIP:BioStrategyLong_Random");
+	}
+	else
+	{
+		const PlayerTemplate *playerTemplate = ThePlayerTemplateStore->getNthPlayerTemplate(templateNum);
+		if (playerTemplate)
+		{
+			ustringTooltip = TheGameText->fetch(playerTemplate->getTooltip());
+		}
+	}
+	TheMouse->setCursorTooltip(ustringTooltip);
+}
+
+// -----------------------------------------------------------------------------
+
+// for use by GameWindow::winSetTooltipFunc
+// displays the Army Tooltip for the player templates
+void playerTemplateListBoxTooltip(GameWindow *wndListBox, WinInstanceData *instData, UnsignedInt mouse)
+{
+	Int x, y, row, col;
+	x = LOLONGTOSHORT(mouse);
+	y = HILONGTOSHORT(mouse);
+	GadgetListBoxGetEntryBasedOnXY(wndListBox, x, y, row, col);
+	if (row == -1 || col == -1)
+		return;
+
+	Int templateNum = (Int)GadgetListBoxGetItemData(wndListBox, row, col);
+	UnicodeString ustringTooltip;
+	if (templateNum == -1)
+	{
+			// the "Random" template is always first
+			ustringTooltip = TheGameText->fetch("TOOLTIP:BioStrategyLong_Random");
+	}
+	else
+	{
+		const PlayerTemplate *playerTemplate = ThePlayerTemplateStore->getNthPlayerTemplate(templateNum);
+		if (playerTemplate)
+		{
+			ustringTooltip = TheGameText->fetch(playerTemplate->getTooltip());
+		}
+	}
+
+	// use no tooltip delay here
+	TheMouse->setCursorTooltip(ustringTooltip, 0);
+}

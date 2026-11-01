@@ -83,8 +83,6 @@
 
 #include "GameNetwork/NetworkInterface.h"
 #include "GameNetwork/GameInfo.h"
-#include "GameNetwork/GameSpyOverlay.h"
-#include "GameNetwork/GameSpy/BuddyThread.h"
 
 #ifdef _INTERNAL
 // for occasional debugging...
@@ -3078,8 +3076,6 @@ GameMessageDisposition CommandTranslator::translateGameMessage(const GameMessage
 			{
 				ToggleDiplomacy( FALSE );
 			}
-			else if( TheShell && TheShell->isShellActive() && TheGameSpyBuddyMessageQueue)
-				GameSpyToggleOverlay(GSOVERLAY_BUDDY);
 			disp = DESTROY_MESSAGE;
 			break;
 
