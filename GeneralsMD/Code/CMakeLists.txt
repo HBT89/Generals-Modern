@@ -14,6 +14,14 @@ if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
         "Configure with: cmake -S GeneralsMD/Code -B build -A Win32")
 endif()
 
+# Link the C/C++ runtime statically (/MT, /MTd in Debug), so the exe needs no Visual C++
+# redistributable. With the default dynamic runtime, a build from a newer toolset needs
+# a runtime at least that new, and can crash on an older one (CI builds with VS 2026's
+# v145). Every library here is built from source with the same setting. Set before any
+# target is created; CMP0091 is NEW under cmake_minimum_required 3.20. Zero Hour
+# Reforged does the same, for the same reason (its CMakeLists.txt:99-102).
+set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+
 # Recorded in every configure log, so a CI compiler that differs from the one the
 # game is developed with is visible instead of surfacing as unexplained errors.
 message(STATUS "Generals-Modern toolchain: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}, "
