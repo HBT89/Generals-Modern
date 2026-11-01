@@ -2,12 +2,24 @@
 # Ignore RUNable folder
 [Rr]un
 
-# Build output folders
-[Rr]elease*
-[Pp]rofile*
-[Ii]nternal*
-[Dd]ebug*
-[Hh]ybrid*
+# Build output folders (VC6 configurations). Directory-only, with the trailing slash:
+# the bare forms ("[Dd]ebug*") also matched FILES, so git silently skipped every new
+# source file whose name starts with debug or profile. That is how bx's debug.h and
+# debug.cpp and bgfx's debug_renderdoc.h/.cpp were never committed, and a fresh clone
+# could not build. Tracked files such as Common/Debug.h were only safe because EA
+# committed them before this file existed.
+[Rr]elease*/
+[Pp]rofile*/
+[Ii]nternal*/
+[Dd]ebug*/
+[Hh]ybrid*/
+# Source directories whose names match the rules above:
+!/Code/Libraries/Source/debug/
+!/Code/Libraries/Source/debug/debug_dlg/
+!/Code/Libraries/Source/profile/
+!/Code/Tools/DebugWindow/
+!/Code/Tools/Launcher/Toolkit/Debug/
+!/Code/GameEngine/Source/GameClient/System/Debug Displayers/
 [Ee]nglish
 [Ff]rench
 [Gg]erman
