@@ -12,7 +12,9 @@ name: Build
 
 on:
   push:
-    branches: [ ReshadeBranch, main ]
+    # Every branch, so work is checked before it is merged rather than after. A
+    # branch that does not carry this file (main, the website) never runs it.
+    branches: [ '**' ]
   pull_request:
     branches: [ ReshadeBranch, main ]
   workflow_dispatch:
@@ -54,25 +56,53 @@ jobs:
           }
           Write-Host "All $($required.Count) build-critical stubs present."
 
+      # Third-party sources EA stripped from the release. Each is #included by code
+      # that compiles, and none is in the repository yet: they exist only on the
+      # machine the game has been developed on. Reported up front, and not fatal
+      # until they are committed or fetched, so the compiler errors further down can
+      # be told apart from new breakage.
+      - name: Report missing third-party inputs
+        shell: pwsh
+        run: |
+          $inputs = [ordered]@{
+            'GeneralsMD/Code/Libraries/Source/Compression/ZLib/zlib.h'                  = 'zlib, for Compression/CompressionManager.cpp'
+            'GeneralsMD/Code/Libraries/Source/Compression/LZHCompress/CompLibHeader/lzhl.h' = 'LZH-Light, for LZHCompress/NoxCompress.cpp'
+            'GeneralsMD/Code/GameEngine/Include/Common/SafeDisc/CdaPfn.h'             = 'SafeDisc header, for Main/WinMain.cpp'
+            'GeneralsMD/Code/Libraries/Source/EABrowserDispatch/BrowserDispatch.h'     = 'MIDL output of BrowserDispatch.idl, for WOLBrowser/WebBrowser.h'
+            'GeneralsMD/Code/Libraries/Source/GameSpy/Peer/Peer.h'                     = 'GameSpy SDK, for GameSpy.h, PeerThread.h and 3 more'
+            'GeneralsMD/Code/Libraries/Source/GameSpy/GP/GP.h'                         = 'GameSpy SDK, for GameSpyGP.h, BuddyThread.h, PeerDefs.h'
+            'GeneralsMD/Code/Libraries/Source/GameSpy/ghttp/ghttp.h'                   = 'GameSpy SDK, for MainMenu.cpp, OptionsMenu.cpp, MainMenuUtils.cpp'
+            'GeneralsMD/Code/Libraries/Source/GameSpy/gstats/gpersist.h'               = 'GameSpy SDK, for PersistentStorageThread.h'
+          }
+          $missing = @($inputs.Keys | Where-Object { -not (Test-Path $_) })
+          foreach ($path in $missing) { Write-Host "::warning::Missing input: $path ($($inputs[$path]))" }
+          Write-Host "$($missing.Count) of $($inputs.Count) third-party inputs missing."
+
       - name: Report toolchain versions
         shell: pwsh
         run: |
           cmake --version
           Write-Host "---"
-          Write-Host "Note: this project pins itself to Win32 (x86) because the engine"
-          Write-Host "contains ~120 inline __asm blocks across 16 files."
+          Write-Host "Note: this project builds as Win32 (x86) only, because the engine"
+          Write-Host "still contains MSVC x86 inline __asm. The compiler is reported by"
+          Write-Host "the Configure step ('Generals-Modern toolchain: ...')."
 
-      # The CMake root is GeneralsMD/Code, not the repository root. Win32 is not
-      # optional -- CMakeLists.txt forces it, and /SAFESEH:NO is required for the
-      # inline assembly to link.
+      # The CMake root is GeneralsMD/Code, not the repository root. -A Win32 is
+      # required: CMakeLists.txt stops the configure on anything else.
+      #
+      # No -G. Pinning "Visual Studio 17 2022" broke every run so far, because the
+      # hosted image no longer carries Visual Studio 2022, so CMake takes the newest
+      # Visual Studio installed. That may be a newer MSVC than the 19.44 the game
+      # is developed with; the configure log records which one, and a -T toolset
+      # pin can follow if the two disagree. CMAKE_BUILD_TYPE is not passed: Visual
+      # Studio generators ignore it and take the configuration at build time.
       - name: Configure
-        run: >
-          cmake -S GeneralsMD/Code -B build
-          -G "Visual Studio 17 2022" -A Win32
-          -DCMAKE_BUILD_TYPE=Release
+        run: cmake -S GeneralsMD/Code -B build -A Win32
 
-      - name: Build GeneralsZH
-        run: cmake --build build --config Release --target GeneralsZH
+      # Every target, not just the game: the test executables have to be built for
+      # the step after this one to have anything to run.
+      - name: Build
+        run: cmake --build build --config Release --parallel
 
       # Five test executables have existed for months and have never been run by
       # anything -- CTest's own log records zero tests. Do not fail the job on them

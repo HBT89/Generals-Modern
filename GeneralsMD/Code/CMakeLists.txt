@@ -1,10 +1,24 @@
 cmake_minimum_required(VERSION 3.20)
 project(GeneralsZH LANGUAGES C CXX)
 
-# Force Win32 (x86) - the game uses inline assembly and 32-bit APIs
-if(NOT CMAKE_GENERATOR_PLATFORM)
-    set(CMAKE_GENERATOR_PLATFORM Win32)
+# 32-bit x86 only, for now: the engine still contains MSVC x86 inline __asm, and
+# saved data assumes 32-bit pointers. This used to set CMAKE_GENERATOR_PLATFORM to
+# Win32, but project() above has already chosen the platform by then, so it did
+# nothing and a configure without -A Win32 silently produced a 64-bit tree. Fail at
+# configure instead. (Zero Hour Reforged guards the opposite way, x64 only, at
+# GeneralsMD/Code/CMakeLists.txt:105-109; 64-bit is planned here after the base
+# game is playable and replay checksums are pinned.)
+if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
+    message(FATAL_ERROR
+        "Generals-Modern builds as 32-bit x86 only for now. "
+        "Configure with: cmake -S GeneralsMD/Code -B build -A Win32")
 endif()
+
+# Recorded in every configure log, so a CI compiler that differs from the one the
+# game is developed with is visible instead of surfacing as unexplained errors.
+message(STATUS "Generals-Modern toolchain: ${CMAKE_CXX_COMPILER_ID} ${CMAKE_CXX_COMPILER_VERSION}, "
+    "generator '${CMAKE_GENERATOR}', platform '${CMAKE_GENERATOR_PLATFORM}', "
+    "toolset '${CMAKE_VS_PLATFORM_TOOLSET}'")
 
 # =============================================================================
 # Path variables

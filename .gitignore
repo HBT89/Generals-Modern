@@ -1,6 +1,8 @@
 /Run
 /Profile
-/Tools
+# '/Tools' used to be here. Nothing at the repository root is named Tools, but on
+# Windows git matches ignore rules case-insensitively, so it hid tools/ -- where the
+# capture and debugger scripts live -- from 'git status' and 'git add'.
 /Backup
 /.obsidian
 /.vscode
