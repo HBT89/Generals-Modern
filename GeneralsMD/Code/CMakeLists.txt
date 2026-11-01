@@ -430,34 +430,63 @@ target_link_libraries(GeneralsZH PRIVATE
 # =============================================================================
 enable_testing()
 
+# Every test is TEST()/CHECK() blocks over the harness in Tests/test_harness.h; this
+# library supplies main(), which exits non-zero when any CHECK failed, in Release too.
+# Harness and library are taken from Zero Hour Reforged (see NOTICE.md). Reforged
+# registers its tests through an add_lib_test helper; here each one is spelled out.
+add_library(test_harness STATIC ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_main.cpp)
+target_include_directories(test_harness PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/Tests)
+
 # Test: stub compilation
 add_executable(test_stub_compilation ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_stub_compilation.cpp)
 target_include_directories(test_stub_compilation PRIVATE ${COMMON_INCLUDES})
+target_link_libraries(test_stub_compilation PRIVATE test_harness)
 add_test(NAME StubCompilation COMMAND test_stub_compilation)
 
 # Test: math library
 add_executable(test_math ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_math.cpp)
 target_include_directories(test_math PRIVATE ${COMMON_INCLUDES})
-target_link_libraries(test_math wwmath wwlib wwdebug)
+target_link_libraries(test_math wwmath wwlib wwdebug test_harness)
 add_test(NAME MathLibrary COMMAND test_math)
 
 # Test: DX8 stub OUT-param safety (links bgfx for BGFXTexture8 destructor)
 add_executable(test_dx8_stubs ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_chunk_01_dx8_stubs.cpp)
 target_include_directories(test_dx8_stubs PRIVATE ${COMMON_INCLUDES})
-target_link_libraries(test_dx8_stubs PRIVATE bgfx bx bimg psapi)
+target_link_libraries(test_dx8_stubs PRIVATE bgfx bx bimg psapi test_harness)
 add_test(NAME DX8Stubs COMMAND test_dx8_stubs)
 
 # Test: BGFX CPU buffer mechanics (links bgfx for BGFXTexture8 destructor)
 add_executable(test_bgfx_buffers ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_chunk_02_bgfx_buffers.cpp)
 target_include_directories(test_bgfx_buffers PRIVATE ${COMMON_INCLUDES})
-target_link_libraries(test_bgfx_buffers PRIVATE bgfx bx bimg psapi)
+target_link_libraries(test_bgfx_buffers PRIVATE bgfx bx bimg psapi test_harness)
 add_test(NAME BGFXBuffers COMMAND test_bgfx_buffers)
 
 # Test: BGFX headless init/frame/shutdown via Noop renderer
 add_executable(test_bgfx_headless ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_chunk_03_bgfx_headless.cpp)
 target_include_directories(test_bgfx_headless PRIVATE ${COMMON_INCLUDES})
-target_link_libraries(test_bgfx_headless bgfx bx bimg d3d11 dxgi psapi)
+target_link_libraries(test_bgfx_headless bgfx bx bimg d3d11 dxgi psapi test_harness)
 add_test(NAME BGFXHeadless COMMAND test_bgfx_headless)
+
+# Test: BaseType.h float->int helpers (MSVC x86 asm), bit-exact in the game's FPU mode.
+# Header-only: BaseType.h needs nothing linked.
+add_executable(test_basetype_float ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_basetype_float.cpp)
+target_include_directories(test_basetype_float PRIVATE ${LIBS_INCLUDE})
+target_link_libraries(test_basetype_float PRIVATE test_harness)
+add_test(NAME BaseTypeFloat COMMAND test_basetype_float)
+
+# Test: the stub d3dx8math.h's Vec4Transform/Vec4Dot as the Bezier code calls them,
+# bit-exact. Header-only: nothing in d3d8.h is called.
+add_executable(test_d3dx8math_golden ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_d3dx8math_golden.cpp)
+target_include_directories(test_d3dx8math_golden PRIVATE ${DX8_SDK_INCLUDE})
+target_link_libraries(test_d3dx8math_golden PRIVATE test_harness)
+add_test(NAME D3DX8MathGolden COMMAND test_d3dx8math_golden)
+
+# Armed control: fails on purpose, so it passes only while a failing CHECK still
+# fails its binary and ctest still sees that.
+add_executable(test_harness_armed_control ${CMAKE_CURRENT_SOURCE_DIR}/Tests/test_harness_armed_control.cpp)
+target_link_libraries(test_harness_armed_control PRIVATE test_harness)
+add_test(NAME HarnessArmedControl COMMAND test_harness_armed_control)
+set_tests_properties(HarnessArmedControl PROPERTIES WILL_FAIL TRUE)
 
 message(STATUS "")
 message(STATUS "=== Generals: Zero Hour Build Configuration ===")

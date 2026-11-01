@@ -5,10 +5,12 @@
 
 #include <bgfx/bgfx.h>
 #include <bgfx/platform.h>
-#include <cassert>
-#include <stdio.h>
 
-int main() {
+#include "test_harness.h"
+
+// The only test in this binary: renderFrame-before-init and bgfx's global state allow
+// one init/shutdown cycle per process.
+TEST(bgfx_noop_init_frame_shutdown) {
     // Single-threaded mode: renderFrame before init suppresses bgfx's render thread.
     // Required when the caller owns the main loop (same as the game).
     bgfx::renderFrame();
@@ -20,11 +22,10 @@ int main() {
     // No HWND needed for Noop renderer
     init.platformData.nwh  = nullptr;
 
-    bool ok = bgfx::init(init);
-    if (!ok) {
-        printf("FAIL: bgfx::init(Noop) returned false\n");
-        return 1;
-    }
+    const bool ok = bgfx::init(init);
+    CHECK(ok);
+    if (!ok) return;
+    CHECK_EQ(bgfx::getRendererType(), bgfx::RendererType::Noop);
 
     // One frame cycle: clear, touch, frame
     bgfx::setViewClear(0, BGFX_CLEAR_COLOR | BGFX_CLEAR_DEPTH, 0x000000ff, 1.0f, 0);
@@ -32,7 +33,4 @@ int main() {
     bgfx::frame();
 
     bgfx::shutdown();
-
-    printf("BGFX headless init/frame/shutdown passed!\n");
-    return 0;
 }

@@ -22,6 +22,7 @@ Every file or change that takes something from it says so where it happens. So f
 | `W3DVolumetricShadow.cpp`: shader-mesh shadow branch compiled out | Reforged's W3DVolumetricShadow.cpp |
 | `GameEngine/Include/Common/SafeDisc/CdaPfn.h` | Reforged's stand-in of the same name |
 | LZH-Light `_lz.h`: history buffer cleared | Reforged's `lzhl-clear-history.patch` |
+| `GeneralsMD/Code/Tests/test_harness.h`, `test_main.cpp`: the TEST/CHECK harness and its runner; the test_harness library in CMakeLists.txt's test section | Reforged's `Tests/test_harness.h` and `Tests/test_main.cpp` by Olcay Seygan (commit `c13a474f`, 2026-08-17), and the test_harness library from its CMakeLists.txt |
 
 The planned sound work ports Reforged's Miles-API implementation over miniaudio; it will be listed
 here, with its authors, when it lands.

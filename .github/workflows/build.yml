@@ -94,13 +94,13 @@ jobs:
       - name: Build
         run: cmake --build build --config Release --parallel
 
-      # Five test executables have existed for months and have never been run by
-      # anything -- CTest's own log records zero tests. Do not fail the job on them
-      # yet: at least one contains an assertion that contradicts the shipped code,
-      # and in Release the asserts compile out entirely. Surface the results, fix
-      # the tests, then remove continue-on-error so they become a real gate.
+      # A gate: any failing test fails the job. The tests use the CHECK harness in
+      # GeneralsMD/Code/Tests/test_harness.h, which still checks in Release (the
+      # assert()s it replaced compiled out there, so those tests passed vacuously),
+      # and every binary exits non-zero when a CHECK fails. HarnessArmedControl fails
+      # on purpose and is registered WILL_FAIL, so it shows that a failing CHECK
+      # still fails its test. --no-tests=error fails the step if CTest finds no tests.
       - name: Run tests
-        continue-on-error: true
         run: ctest --test-dir build -C Release --output-on-failure --no-tests=error
 
       - name: Upload GeneralsZH.exe
